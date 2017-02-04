@@ -41,6 +41,11 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
         ],
     ],
+    'service_manager' => [
+        'factories' => [
+            \Zend\I18n\Translator\TranslatorInterface::class => \Zend\I18n\Translator\TranslatorServiceFactory::class,
+        ],
+    ],
     'view_manager' => [
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
@@ -55,6 +60,11 @@ return [
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
+        ],
+    ],
+    'view_helpers' => [
+        'invokables' => [
+            'translate' => \Zend\I18n\View\Helper\Translate::class,
         ],
     ],
 ];

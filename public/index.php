@@ -4,6 +4,11 @@ use Zend\Mvc\Application;
 use Zend\Stdlib\ArrayUtils;
 
 /**
+ * Always set the default timezone for the application
+ */
+date_default_timezone_set('Europe/Brussels');
+
+/**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
  */
