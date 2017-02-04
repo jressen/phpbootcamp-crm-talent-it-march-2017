@@ -6,11 +6,11 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
-    'controllers' => [
+    /*'controllers' => [
         'factories' => [
             Controller\ContactController::class => InvokableFactory::class,
         ],
-    ],
+    ],*/
     'router' => [
         'routes' => [
             'contact' => [
