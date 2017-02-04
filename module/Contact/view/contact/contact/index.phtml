@@ -1,0 +1,25 @@
+<?php $this->headTitle($this->translate('Overview of contacts')) ?>
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="h1"><?php echo $this->translate('Overview of contacts') ?></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+
+            <?php foreach ($this->contacts as $contact): ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($contact->firstName) ?></td>
+                    <td><?php echo $this->escapeHtml($contact->lastName) ?></td>
+                </tr>
+            <?php endforeach ?>
+        </table>
+    </div>
+</div>

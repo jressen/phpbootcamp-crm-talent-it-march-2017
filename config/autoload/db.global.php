@@ -2,7 +2,7 @@
 
 return [
     /*'db' => [
-        'driver' => \Zend\Db\Adapter\Driver\Pdo\Pdo::class,
+        'driver' => 'Pdo',
         'dsn' => sprintf(
             'mysql:dbname=%s;host=%s;port=%d;charset=%s',
             getenv('ZFCRM_DB_DBNAME'),
