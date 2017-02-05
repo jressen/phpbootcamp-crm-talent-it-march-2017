@@ -1,0 +1,25 @@
+<?php $this->headTitle(sprintf($this->translate('Delete %s %s?'), $contact->firstName, $contact->lastName)) ?>
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="h1"><?php echo sprintf($this->translate('Delete %s %s?'), $contact->firstName, $contact->lastName) ?></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            Are you sure that you want to delete
+            "<?php echo $this->escapeHtml($contact->firstName) ?>
+            <?php echo $this->escapeHtml($contact->lastName) ?>" ?
+        </p>
+
+        <form action="<?php echo $this->url('contact', ['action' => 'delete', 'id' => $contact->contactId]) ?>" method="post">
+            <div class="form-group">
+                <input type="hidden" name="id" value="<?php echo (int) $contact->contactId ?>" />
+                <input type="submit" class="btn btn-danger" name="del" value="Yes" />
+                <input type="submit" class="btn btn-success" name="del" value="No" />
+            </div>
+        </form>
+    </div>
+</div>

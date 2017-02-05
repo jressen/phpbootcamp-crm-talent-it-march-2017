@@ -29,7 +29,7 @@ class ContactTable
     public function getContact($contactId)
     {
         $id = (int) $contactId;
-        $rowset = $this->tableGateway->select(['id' => $id]);
+        $rowset = $this->tableGateway->select(['contact_id' => $id]);
         $row = $rowset->current();
         if (! $row) {
             throw new \RuntimeException(sprintf(
@@ -43,14 +43,17 @@ class ContactTable
 
     public function saveContact(Contact $contact)
     {
+        $date = new \DateTime();
         $data = [
             'first_name' => $contact->firstName,
             'last_name' => $contact->lastName,
+            'modified' => $date->format('Y-m-d H:i:s'),
         ];
 
         $id = (int) $contact->contactId;
 
         if ($id === 0) {
+            $data['created'] = $date->format('Y-m-d H:i:s');
             $this->tableGateway->insert($data);
             return;
         }
