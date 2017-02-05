@@ -29,7 +29,7 @@ class ContactTable
     public function getContact($contactId)
     {
         $id = (int) $contactId;
-        $rowset = $this->tableGateway->select(['id' => $id]);
+        $rowset = $this->tableGateway->select(['contact_id' => $id]);
         $row = $rowset->current();
         if (! $row) {
             throw new \RuntimeException(sprintf(

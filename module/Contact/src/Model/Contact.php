@@ -29,6 +29,15 @@ class Contact implements InputFilterAwareInterface
         $this->lastName = $data['last_name'];
     }
 
+    public function getArrayCopy()
+    {
+        return [
+            'contact_id' => $this->contactId,
+            'first_name' => $this->firstName,
+            'last_name' => $this->lastName,
+        ];
+    }
+
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \DomainException(sprintf(
