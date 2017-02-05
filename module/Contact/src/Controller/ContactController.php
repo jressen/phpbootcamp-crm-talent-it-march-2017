@@ -96,4 +96,30 @@ class ContactController extends AbstractActionController
         // Redirect to album list
         return $this->redirect()->toRoute('contact', ['action' => 'index']);
     }
+
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('contact');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->contactTable->deleteContact($id);
+            }
+
+            // Redirect to list of albums
+            return $this->redirect()->toRoute('contact');
+        }
+
+        return [
+            'id'    => $id,
+            'contact' => $this->contactTable->getContact($id),
+        ];
+    }
 }
