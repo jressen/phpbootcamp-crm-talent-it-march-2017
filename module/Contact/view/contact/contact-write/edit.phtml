@@ -1,0 +1,22 @@
+<?php $this->headTitle($this->translate('Edit a contact')) ?>
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="h1"><?php echo $this->translate('Edit a contact') ?></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('contact/edit', [], true));
+echo $this->partial('contact/contact-write/contact-form', [
+    'form' => $form,
+    'submitLabel' => 'Update contact',
+]);
+?>
+
+    </div>
+</div>
