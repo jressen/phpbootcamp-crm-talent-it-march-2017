@@ -12,16 +12,16 @@
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th><a href="<?php echo $this->url('contact', ['action' => 'add']) ?>"><?php echo $this->translate('Add') ?></a></th>
+                <th><a href="<?php echo $this->url('contact/add') ?>"><?php echo $this->translate('Add') ?></a></th>
             </tr>
 
             <?php foreach ($this->contacts as $contact): ?>
                 <tr>
-                    <td><?php echo $this->escapeHtml($contact->firstName) ?></td>
-                    <td><?php echo $this->escapeHtml($contact->lastName) ?></td>
+                    <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
+                    <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
                     <td>
-                        <a href="<?php echo $this->url('contact', ['action' => 'edit', 'id' => $contact->contactId]) ?>"><?php echo $this->translate('Edit') ?></a>
-                        <a href="<?php echo $this->url('contact', ['action' => 'delete', 'id' => $contact->contactId]) ?>"><?php echo $this->translate('Delete') ?></a>
+                        <a href="<?php echo $this->url('contact/edit', ['id' => $contact->getContactId()]) ?>"><?php echo $this->translate('Edit') ?></a>
+                        <a href="<?php echo $this->url('contact/delete', ['id' => $contact->getContactId()]) ?>"><?php echo $this->translate('Delete') ?></a>
                     </td>
                 </tr>
             <?php endforeach ?>

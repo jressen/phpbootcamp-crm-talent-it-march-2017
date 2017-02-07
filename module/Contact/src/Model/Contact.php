@@ -11,31 +11,63 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator\StringLength;
 
-class Contact implements InputFilterAwareInterface
+class Contact implements ContactInterface, InputFilterAwareInterface
 {
-    public $contactId;
-    public $firstName;
-    public $lastName;
+    /**
+     * @var int
+     */
+    private $contactId;
+
+    /**
+     * @var string
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     */
+    private $lastName;
 
     /**
      * @var InputFilterAwareInterface
      */
     private $inputFilter;
 
-    public function exchangeArray(array $data)
+    /**
+     * Contact constructor.
+     * @param int $contactId
+     * @param string $firstName
+     * @param string $lastName
+     */
+    public function __construct($contactId, $firstName, $lastName)
     {
-        $this->contactId = $data['contact_id'];
-        $this->firstName = $data['first_name'];
-        $this->lastName = $data['last_name'];
+        $this->contactId = $contactId;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
     }
 
-    public function getArrayCopy()
+    /**
+     * @return int
+     */
+    public function getContactId()
     {
-        return [
-            'contact_id' => $this->contactId,
-            'first_name' => $this->firstName,
-            'last_name' => $this->lastName,
-        ];
+        return $this->contactId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)

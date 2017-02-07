@@ -12,30 +12,22 @@ class ContactForm extends Form
         parent::__construct('contact', $options);
 
         $this->add([
-            'name' => 'contact_id',
-            'type' => 'hidden',
-        ]);
-
-        $this->add([
-            'name' => 'first_name',
-            'type' => 'text',
+            'name' => 'contact-fieldset',
+            'type' => ContactFieldset::class,
             'options' => [
-                'Label' => 'First name',
+                'use_as_base_fieldset' => true,
             ],
         ]);
 
         $this->add([
-            'name' => 'last_name',
-            'type' => 'text',
-            'options' => [
-                'Label' => 'Last name',
-            ],
+            'name' => 'csrf',
+            'type' => 'csrf',
         ]);
 
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
-            'options' => [
+            'attributes' => [
                 'value' => 'Save',
             ],
         ]);
