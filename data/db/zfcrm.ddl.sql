@@ -13,6 +13,7 @@ CREATE TABLE `contact_email` (
   `contact_email_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `contact_id` INT UNSIGNED NOT NULL,
   `email_address` VARCHAR(250) NOT NULL,
+  `primary` TINYINT(1) NOT NULL DEFAULT 0,
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `modified` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`contact_email_id`),
