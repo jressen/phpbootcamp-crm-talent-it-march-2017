@@ -2,15 +2,28 @@
 
 namespace Contact;
 
+use Contact\Factory\ZendDbSqlRepositoryFactory;
+use Contact\Model\ContactRepository;
+use Contact\Model\ContactRepositoryInterface;
+use Contact\Model\ZendDbSqlRepository;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
-    /*'controllers' => [
-        'factories' => [
-            Controller\ContactController::class => InvokableFactory::class,
+    'service_manager' => [
+        'aliases' => [
+            ContactRepositoryInterface::class => ZendDbSqlRepository::class,
         ],
-    ],*/
+        'factories' => [
+            ContactRepository::class => InvokableFactory::class,
+            ZendDbSqlRepository::class => ZendDbSqlRepositoryFactory::class,
+        ],
+    ],
+    'controllers' => [
+        'factories' => [
+            Controller\ContactController::class => Factory\ContactControllerFactory::class,
+        ],
+    ],
     'router' => [
         'routes' => [
             'contact' => [
