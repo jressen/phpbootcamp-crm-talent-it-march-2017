@@ -5,6 +5,7 @@ namespace Contact\Factory;
 
 use Contact\Controller\ContactController;
 use Contact\Form\ContactForm;
+use Contact\Model\ContactEmailRepositoryInterface;
 use Contact\Model\ContactRepositoryInterface;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
@@ -20,7 +21,8 @@ class ContactControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new ContactController(
-            $container->get(ContactRepositoryInterface::class)
+            $container->get(ContactRepositoryInterface::class),
+            $container->get(ContactEmailRepositoryInterface::class)
         );
     }
 

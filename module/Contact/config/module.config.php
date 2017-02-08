@@ -10,10 +10,12 @@ return [
         'aliases' => [
             Model\ContactRepositoryInterface::class => Model\ContactRepository::class,
             Model\ContactCommandInterface::class => Model\ContactCommand::class,
+            Model\ContactEmailRepositoryInterface::class => Model\ContactEmailRepository::class,
         ],
         'factories' => [
             Model\ContactRepository::class => Factory\ContactRepositoryFactory::class,
             Model\ContactCommand::class => Factory\ContactlCommandFactory::class,
+            Model\ContactEmailRepository::class => Factory\ContactEmailRepositoryFactory::class,
         ],
     ],
     'controllers' => [

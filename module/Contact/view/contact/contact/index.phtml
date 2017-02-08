@@ -20,6 +20,7 @@
                     <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
                     <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
                     <td>
+                        <a href="<?php echo $this->url('contact/detail', ['id' => $contact->getContactId()]) ?>"><?php echo $this->translate('Detail') ?></a>
                         <a href="<?php echo $this->url('contact/edit', ['id' => $contact->getContactId()]) ?>"><?php echo $this->translate('Edit') ?></a>
                         <a href="<?php echo $this->url('contact/delete', ['id' => $contact->getContactId()]) ?>"><?php echo $this->translate('Delete') ?></a>
                     </td>
