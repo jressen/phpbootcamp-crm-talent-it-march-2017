@@ -1,11 +1,11 @@
 <?php
 
-namespace Contact\Factory;
+namespace Contact\Model\Factory;
 
 
-use Contact\Model\Contact;
-use Contact\Model\ContactHydrator;
-use Contact\Model\ZendDbSqlRepository;
+use Contact\Entity\Contact;
+use Contact\Entity\ContactHydrator;
+use Contact\Model\ContactRepository;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\Db\Adapter\AdapterInterface;
@@ -13,14 +13,14 @@ use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class ZendDbSqlRepositoryFactory implements FactoryInterface
+class ContactRepositoryFactory implements FactoryInterface
 {
     /**
      * @inheritDoc
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new ZendDbSqlRepository(
+        return new ContactRepository(
             $container->get(AdapterInterface::class),
             new ContactHydrator(),
             new Contact(0, '', '')

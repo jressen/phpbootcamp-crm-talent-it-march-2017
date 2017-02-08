@@ -1,6 +1,6 @@
 <?php
 
-namespace Contact\Factory;
+namespace Contact\Controller\Factory;
 
 use Contact\Controller\ContactWriteController;
 use Contact\Form\ContactForm;

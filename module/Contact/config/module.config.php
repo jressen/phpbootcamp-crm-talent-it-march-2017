@@ -2,35 +2,28 @@
 
 namespace Contact;
 
-use Contact\Factory\ZendDbSqlCommandFactory;
-use Contact\Factory\ZendDbSqlRepositoryFactory;
-use Contact\Model\ContactCommand;
-use Contact\Model\ContactCommandInterface;
-use Contact\Model\ContactRepository;
-use Contact\Model\ContactRepositoryInterface;
-use Contact\Model\ZendDbSqlCommand;
-use Contact\Model\ZendDbSqlRepository;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'service_manager' => [
         'aliases' => [
-            ContactRepositoryInterface::class => ZendDbSqlRepository::class,
-            ContactCommandInterface::class => ZendDbSqlCommand::class,
+            Model\ContactRepositoryInterface::class => Model\ContactRepository::class,
+            Model\ContactCommandInterface::class => Model\ContactCommand::class,
+            Model\ContactEmailRepositoryInterface::class => Model\ContactEmailRepository::class,
+            Model\ContactAddressRepositoryInterface::class => Model\ContactAddressRepository::class,
         ],
         'factories' => [
-            ContactRepository::class => InvokableFactory::class,
-            ContactCommand::class => InvokableFactory::class,
-            ZendDbSqlRepository::class => ZendDbSqlRepositoryFactory::class,
-            ZendDbSqlCommand::class => ZendDbSqlCommandFactory::class,
+            Model\ContactRepository::class => Model\Factory\ContactRepositoryFactory::class,
+            Model\ContactCommand::class => Model\Factory\ContactlCommandFactory::class,
+            Model\ContactEmailRepository::class => Model\Factory\ContactEmailRepositoryFactory::class,
+            Model\ContactAddressRepository::class => Model\Factory\ContactAddressRepositoryFactory::class,
         ],
     ],
     'controllers' => [
         'factories' => [
-            Controller\ContactController::class => Factory\ContactControllerFactory::class,
-            Controller\ContactWriteController::class => Factory\ContactWriteControllerFactory::class,
+            Controller\ContactController::class => Controller\Factory\ContactControllerFactory::class,
+            Controller\ContactWriteController::class => Controller\Factory\ContactWriteControllerFactory::class,
         ],
     ],
     'router' => [
