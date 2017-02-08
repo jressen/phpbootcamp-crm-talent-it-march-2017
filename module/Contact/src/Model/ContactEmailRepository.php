@@ -3,6 +3,7 @@
 namespace Contact\Model;
 
 
+use Contact\Entity\ContactEmailInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;

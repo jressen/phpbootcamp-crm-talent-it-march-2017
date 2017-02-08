@@ -1,6 +1,6 @@
 <?php
 
-namespace Contact\Model;
+namespace Contact\Entity;
 
 
 class ContactEmail implements ContactEmailInterface

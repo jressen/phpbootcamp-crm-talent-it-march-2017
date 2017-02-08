@@ -1,12 +1,11 @@
 <?php
 
-namespace Contact\Factory;
+namespace Contact\Model\Factory;
 
 
-use Contact\Model\Contact;
-use Contact\Model\ContactHydrator;
+use Contact\Entity\Contact;
+use Contact\Entity\ContactHydrator;
 use Contact\Model\ContactRepository;
-use Contact\Model\ZendDbSqlRepository;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\Db\Adapter\AdapterInterface;

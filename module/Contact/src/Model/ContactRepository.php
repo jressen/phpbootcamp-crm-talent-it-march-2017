@@ -2,6 +2,7 @@
 
 namespace Contact\Model;
 
+use Contact\Entity\ContactInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;

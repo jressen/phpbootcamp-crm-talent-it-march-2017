@@ -1,10 +1,12 @@
 <?php
 
-namespace Contact\Factory;
+namespace Contact\Controller\Factory;
 
-use Contact\Controller\ContactWriteController;
+
+use Contact\Controller\ContactController;
 use Contact\Form\ContactForm;
-use Contact\Model\ContactCommandInterface;
+use Contact\Model\ContactAddressRepositoryInterface;
+use Contact\Model\ContactEmailRepositoryInterface;
 use Contact\Model\ContactRepositoryInterface;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
@@ -12,18 +14,17 @@ use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class ContactWriteControllerFactory implements FactoryInterface
+class ContactControllerFactory implements FactoryInterface
 {
     /**
      * @inheritDoc
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $formManager = $container->get('FormElementManager');
-        return new ContactWriteController(
-            $container->get(ContactCommandInterface::class),
+        return new ContactController(
             $container->get(ContactRepositoryInterface::class),
-            $formManager->get(ContactForm::class)
+            $container->get(ContactEmailRepositoryInterface::class),
+            $container->get(ContactAddressRepositoryInterface::class)
         );
     }
 

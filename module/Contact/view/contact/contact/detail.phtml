@@ -21,6 +21,23 @@
                 <li class="list-group-item"><?php echo $this->escapeHtml($contactEmail->getEmailAddress()) ?></li>
             <?php endforeach ?>
         </ul>
+        <br>
+        <h2 class="h2">Addresses</h2>
+        <ul class="list-group">
+            <?php foreach ($this->contactAddresses as $contactAddress): ?>
+                <?php /** @var \Contact\Entity\ContactAddressInterface $contactAddress */ ?>
+                <li class="list-group-item">
+                    <?php echo $this->escapeHtml($contactAddress->getStreet1()) ?><br>
+                    <?php if ('' !== $contactAddress->getStreet2()): ?>
+                        <?php echo $this->escapeHtml($contactAddress->getStreet2()) ?><br>
+                    <?php endif ?>
+                    <?php echo $this->escapeHtml($contactAddress->getPostcode()) ?>
+                    <?php echo $this->escapeHtml($contactAddress->getCity()) ?><br>
+                    <?php echo $this->escapeHtml($contactAddress->getProvince()) ?><br>
+                    <?php echo $this->escapeHtml($contactAddress->getCountryCode()) ?>
+                </li>
+            <?php endforeach ?>
+        </ul>
     </div>
 </div>
 

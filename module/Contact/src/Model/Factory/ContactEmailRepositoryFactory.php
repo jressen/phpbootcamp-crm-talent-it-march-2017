@@ -1,10 +1,10 @@
 <?php
 
-namespace Contact\Factory;
+namespace Contact\Model\Factory;
 
 
-use Contact\Model\ContactEmail;
-use Contact\Model\ContactEmailHydrator;
+use Contact\Entity\ContactEmail;
+use Contact\Entity\ContactEmailHydrator;
 use Contact\Model\ContactEmailRepository;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
