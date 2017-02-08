@@ -6,7 +6,6 @@ namespace Contact\Controller;
 use Contact\Form\ContactForm;
 use Contact\Model\Contact;
 use Contact\Model\ContactRepositoryInterface;
-use Contact\Model\ContactTable;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
