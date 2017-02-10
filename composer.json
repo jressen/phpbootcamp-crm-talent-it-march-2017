@@ -30,13 +30,15 @@
     "autoload": {
         "psr-4": {
             "Application\\": "module/Application/src/",
-            "Contact\\": "module/Contact/src/"
+            "Contact\\": "module/Contact/src/",
+            "Auth\\": "module/Auth/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
-            "ContactTest\\": "module/Contact/test/"
+            "ContactTest\\": "module/Contact/test/",
+            "AuthTest\\": "module/Auth/test/"
         }
     },
     "extra": [],
@@ -54,6 +56,7 @@
     },
     "require-dev": {
         "zendframework/zend-developer-tools": "^1.1.0",
-        "zendframework/zend-test": "^3.0.1"
+        "zendframework/zend-test": "^3.0.1",
+        "fzaninotto/faker": "^1.6"
     }
 }
