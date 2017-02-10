@@ -30,13 +30,15 @@
     "autoload": {
         "psr-4": {
             "Application\\": "module/Application/src/",
-            "Contact\\": "module/Contact/src/"
+            "Contact\\": "module/Contact/src/",
+            "Auth\\": "module/Auth/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
-            "ContactTest\\": "module/Contact/test/"
+            "ContactTest\\": "module/Contact/test/",
+            "AuthTest\\": "module/Auth/test/"
         }
     },
     "extra": [],

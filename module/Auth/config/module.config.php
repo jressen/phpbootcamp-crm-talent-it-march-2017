@@ -3,16 +3,22 @@
 namespace Auth;
 
 use Zend\Router\Http\Literal;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
-    'routes' => [
-        'router' => [
+    'controllers' => [
+        'factories' => [
+            Controller\AuthController::class => InvokableFactory::class,
+        ],
+    ],
+    'router' => [
+        'routes' => [
             'auth' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/auth',
                     'defaults' => [
-                        'controller' => '',
+                        'controller' => Controller\AuthController::class,
                         'action' => 'index',
                     ],
                 ],
