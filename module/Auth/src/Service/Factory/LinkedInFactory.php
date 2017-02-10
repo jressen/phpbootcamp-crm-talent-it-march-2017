@@ -1,24 +1,27 @@
 <?php
 
-namespace Auth\Controller\Factory;
+namespace Auth\Service\Factory;
 
 
-use Auth\Controller\AuthController;
+use Auth\Service\LinkedIn;
+use GuzzleHttp\Client;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class AuthControllerFactory implements FactoryInterface
+class LinkedInFactory implements FactoryInterface
 {
     /**
      * @inheritDoc
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $linkedInService = $container->get(\Auth\Service\LinkedIn::class);
-        return new AuthController($linkedInService);
+        $guzzleClient = new Client();
+        $config = $container->get('config');
+
+        return new LinkedIn($guzzleClient, $config['linkedin']);
     }
 
 }
