@@ -8,6 +8,8 @@ use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Sql;
 use Zend\Hydrator\HydratorInterface;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 class ContactRepository implements ContactRepositoryInterface
 {
@@ -49,15 +51,13 @@ class ContactRepository implements ContactRepositoryInterface
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('contact');
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
         $resultSet = new HydratingResultSet($this->hydrator, $this->contactPrototype);
-        $resultSet->initialize($result);
-        return $resultSet;
+
+        $adapter = new DbSelect($select, $this->db, $resultSet);
+        $paginator = new Paginator($adapter);
+
+        return $paginator;
     }
 
     /**

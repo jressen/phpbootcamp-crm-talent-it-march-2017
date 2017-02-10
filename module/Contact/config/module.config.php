@@ -29,12 +29,16 @@ return [
     'router' => [
         'routes' => [
             'contact' => [
-                'type' => Literal::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route' => '/contact',
+                    'route' => '/contact[/page/:page]',
                     'defaults' => [
                         'controller' => Controller\ContactController::class,
                         'action' => 'index',
+                        'page' => 1,
+                    ],
+                    'constraints' => [
+                        'page' => '\d+',
                     ],
                 ],
                 'may_terminate' => true,
@@ -94,6 +98,9 @@ return [
     'view_manager' => [
         'template_path_stack' => [
             'contact' => __DIR__ . '/../view',
+        ],
+        'template_map' => [
+            'paginator-slide' => __DIR__ . '/../view/layout/slidePaginator.phtml',
         ],
     ],
 ];
