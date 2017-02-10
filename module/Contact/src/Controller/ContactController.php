@@ -9,6 +9,8 @@ use Contact\Model\ContactAddressRepositoryInterface;
 use Contact\Model\ContactEmailRepositoryInterface;
 use Contact\Model\ContactRepositoryInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\PaginatorIterator;
 use Zend\View\Model\ViewModel;
 
 class ContactController extends AbstractActionController
@@ -48,8 +50,14 @@ class ContactController extends AbstractActionController
 
     public function indexAction()
     {
+        $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+        $contacts = $this->contactRepository->findAllContacts();
+        $contacts->setCurrentPageNumber($page)
+            ->setItemCountPerPage(15)
+            ->setPageRange(7);
+
         return new ViewModel([
-            'contacts' => $this->contactRepository->findAllContacts(),
+            'contacts' => $contacts,
         ]);
     }
 

@@ -27,5 +27,7 @@
                 </tr>
             <?php endforeach ?>
         </table>
+        <br>
+        <?php echo $this->paginationControl($this->contacts, 'Sliding', 'paginator-slide', []); ?>
     </div>
 </div>

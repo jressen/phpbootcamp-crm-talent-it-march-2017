@@ -3,12 +3,15 @@
 namespace Contact\Model;
 
 
+use Contact\Entity\ContactInterface;
+use Zend\Paginator\Paginator;
+
 interface ContactRepositoryInterface
 {
     /**
      * Find all contacts
      *
-     * @return ContactInterface[]
+     * @return Paginator
      */
     public function findAllContacts();
 
