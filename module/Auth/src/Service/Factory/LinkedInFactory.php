@@ -3,6 +3,7 @@
 namespace Auth\Service\Factory;
 
 
+use Application\Module;
 use Auth\Service\LinkedIn;
 use GuzzleHttp\Client;
 use Interop\Container\ContainerInterface;
@@ -18,7 +19,12 @@ class LinkedInFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $guzzleClient = new Client();
+        $guzzleClient = new Client([
+            'headers' => [
+                'User-Agent' => 'ZFCRM/' . Module::VERSION . ' curl/' . curl_version() . ' PHP/7.1.1',
+                'Accept' => 'application/json',
+            ],
+        ]);
         $config = $container->get('config');
 
         return new LinkedIn($guzzleClient, $config['linkedin']);

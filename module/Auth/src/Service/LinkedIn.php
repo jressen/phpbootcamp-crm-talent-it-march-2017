@@ -3,6 +3,7 @@
 namespace Auth\Service;
 
 
+use Application\Module;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
@@ -54,24 +55,26 @@ class LinkedIn
 
     public function requestAccessCode($code)
     {
-        $request = $this->guzzleClient->request('POST', self::LINKEDIN_ACCESS_URL, [
-            'form_params' => [
-                'grant_type=' . 'authorization_code',
-                'code=' . $code,
-                'redirect_uri=' . urlencode($this->config['callback_uri']),
-                'client_id=' . $this->config['client_key'],
-                'client_secret=' . $this->config['client_key_secret'],
-            ],
-        ]);
-        \Zend\Debug\Debug::dump($request);
-        die;
         try {
-            $response = $request->send();
+            $response = $this->guzzleClient->request('POST', self::LINKEDIN_ACCESS_URL, [
+                'form_params' => [
+                    'grant_type' => 'authorization_code',
+                    'code' => $code,
+                    'redirect_uri' => $this->config['callback_uri'],
+                    'client_id' => $this->config['client_key'],
+                    'client_secret' => $this->config['client_key_secret'],
+                ],
+            ]);
         } catch (ClientException $exception) {
-            \Zend\Debug\Debug::dump($exception->getMessage());
-            \Zend\Debug\Debug::dump($request);
+            throw new \RuntimeException($exception->getMessage());
         }
-        \Zend\Debug\Debug::dump($response);
+
+        if (200 !== $response->getStatusCode()) {
+            throw new \RuntimeException('Something went wrong');
+        }
+        $result = $response->getBody();
+
+        return \GuzzleHttp\json_decode($result, true);
     }
 
 }

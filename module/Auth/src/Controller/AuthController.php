@@ -55,7 +55,15 @@ class AuthController extends AbstractActionController
                 return $this->redirect()->toRoute('auth/cancelled');
             }
         }
-        $this->linkedInService->requestAccessCode($response->code);
+
+        try {
+            $accessCode = $this->linkedInService->requestAccessCode($response->code);
+        } catch (\RuntimeException $runtimeException) {
+            return $this->redirect()->toRoute('auth/problem');
+        }
+
+        $this->sessionContainer->accessCode = $accessCode;
+        \Zend\Debug\Debug::dump($accessCode);
         return new ViewModel();
     }
 
