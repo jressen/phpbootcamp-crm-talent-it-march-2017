@@ -8,6 +8,7 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
     'service_manager' => [
         'factories' => [
+            \Zend\Session\Config\ConfigInterface::class => \Zend\Session\Service\SessionConfigFactory::class,
             Service\LinkedIn::class => Service\Factory\LinkedInFactory::class,
         ],
     ],
@@ -27,7 +28,7 @@ return [
                         'action' => 'index',
                     ],
                 ],
-                'may_terminate',
+                'may_terminate' => true,
                 'child_routes' => [
                     'callback' => [
                         'type' => Literal::class,
@@ -35,6 +36,24 @@ return [
                             'route' => '/callback',
                             'defaults' => [
                                 'action' => 'callback',
+                            ],
+                        ],
+                    ],
+                    'problem' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/problem',
+                            'defaults' => [
+                                'action' => 'problem',
+                            ],
+                        ],
+                    ],
+                    'cancelled' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/cancelled',
+                            'defaults' => [
+                                'action' => 'cancelled',
                             ],
                         ],
                     ],

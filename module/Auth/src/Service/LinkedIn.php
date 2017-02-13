@@ -4,10 +4,12 @@ namespace Auth\Service;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class LinkedIn
 {
     const LINKEDIN_AUTH_URL = 'https://www.linkedin.com/oauth/v2/authorization';
+    const LINKEDIN_ACCESS_URL = 'https://www.linkedin.com/oauth/v2/accessToken';
     const LINKEDIN_BASE_URL = 'https://www.linkedin.com';
 
     /**
@@ -30,23 +32,46 @@ class LinkedIn
     {
         $this->guzzleClient = $guzzleClient;
         $this->config = $config;
-        \Zend\Debug\Debug::dump($this->config);
     }
 
-    public function getAuthenticationUrl()
+    /**
+     * Create a unique authorization url
+     *
+     * @param string $csrf
+     * @return string
+     */
+    public function getAuthenticationUrl($csrf)
     {
-        return sprintf('%s?%s', self::LINKEDIN_AUTH_URL, implode('&', [
+        $url = sprintf('%s?%s', self::LINKEDIN_AUTH_URL, implode('&', [
             'response_type=' . 'code',
             'client_id=' . $this->config['client_key'],
             'redirect_uri=' . urlencode($this->config['callback_uri']),
-            'state=' . md5('foo-bar' . date('Y-m-d H:i:s')),
+            'state=' . $csrf,
             'scope=' . urlencode('r_basicprofile r_emailaddress rw_company_admin w_share')
         ]));
+        return $url;
     }
 
-    public function requestAuthenticationCode()
+    public function requestAccessCode($code)
     {
-
+        $request = $this->guzzleClient->request('POST', self::LINKEDIN_ACCESS_URL, [
+            'form_params' => [
+                'grant_type=' . 'authorization_code',
+                'code=' . $code,
+                'redirect_uri=' . urlencode($this->config['callback_uri']),
+                'client_id=' . $this->config['client_key'],
+                'client_secret=' . $this->config['client_key_secret'],
+            ],
+        ]);
+        \Zend\Debug\Debug::dump($request);
+        die;
+        try {
+            $response = $request->send();
+        } catch (ClientException $exception) {
+            \Zend\Debug\Debug::dump($exception->getMessage());
+            \Zend\Debug\Debug::dump($request);
+        }
+        \Zend\Debug\Debug::dump($response);
     }
 
 }
