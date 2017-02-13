@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS `member`;
+CREATE TABLE `member` (
+  `member_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `linkedin_id` VARCHAR(12) NOT NULL DEFAULT '',
+  `access_token` VARCHAR(200) NOT NULL DEFAULT '',
+  PRIMARY KEY (`member_id`),
+  INDEX `member_linkedin_idx` (`linkedin_id`)
+) Engine=InnoDb CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
 DROP TABLE IF EXISTS `contact`;
 CREATE TABLE `contact` (
   `contact_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

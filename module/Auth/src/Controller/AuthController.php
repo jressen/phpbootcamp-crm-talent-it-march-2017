@@ -63,8 +63,7 @@ class AuthController extends AbstractActionController
         }
 
         $this->sessionContainer->accessCode = $accessCode;
-        \Zend\Debug\Debug::dump($accessCode);
-        return new ViewModel();
+        return $this->redirect()->toRoute('auth/welcome');
     }
 
     public function problemAction()
@@ -76,6 +75,37 @@ class AuthController extends AbstractActionController
     public function cancelledAction()
     {
         $this->getResponse()->setStatusCode(403);
+        return new ViewModel();
+    }
+
+    public function welcomeAction()
+    {
+        $accessToken = $this->sessionContainer->accessCode['access_token'];
+        \Zend\Debug\Debug::dump($accessToken);
+
+        if (!isset ($this->sessionContainer->basicProfile)) {
+            try {
+                $basicProfile = $this->linkedInService->getBasicProfileDetails($accessToken);
+            } catch (\RuntimeException $runtimeException) {
+                return $this->redirect()->toRoute('auth');
+            }
+            $this->sessionContainer->basicProfile = $basicProfile;
+        }
+
+        if (!isset ($this->sessionContainer->additionalProfile)) {
+            $options = [];
+            try {
+                $additionalProfile = $this->linkedInService->getAdditionalProfileDetails($accessToken, $options);
+            } catch (\RuntimeException $runtimeException) {
+                return $this->redirect()->toRoute('auth');
+            }
+            $this->sessionContainer->additionalProfile = $additionalProfile;
+        }
+
+        \Zend\Debug\Debug::dump([
+            $this->sessionContainer->basicProfile,
+            $this->sessionContainer->additionalProfile,
+        ]);
         return new ViewModel();
     }
 }

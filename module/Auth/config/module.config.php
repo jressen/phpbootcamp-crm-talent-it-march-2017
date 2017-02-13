@@ -7,6 +7,9 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'service_manager' => [
+        'aliases' => [
+            Entity\MemberInterface::class => Entity\MemberEntity::class,
+        ],
         'factories' => [
             \Zend\Session\Config\ConfigInterface::class => \Zend\Session\Service\SessionConfigFactory::class,
             Service\LinkedIn::class => Service\Factory\LinkedInFactory::class,
@@ -54,6 +57,15 @@ return [
                             'route' => '/cancelled',
                             'defaults' => [
                                 'action' => 'cancelled',
+                            ],
+                        ],
+                    ],
+                    'welcome' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/welcome',
+                            'defaults' => [
+                                'action' => 'welcome',
                             ],
                         ],
                     ],

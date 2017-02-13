@@ -23,11 +23,17 @@ class LinkedInFactory implements FactoryInterface
             'headers' => [
                 'User-Agent' => 'ZFCRM/' . Module::VERSION . ' curl/' . curl_version() . ' PHP/7.1.1',
                 'Accept' => 'application/json',
+                'x-li-format' => 'json',
             ],
         ]);
+        $memberEntity = $container->get(\Auth\Entity\MemberInterface::class);
         $config = $container->get('config');
 
-        return new LinkedIn($guzzleClient, $config['linkedin']);
+        return new LinkedIn(
+            $guzzleClient,
+            $memberEntity,
+            $config['linkedin']
+        );
     }
 
 }
