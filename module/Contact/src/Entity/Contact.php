@@ -19,6 +19,11 @@ class Contact implements ContactInterface, InputFilterAwareInterface
     private $contactId;
 
     /**
+     * @var int
+     */
+    private $memberId;
+
+    /**
      * @var string
      */
     private $firstName;
@@ -36,12 +41,14 @@ class Contact implements ContactInterface, InputFilterAwareInterface
     /**
      * Contact constructor.
      * @param int $contactId
+     * @param int $memberId
      * @param string $firstName
      * @param string $lastName
      */
-    public function __construct($contactId, $firstName, $lastName)
+    public function __construct($contactId, $memberId, $firstName, $lastName)
     {
         $this->contactId = $contactId;
+        $this->memberId = $memberId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
     }
@@ -52,6 +59,14 @@ class Contact implements ContactInterface, InputFilterAwareInterface
     public function getContactId()
     {
         return $this->contactId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemberId()
+    {
+        return $this->memberId;
     }
 
     /**
@@ -88,6 +103,14 @@ class Contact implements ContactInterface, InputFilterAwareInterface
 
         $inputFilter->add([
             'name' => 'contact_id',
+            'required' => true,
+            'filters' => [
+                ['name' => ToInt::class],
+            ],
+        ]);
+
+        $inputFilter->add([
+            'name' => 'member_id',
             'required' => true,
             'filters' => [
                 ['name' => ToInt::class],

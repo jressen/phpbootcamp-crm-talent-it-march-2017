@@ -3,6 +3,8 @@
 namespace Contact\Entity;
 
 
+use Auth\Entity\MemberAwareInterface;
+
 class ContactAddress implements ContactAddressInterface
 {
     /**
@@ -13,6 +15,10 @@ class ContactAddress implements ContactAddressInterface
      * @var int
      */
     protected $contactId;
+    /**
+     * @var int
+     */
+    protected $memberId;
     /**
      * @var string
      */
@@ -41,6 +47,7 @@ class ContactAddress implements ContactAddressInterface
     /**
      * ContactAddress constructor.
      * @param int $contactAddressId
+     * @param int $memberId
      * @param int $contactId
      * @param string $street1
      * @param string $street2
@@ -50,7 +57,9 @@ class ContactAddress implements ContactAddressInterface
      * @param string $countryCode
      */
     public function __construct(
-        $contactAddressId, $contactId,
+        $contactAddressId,
+        $memberId,
+        $contactId,
         $street1 = '',
         $street2 = '',
         $postcode = '',
@@ -60,6 +69,7 @@ class ContactAddress implements ContactAddressInterface
     )
     {
         $this->contactAddressId = $contactAddressId;
+        $this->memberId = $memberId;
         $this->contactId = $contactId;
         $this->street1 = $street1;
         $this->street2 = $street2;
@@ -75,6 +85,14 @@ class ContactAddress implements ContactAddressInterface
     public function getContactAddressId()
     {
         return $this->contactAddressId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemberId()
+    {
+        return $this->memberId;
     }
 
     /**

@@ -3,7 +3,9 @@
 namespace Contact\Entity;
 
 
-interface ContactAddressInterface
+use Auth\Entity\MemberAwareInterface;
+
+interface ContactAddressInterface extends MemberAwareInterface
 {
     /**
      * Retrieve the contact address sequence ID

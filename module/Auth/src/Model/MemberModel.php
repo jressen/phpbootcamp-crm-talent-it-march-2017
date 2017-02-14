@@ -83,7 +83,9 @@ class MemberModel
         $date = new \DateTime();
         $insert = new Insert('member');
         $data = $this->hydrator->extract($member);
+        $data['modified'] = $date->format('Y-m-d H:i:s');
         if (0 === (int) $member->getMemberId()) {
+            $data['created'] = $date->format('Y-m-d H:i:s');
             unset ($data['member_id']);
         }
         $insert->values($data);
