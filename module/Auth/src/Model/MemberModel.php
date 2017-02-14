@@ -47,7 +47,12 @@ class MemberModel
         $this->memberPrototype = $memberPrototype;
     }
 
-
+    /**
+     * @param int $id
+     * @return MemberInterface
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     */
     public function getMember($id)
     {
         $sql       = new Sql($this->db);

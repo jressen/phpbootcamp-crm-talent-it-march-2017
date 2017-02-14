@@ -7,6 +7,8 @@ use Application\Module;
 use Auth\Entity\MemberInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Zend\Authentication\Adapter\AdapterInterface;
+use Zend\Authentication\AuthenticationService;
 
 class LinkedIn
 {
@@ -30,22 +32,42 @@ class LinkedIn
     protected $config;
 
     /**
+     * @var AdapterInterface
+     */
+    protected $authAdapter;
+
+    /**
      * LinkedIn constructor.
      *
      * @param Client $guzzleClient
+     * @param MemberInterface $member
+     * @param AdapterInterface $authAdapter
      * @param array $config
      */
     public function __construct(
         Client $guzzleClient,
         MemberInterface $member,
+        AdapterInterface $authAdapter,
         $config
     )
     {
         $this->guzzleClient = $guzzleClient;
         $this->memberEntity = $member;
+        $this->authAdapter = $authAdapter;
         $this->config = $config;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function authenticateMember(AuthenticationService $authService, MemberInterface $member)
+    {
+        $this->authAdapter->setMember($member);
+
+        $authService->setAdapter($this->authAdapter);
+
+        return $authService->authenticate();
+    }
     /**
      * Create a unique authorization url
      *

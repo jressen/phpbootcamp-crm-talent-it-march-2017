@@ -28,11 +28,13 @@ class LinkedInFactory implements FactoryInterface
             ],
         ]);
         $memberEntity = new MemberEntity(0, '', '');
+        $linkedinAuthAdapter = $container->get(\Auth\Adapter\LinkedinAdapterInterface::class);
         $config = $container->get('config');
 
         return new LinkedIn(
             $guzzleClient,
             $memberEntity,
+            $linkedinAuthAdapter,
             $config['linkedin']
         );
     }

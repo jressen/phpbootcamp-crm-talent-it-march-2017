@@ -7,14 +7,19 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'service_manager' => [
+        'invokables' => [
+            \Zend\Authentication\AuthenticationService::class => \Zend\Authentication\AuthenticationService::class,
+        ],
         'aliases' => [
             Entity\MemberInterface::class => Entity\MemberEntity::class,
+            Adapter\LinkedinAdapterInterface::class => Adapter\LinkedinAdapter::class,
         ],
         'factories' => [
             \Zend\Session\Config\ConfigInterface::class => \Zend\Session\Service\SessionConfigFactory::class,
             Service\LinkedIn::class => Service\Factory\LinkedInFactory::class,
             Service\MemberService::class => Service\Factory\MemberServiceFactory::class,
             Model\MemberModel::class => Model\Factory\MemberModelFactory::class,
+            Adapter\LinkedinAdapter::class => Adapter\Factory\LinkedinAdapterFactory::class,
         ],
     ],
     'controllers' => [

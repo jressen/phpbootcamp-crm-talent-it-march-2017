@@ -6,6 +6,7 @@ use Auth\Service\LinkedIn;
 use Auth\Service\MemberService;
 use Contact\Model\ContactCommandInterface;
 use Contact\Model\ContactEmailCommandInterface;
+use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
@@ -28,6 +29,11 @@ class AuthController extends AbstractActionController
     protected $memberService;
 
     /**
+     * @var AuthenticationService
+     */
+    protected $authService;
+
+    /**
      * AuthController constructor.
      *
      * @param Container $sessionContainer
@@ -37,12 +43,14 @@ class AuthController extends AbstractActionController
     public function __construct(
         Container $sessionContainer,
         LinkedIn $linkedInService,
-        MemberService $memberService
+        MemberService $memberService,
+        AuthenticationService $authService
     )
     {
         $this->sessionContainer = $sessionContainer;
         $this->linkedInService = $linkedInService;
         $this->memberService = $memberService;
+        $this->authService = $authService;
     }
 
     public function indexAction()
@@ -104,13 +112,20 @@ class AuthController extends AbstractActionController
                 $additionalProfile = $this->linkedInService->getAdditionalProfileDetails($accessToken, $options);
                 $member = $this->memberService->registerNewMember($additionalProfile, $accessToken);
             } catch (\RuntimeException $runtimeException) {
+                return $this->redirect()->toRoute('auth/problem');
             }
             $this->sessionContainer->member = $member;
         }
 
-        \Zend\Debug\Debug::dump(
+        $result = $this->linkedInService->authenticateMember(
+            $this->authService,
             $this->sessionContainer->member
         );
+
+
+
+        \Zend\Debug\Debug::dump($result);
+        \Zend\Debug\Debug::dump($this->sessionContainer->member);
         return new ViewModel();
     }
 }
