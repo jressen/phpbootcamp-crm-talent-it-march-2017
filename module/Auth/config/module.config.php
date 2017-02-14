@@ -13,6 +13,8 @@ return [
         'factories' => [
             \Zend\Session\Config\ConfigInterface::class => \Zend\Session\Service\SessionConfigFactory::class,
             Service\LinkedIn::class => Service\Factory\LinkedInFactory::class,
+            Service\MemberService::class => Service\Factory\MemberServiceFactory::class,
+            Model\MemberModel::class => Model\Factory\MemberModelFactory::class,
         ],
     ],
     'controllers' => [

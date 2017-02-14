@@ -122,7 +122,7 @@ class LinkedIn
      * @param string $accessToken
      * @param array $options
      * @param string $format
-     * @return string
+     * @return array
      */
     public function getAdditionalProfileDetails($accessToken, $options = [], $format = 'json')
     {

@@ -3,11 +3,13 @@
 namespace Auth\Model;
 
 
+use Auth\Entity\MemberEntity;
 use Auth\Entity\MemberInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Hydrator\HydratorInterface;
 
@@ -73,6 +75,29 @@ class MemberModel
             ));
         }
 
+        return $member;
+    }
+
+    public function saveMember(MemberInterface $member)
+    {
+        $date = new \DateTime();
+        $insert = new Insert('member');
+        $data = $this->hydrator->extract($member);
+        if (0 === (int) $member->getMemberId()) {
+            unset ($data['member_id']);
+        }
+        $insert->values($data);
+        $sql = new Sql($this->db);
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface) {
+            throw new \RuntimeException('Database error occurred during storage of new member');
+        }
+        if (0 === (int) $member->getMemberId()) {
+            $memberId = $result->getGeneratedValue();
+            return new MemberEntity($memberId, $member->getLinkedinId(), $member->getAccessToken());
+        }
         return $member;
     }
 }

@@ -4,6 +4,7 @@ namespace Auth\Service\Factory;
 
 
 use Application\Module;
+use Auth\Entity\MemberEntity;
 use Auth\Service\LinkedIn;
 use GuzzleHttp\Client;
 use Interop\Container\ContainerInterface;
@@ -26,7 +27,7 @@ class LinkedInFactory implements FactoryInterface
                 'x-li-format' => 'json',
             ],
         ]);
-        $memberEntity = $container->get(\Auth\Entity\MemberInterface::class);
+        $memberEntity = new MemberEntity(0, '', '');
         $config = $container->get('config');
 
         return new LinkedIn(

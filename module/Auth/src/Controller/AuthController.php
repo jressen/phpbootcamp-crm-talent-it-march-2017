@@ -2,8 +2,8 @@
 
 namespace Auth\Controller;
 
-
 use Auth\Service\LinkedIn;
+use Auth\Service\MemberService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
@@ -21,19 +21,33 @@ class AuthController extends AbstractActionController
     protected $linkedInService;
 
     /**
+     * @var MemberService
+     */
+    protected $memberService;
+
+    /**
      * AuthController constructor.
      *
      * @param Container $sessionContainer
      * @param LinkedIn $linkedInService
+     * @param MemberService $memberService
      */
-    public function __construct(Container $sessionContainer, LinkedIn $linkedInService)
+    public function __construct(
+        Container $sessionContainer,
+        LinkedIn $linkedInService,
+        MemberService $memberService
+    )
     {
         $this->sessionContainer = $sessionContainer;
         $this->linkedInService = $linkedInService;
+        $this->memberService = $memberService;
     }
 
     public function indexAction()
     {
+        if (isset ($this->sessionContainer->accessCode)) {
+            return $this->redirect()->toRoute('auth/welcome');
+        }
         $csrf = md5('foo-bar' . date('Y-m-d H:i:s'));
         $this->sessionContainer->csrf = $csrf;
         return new ViewModel([
@@ -83,16 +97,17 @@ class AuthController extends AbstractActionController
         $accessToken = $this->sessionContainer->accessCode['access_token'];
         \Zend\Debug\Debug::dump($accessToken);
 
-        if (!isset ($this->sessionContainer->basicProfile)) {
+//        if (!isset ($this->sessionContainer->basicProfile)) {
             try {
                 $basicProfile = $this->linkedInService->getBasicProfileDetails($accessToken);
+                $this->memberService->registerNewMember($basicProfile, $accessToken);
             } catch (\RuntimeException $runtimeException) {
                 return $this->redirect()->toRoute('auth');
             }
             $this->sessionContainer->basicProfile = $basicProfile;
-        }
+//        }
 
-        if (!isset ($this->sessionContainer->additionalProfile)) {
+        /*if (!isset ($this->sessionContainer->additionalProfile)) {
             $options = [];
             try {
                 $additionalProfile = $this->linkedInService->getAdditionalProfileDetails($accessToken, $options);
@@ -100,11 +115,11 @@ class AuthController extends AbstractActionController
                 return $this->redirect()->toRoute('auth');
             }
             $this->sessionContainer->additionalProfile = $additionalProfile;
-        }
+        }*/
 
         \Zend\Debug\Debug::dump([
             $this->sessionContainer->basicProfile,
-            $this->sessionContainer->additionalProfile,
+//            $this->sessionContainer->additionalProfile,
         ]);
         return new ViewModel();
     }
