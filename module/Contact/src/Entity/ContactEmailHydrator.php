@@ -15,6 +15,7 @@ class ContactEmailHydrator implements HydratorInterface
         /** @var ContactEmail $object */
         return [
             'contact_email_id' => $object->getContactEmailId(),
+            'member_id' => $object->getMemberId(),
             'contact_id' => $object->getContactId(),
             'email_address' => $object->getEmailAddress(),
             'primary' => $object->isPrimary(),
@@ -30,6 +31,7 @@ class ContactEmailHydrator implements HydratorInterface
         $class = get_class($object);
         return new $class(
             $data['contact_email_id'],
+            $data['member_id'],
             $data['contact_id'],
             $data['email_address'],
             (bool) $data['primary']

@@ -15,6 +15,7 @@ class ContactHydrator extends AbstractHydrator implements HydratorInterface
     {
         return [
             'contact_id' => $object->getContactId(),
+            'member_id' => $object->getMemberId(),
             'first_name' => $object->getFirstName(),
             'last_name' => $object->getLastName(),
         ];
@@ -26,7 +27,12 @@ class ContactHydrator extends AbstractHydrator implements HydratorInterface
     public function hydrate(array $data, $object)
     {
         $class = get_class($object);
-        return new $class($data['contact_id'], $data['first_name'], $data['last_name']);
+        return new $class(
+            $data['contact_id'],
+            $data['member_id'],
+            $data['first_name'],
+            $data['last_name']
+        );
     }
 
 }

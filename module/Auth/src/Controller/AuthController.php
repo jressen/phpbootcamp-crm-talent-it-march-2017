@@ -4,6 +4,8 @@ namespace Auth\Controller;
 
 use Auth\Service\LinkedIn;
 use Auth\Service\MemberService;
+use Contact\Model\ContactCommandInterface;
+use Contact\Model\ContactEmailCommandInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
@@ -95,31 +97,19 @@ class AuthController extends AbstractActionController
     public function welcomeAction()
     {
         $accessToken = $this->sessionContainer->accessCode['access_token'];
-        \Zend\Debug\Debug::dump($accessToken);
 
-//        if (!isset ($this->sessionContainer->basicProfile)) {
-            try {
-                $basicProfile = $this->linkedInService->getBasicProfileDetails($accessToken);
-                $this->memberService->registerNewMember($basicProfile, $accessToken);
-            } catch (\RuntimeException $runtimeException) {
-                return $this->redirect()->toRoute('auth');
-            }
-            $this->sessionContainer->basicProfile = $basicProfile;
-//        }
-
-        /*if (!isset ($this->sessionContainer->additionalProfile)) {
+        if (!isset ($this->sessionContainer->member)) {
             $options = [];
             try {
                 $additionalProfile = $this->linkedInService->getAdditionalProfileDetails($accessToken, $options);
+                $member = $this->memberService->registerNewMember($additionalProfile, $accessToken);
             } catch (\RuntimeException $runtimeException) {
-                return $this->redirect()->toRoute('auth');
             }
-            $this->sessionContainer->additionalProfile = $additionalProfile;
-        }*/
+            $this->sessionContainer->member = $member;
+        }
 
         \Zend\Debug\Debug::dump([
-            $this->sessionContainer->basicProfile,
-//            $this->sessionContainer->additionalProfile,
+            $this->sessionContainer->member
         ]);
         return new ViewModel();
     }

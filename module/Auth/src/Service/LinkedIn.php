@@ -93,7 +93,7 @@ class LinkedIn
      *
      * @param string $accessToken
      * @param string $format
-     * @return string
+     * @return array
      */
     public function getBasicProfileDetails($accessToken, $format = 'json')
     {

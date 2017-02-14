@@ -21,7 +21,11 @@ class AuthControllerFactory implements FactoryInterface
         $sessionContainer = new Container('linkedin');
         $linkedInService = $container->get(\Auth\Service\LinkedIn::class);
         $memberService = $container->get(\Auth\Service\MemberService::class);
-        return new AuthController($sessionContainer, $linkedInService, $memberService);
+        return new AuthController(
+            $sessionContainer,
+            $linkedInService,
+            $memberService
+        );
     }
 
 }

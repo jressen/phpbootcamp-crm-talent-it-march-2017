@@ -28,7 +28,11 @@ class MemberHydrator implements HydratorInterface
     public function hydrate(array $data, $object)
     {
         $class = get_class($object);
-        return new $class($data['member_id'], $data['linkedin_id'], $data['access_token']);
+        return new $class(
+            (int) $data['member_id'],
+            $data['linkedin_id'],
+            $data['access_token']
+        );
     }
 
 }

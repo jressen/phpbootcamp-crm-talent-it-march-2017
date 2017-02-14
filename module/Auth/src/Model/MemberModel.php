@@ -97,7 +97,7 @@ class MemberModel
             throw new \RuntimeException('Database error occurred during storage of new member');
         }
         if (0 === (int) $member->getMemberId()) {
-            $memberId = $result->getGeneratedValue();
+            $memberId = (int) $result->getGeneratedValue();
             return new MemberEntity($memberId, $member->getLinkedinId(), $member->getAccessToken());
         }
         return $member;

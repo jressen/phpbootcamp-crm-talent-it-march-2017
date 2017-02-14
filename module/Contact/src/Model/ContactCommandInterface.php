@@ -9,23 +9,25 @@
 namespace Contact\Model;
 
 
+use Contact\Entity\ContactInterface;
+
 interface ContactCommandInterface
 {
     /**
-     * @param Contact $contact
-     * @return Contact
+     * @param ContactInterface $contact
+     * @return ContactInterface
      */
-    public function insertContact(Contact $contact);
+    public function insertContact(ContactInterface $contact);
 
     /**
-     * @param Contact $contact
-     * @return Contact
+     * @param ContactInterface $contact
+     * @return ContactInterface
      */
-    public function updateContact(Contact $contact);
+    public function updateContact(ContactInterface $contact);
 
     /**
-     * @param Contact $contact
+     * @param ContactInterface $contact
      * @return bool
      */
-    public function deleteContact(Contact $contact);
+    public function deleteContact(ContactInterface $contact);
 }
