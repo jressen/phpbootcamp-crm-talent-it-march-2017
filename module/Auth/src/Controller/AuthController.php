@@ -108,9 +108,9 @@ class AuthController extends AbstractActionController
             $this->sessionContainer->member = $member;
         }
 
-        \Zend\Debug\Debug::dump([
+        \Zend\Debug\Debug::dump(
             $this->sessionContainer->member
-        ]);
+        );
         return new ViewModel();
     }
 }

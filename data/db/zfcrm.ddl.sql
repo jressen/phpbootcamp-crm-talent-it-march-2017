@@ -6,7 +6,7 @@ CREATE TABLE `member` (
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `modified` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`member_id`),
-  INDEX `member_linkedin_idx` (`linkedin_id`)
+  UNIQUE KEY `member_linkedin_uk` (`linkedin_id`)
 ) Engine=InnoDb CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
 DROP TABLE IF EXISTS `contact`;

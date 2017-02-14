@@ -13,6 +13,8 @@ return [
             Model\ContactEmailRepositoryInterface::class => Model\ContactEmailRepository::class,
             Model\ContactEmailCommandInterface::class => Model\ContactEmailCommand::class,
             Model\ContactAddressRepositoryInterface::class => Model\ContactAddressRepository::class,
+            Model\ContactAddressCommandInterface::class => Model\ContactAddressCommand::class,
+            Model\ContactImageModelInterface::class => Model\ContactImageModel::class,
         ],
         'factories' => [
             Model\ContactRepository::class => Model\Factory\ContactRepositoryFactory::class,
@@ -20,6 +22,8 @@ return [
             Model\ContactEmailRepository::class => Model\Factory\ContactEmailRepositoryFactory::class,
             Model\ContactEmailCommand::class => Model\Factory\ContactEmailCommandFactory::class,
             Model\ContactAddressRepository::class => Model\Factory\ContactAddressRepositoryFactory::class,
+            Model\ContactAddressCommand::class => Model\Factory\ContactAddressCommandFactory::class,
+            Model\ContactImageModel::class => Model\Factory\ContactImageModelFactory::class,
         ],
     ],
     'controllers' => [
