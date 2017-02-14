@@ -13,6 +13,11 @@ class ContactEmail implements ContactEmailInterface
     /**
      * @var int
      */
+    protected $memberId;
+
+    /**
+     * @var int
+     */
     protected $contactId;
 
     /**
@@ -29,13 +34,15 @@ class ContactEmail implements ContactEmailInterface
      * ContactEmail constructor.
      *
      * @param int $contactEmailId
+     * @param int $memberId
      * @param int $contactId
      * @param string $emailAddress
      * @param bool $primary
      */
-    public function __construct($contactEmailId, $contactId, $emailAddress, $primary = false)
+    public function __construct($contactEmailId, $memberId, $contactId, $emailAddress, $primary = false)
     {
         $this->contactEmailId = $contactEmailId;
+        $this->memberId = $memberId;
         $this->contactId = $contactId;
         $this->emailAddress = $emailAddress;
         $this->primary = $primary;
@@ -47,6 +54,14 @@ class ContactEmail implements ContactEmailInterface
     public function getContactEmailId()
     {
         return $this->contactEmailId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemberId()
+    {
+        return $this->memberId;
     }
 
     /**

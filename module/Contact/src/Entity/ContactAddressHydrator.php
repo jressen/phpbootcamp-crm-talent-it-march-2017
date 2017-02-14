@@ -14,6 +14,7 @@ class ContactAddressHydrator implements HydratorInterface
     {
         return [
             'contact_address_id' => $object->getContactAddressId(),
+            'member_id' => $object->getMemberId(),
             'contact_id' => $object->getContactId(),
             'street_1' => $object->getStreet1(),
             'street_2' => $object->getStreet2(),
@@ -32,6 +33,7 @@ class ContactAddressHydrator implements HydratorInterface
         $class = get_class($object);
         return new $class(
             $data['contact_address_id'],
+            $data['member_id'],
             $data['contact_id'],
             $data['street_1'],
             $data['street_2'],

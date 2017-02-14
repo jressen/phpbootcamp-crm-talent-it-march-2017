@@ -2,8 +2,8 @@
 
 namespace Contact\Model;
 
-use Contact\Entity\Contact;
-use Contact\Entity\ContactInterface;
+use Contact\Entity\ContactEmail;
+use Contact\Entity\ContactEmailInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\Sql\Delete;
@@ -11,7 +11,7 @@ use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
 
-class ContactCommand implements ContactCommandInterface
+class ContactEmailCommand implements ContactEmailCommandInterface
 {
     /**
      * @var AdapterInterface
@@ -30,14 +30,15 @@ class ContactCommand implements ContactCommandInterface
     /**
      * @inheritDoc
      */
-    public function insertContact(ContactInterface $contact)
+    public function insertContactEmail(ContactEmailInterface $contactEmail)
     {
         $date = new \DateTime();
-        $insert = new Insert('contact');
+        $insert = new Insert('contact_email');
         $insert->values([
-            'member_id' => $contact->getMemberId(),
-            'first_name' => $contact->getFirstName(),
-            'last_name' => $contact->getLastName(),
+            'member_id' => $contactEmail->getMemberId(),
+            'contact_id' => $contactEmail->getContactId(),
+            'email_address' => $contactEmail->getEmailAddress(),
+            'primary' => $contactEmail->isPrimary() ? 1 : 0,
             'created' => $date->format('Y-m-d H:i:s'),
             'modified' => $date->format('Y-m-d H:i:s'),
         ]);
@@ -50,23 +51,30 @@ class ContactCommand implements ContactCommandInterface
             throw new \RuntimeException('Database error occurred during contact insert operation');
         }
         $id = $result->getGeneratedValue();
-        return new Contact($id, $contact->getMemberId(), $contact->getFirstName(), $contact->getLastName());
+        return new ContactEmail(
+            $id,
+            $contactEmail->getMemberId(),
+            $contactEmail->getContactId(),
+            $contactEmail->getEmailAddress(),
+            $contactEmail->isPrimary()
+        );
     }
 
     /**
      * @inheritDoc
      */
-    public function updateContact(ContactInterface $contact)
+    public function updateContactEmail(ContactEmailInterface $contactEmail)
     {
         $date = new \DateTime();
-        $update = new Update('contact');
+        $update = new Update('contact_email');
         $update->set([
-            'member_id' => $contact->getMemberId(),
-            'first_name' => $contact->getFirstName(),
-            'last_name' => $contact->getLastName(),
+            'member_id' => $contactEmail->getMemberId(),
+            'contact_id' => $contactEmail->getContactId(),
+            'email_address' => $contactEmail->getEmailAddress(),
+            'primary' => $contactEmail->isPrimary() ? 1 : 0,
             'modified' => $date->format('Y-m-d H:i:s'),
         ]);
-        $update->where(['contact_id = ?' => $contact->getContactId()]);
+        $update->where(['contact_email_id = ?' => $contactEmail->getContactEmailId()]);
 
         $sql = new Sql($this->db);
         $stmt = $sql->prepareStatementForSqlObject($update);
@@ -76,19 +84,16 @@ class ContactCommand implements ContactCommandInterface
             throw new \RuntimeException('Database error occurred during contact update operation');
         }
 
-        return $contact;
+        return $contactEmail;
     }
 
     /**
      * @inheritDoc
      */
-    public function deleteContact(ContactInterface $contact)
+    public function deleteContactEmail(ContactEmailInterface $contactEmail)
     {
-        $delete = new Delete('contact');
-        $delete->where([
-            'member_id = ?' => $contact->getMemberId(),
-            'contact_id = ?' => $contact->getContactId()
-        ]);
+        $delete = new Delete('contact_email');
+        $delete->where(['contact_email_id = ?' => $contactEmail->getContactEmailId()]);
         $sql = new Sql($this->db);
         $stmt = $sql->prepareStatementForSqlObject($delete);
         $result = $stmt->execute();

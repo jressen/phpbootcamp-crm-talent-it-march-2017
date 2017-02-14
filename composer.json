@@ -26,13 +26,13 @@
         "zendframework/zend-psr7bridge": "^0.2.2",
         "zendframework/zend-session": "^2.7.1",
         "zendframework/zend-math": "^3.0",
-        "zendframework/zend-paginator": "^2.7"
+        "guzzlehttp/guzzle": "^6.2"
     },
     "autoload": {
         "psr-4": {
             "Application\\": "module/Application/src/",
             "Contact\\": "module/Contact/src/",
-            "Auth\\": "module/Auth/src/"
+            "Auth\\": "module/Auth/src"
         }
     },
     "autoload-dev": {
@@ -57,7 +57,6 @@
     },
     "require-dev": {
         "zendframework/zend-developer-tools": "^1.1.0",
-        "zendframework/zend-test": "^3.0.1",
-        "fzaninotto/faker": "^1.6"
+        "zendframework/zend-test": "^3.0.1"
     }
 }

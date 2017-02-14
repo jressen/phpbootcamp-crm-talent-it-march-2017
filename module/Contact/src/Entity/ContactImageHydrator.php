@@ -5,20 +5,19 @@ namespace Contact\Entity;
 
 use Zend\Hydrator\HydratorInterface;
 
-class ContactEmailHydrator implements HydratorInterface
+class ContactImageHydrator implements HydratorInterface
 {
     /**
      * @inheritDoc
      */
     public function extract($object)
     {
-        /** @var ContactEmail $object */
         return [
-            'contact_email_id' => $object->getContactEmailId(),
+            'contact_image_id' => $object->getContactImageId(),
             'member_id' => $object->getMemberId(),
             'contact_id' => $object->getContactId(),
-            'email_address' => $object->getEmailAddress(),
-            'primary' => $object->isPrimary(),
+            'image_link' => $object->getImageLink(),
+            'image_active' => $object->isImageActive() ? 1 : 0,
         ];
     }
 
@@ -27,14 +26,14 @@ class ContactEmailHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        /** @var ContactEmail $class */
+        /** @var ContactImage $class */
         $class = get_class($object);
         return new $class(
-            $data['contact_email_id'],
+            $data['contact_image_id'],
             $data['member_id'],
             $data['contact_id'],
-            $data['email_address'],
-            (bool) $data['primary']
+            $data['image_link'],
+            (bool) $data['image_active']
         );
     }
 
