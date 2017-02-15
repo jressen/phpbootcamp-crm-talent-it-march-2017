@@ -57,7 +57,7 @@ class AuthController extends AbstractActionController
 
     public function indexAction()
     {
-        if ($this->hasIdentity()) {
+        if ($this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth/welcome');
         }
         if (isset ($this->sessionContainer->accessCode)) {
