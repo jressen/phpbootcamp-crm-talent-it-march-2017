@@ -24,7 +24,7 @@ class ContactEmailRepositoryFactory implements FactoryInterface
         return new ContactEmailRepository(
             $container->get(AdapterInterface::class),
             new ContactEmailHydrator(),
-            new ContactEmail(0, 0, '')
+            new ContactEmail(0, 0, 0, '')
         );
     }
 

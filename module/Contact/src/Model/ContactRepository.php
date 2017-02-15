@@ -30,7 +30,10 @@ class ContactRepository implements ContactRepositoryInterface
 
     /**
      * ZendDbSqlRepository constructor.
+     *
      * @param AdapterInterface $db
+     * @param HydratorInterface $hydrator
+     * @param ContactInterface $contact
      */
     public function __construct(
         AdapterInterface $db,
