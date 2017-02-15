@@ -23,7 +23,7 @@ class ContactAddressRepositoryFactory implements FactoryInterface
         return new ContactAddressRepository(
             $container->get(AdapterInterface::class),
             new ContactAddressHydrator(),
-            new ContactAddress(0, 0)
+            new ContactAddress(0, 0, 0)
         );
     }
 

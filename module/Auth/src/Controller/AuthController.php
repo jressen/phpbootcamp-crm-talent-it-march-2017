@@ -7,6 +7,7 @@ use Auth\Service\MemberService;
 use Contact\Model\ContactCommandInterface;
 use Contact\Model\ContactEmailCommandInterface;
 use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Result;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
@@ -39,6 +40,7 @@ class AuthController extends AbstractActionController
      * @param Container $sessionContainer
      * @param LinkedIn $linkedInService
      * @param MemberService $memberService
+     * @param AuthenticationService $authService
      */
     public function __construct(
         Container $sessionContainer,
@@ -55,8 +57,11 @@ class AuthController extends AbstractActionController
 
     public function indexAction()
     {
-        if (isset ($this->sessionContainer->accessCode)) {
+        if ($this->hasIdentity()) {
             return $this->redirect()->toRoute('auth/welcome');
+        }
+        if (isset ($this->sessionContainer->accessCode)) {
+            return $this->redirect()->toRoute('auth/process');
         }
         $csrf = md5('foo-bar' . date('Y-m-d H:i:s'));
         $this->sessionContainer->csrf = $csrf;
@@ -87,7 +92,7 @@ class AuthController extends AbstractActionController
         }
 
         $this->sessionContainer->accessCode = $accessCode;
-        return $this->redirect()->toRoute('auth/welcome');
+        return $this->redirect()->toRoute('auth/process');
     }
 
     public function problemAction()
@@ -102,7 +107,7 @@ class AuthController extends AbstractActionController
         return new ViewModel();
     }
 
-    public function welcomeAction()
+    public function processAction()
     {
         $accessToken = $this->sessionContainer->accessCode['access_token'];
 
@@ -121,11 +126,15 @@ class AuthController extends AbstractActionController
             $this->authService,
             $this->sessionContainer->member
         );
+        if (!$result->isValid()) {
+            return $this->redirect()->toRoute('auth/problem');
+        }
 
+        return $this->redirect()->toRoute('auth/welcome');
+    }
 
-
-        \Zend\Debug\Debug::dump($result);
-        \Zend\Debug\Debug::dump($this->sessionContainer->member);
+    public function welcomeAction()
+    {
         return new ViewModel();
     }
 }
