@@ -55,7 +55,6 @@ class ContactRepository implements ContactRepositoryInterface
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('contact');
-        $select->join('contact_email', ['member_id', 'contact_id'], '*', Join::JOIN_LEFT);
 
         $resultSet = new HydratingResultSet($this->hydrator, $this->contactPrototype);
 
