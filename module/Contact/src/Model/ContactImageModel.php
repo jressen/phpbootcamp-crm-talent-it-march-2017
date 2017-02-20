@@ -6,6 +6,7 @@ namespace Contact\Model;
 use Contact\Entity\ContactImageInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
+use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
@@ -122,5 +123,27 @@ class ContactImageModel implements ContactImageModelInterface
         }
 
         return $contactImage;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findImagesByContactId($contactId)
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select('contact_image');
+        $select->where(['contact_id = ?' => $contactId]);
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
+            throw new \InvalidArgumentException('Cannot find an image for current contact');
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->contactImagePrototype);
+        $resultSet->initialize($result);
+
+        return $resultSet;
     }
 }

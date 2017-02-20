@@ -16,7 +16,7 @@ interface ContactAddressRepositoryInterface
 
     /**
      * @param int $contactId
-     * @return ContactAddressInterface
+     * @return ContactAddressInterface[]
      */
     public function getAllAddresses($contactId);
 }

@@ -167,4 +167,24 @@ class MemberService
         return $memberEntity;
     }
 
+    /**
+     * Update an existing member
+     *
+     * @param array $memberProfileData
+     * @param string $accessToken
+     * @return MemberInterface
+     */
+    public function updateMember(array $memberProfileData, $accessToken)
+    {
+        $member = $this->memberModel->getMemberByLinkedinId($memberProfileData['id']);
+        $memberClass = get_class($this->memberPrototype);
+        $memberEntity = new $memberClass(
+            $member->getMemberId(),
+            $member->getLinkedinId(),
+            $accessToken
+        );
+        $this->memberModel->saveMember($memberEntity);
+        return $memberEntity;
+    }
+
 }

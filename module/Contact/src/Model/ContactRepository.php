@@ -2,7 +2,7 @@
 
 namespace Contact\Model;
 
-use Contact\Entity\ContactInterface;
+use Contact\Entity\ContactEntityInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -24,7 +24,7 @@ class ContactRepository implements ContactRepositoryInterface
     private $hydrator;
 
     /**
-     * @var ContactInterface
+     * @var ContactEntityInterface
      */
     private $contactPrototype;
 
@@ -33,24 +33,24 @@ class ContactRepository implements ContactRepositoryInterface
      *
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param ContactInterface $contact
+     * @param ContactEntityInterface $contactEntity
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        ContactInterface $contact
+        ContactEntityInterface $contactEntity
     )
     {
         $this->db = $db;
         $this->hydrator = $hydrator;
-        $this->contactPrototype = $contact;
+        $this->contactPrototype = $contactEntity;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function findAllContacts()
+    public function findAllContacts($memberId)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('contact');
