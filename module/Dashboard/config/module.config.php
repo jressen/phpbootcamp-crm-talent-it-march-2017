@@ -22,7 +22,17 @@ return [
                     ],
                 ],
                 'may_terminate' => true,
-                'child_routes' => [],
+                'child_routes' => [
+                    'contacts' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/contacts',
+                            'defaults' => [
+                                'action' => 'contacts',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ],
     ],

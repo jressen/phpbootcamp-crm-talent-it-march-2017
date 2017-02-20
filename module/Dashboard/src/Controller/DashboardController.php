@@ -50,6 +50,16 @@ class DashboardController extends AbstractActionController
         }
         $member = $this->authService->getIdentity();
 
+        return new ViewModel([]);
+    }
+
+    public function contactsAction()
+    {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('auth');
+        }
+        $member = $this->authService->getIdentity();
+
         $contactCollection = $this->contactModel->findAllContacts($member->getMemberId());
 
         return new ViewModel([

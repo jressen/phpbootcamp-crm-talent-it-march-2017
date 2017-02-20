@@ -24,6 +24,7 @@ return [
             Model\ContactAddressRepository::class => Model\Factory\ContactAddressRepositoryFactory::class,
             Model\ContactAddressCommand::class => Model\Factory\ContactAddressCommandFactory::class,
             Model\ContactImageModel::class => Model\Factory\ContactImageModelFactory::class,
+            Entity\ContactEntityHydrator::class => Entity\Factory\ContactEntityHydratorFactory::class,
         ],
     ],
     'controllers' => [

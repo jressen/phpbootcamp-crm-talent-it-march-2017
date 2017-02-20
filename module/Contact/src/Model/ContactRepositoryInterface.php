@@ -3,7 +3,7 @@
 namespace Contact\Model;
 
 
-use Contact\Entity\ContactInterface;
+use Contact\Entity\ContactEntityInterface;
 use Zend\Paginator\Paginator;
 
 interface ContactRepositoryInterface
@@ -20,7 +20,7 @@ interface ContactRepositoryInterface
      * Retrieve a single contact
      *
      * @param int $id
-     * @return ContactInterface
+     * @return ContactEntityInterface
      */
     public function findContact($id);
 }

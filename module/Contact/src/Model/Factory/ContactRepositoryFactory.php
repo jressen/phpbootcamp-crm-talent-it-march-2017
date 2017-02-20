@@ -3,8 +3,8 @@
 namespace Contact\Model\Factory;
 
 
-use Contact\Entity\Contact;
-use Contact\Entity\ContactHydrator;
+use Contact\Entity\ContactEntity;
+use Contact\Entity\ContactEntityHydrator;
 use Contact\Model\ContactRepository;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
@@ -22,8 +22,8 @@ class ContactRepositoryFactory implements FactoryInterface
     {
         return new ContactRepository(
             $container->get(AdapterInterface::class),
-            new ContactHydrator(),
-            new Contact(0, 0, '', '')
+            $container->get(ContactEntityHydrator::class),
+            new ContactEntity(0, 0)
         );
     }
 
