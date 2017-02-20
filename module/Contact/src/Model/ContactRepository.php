@@ -6,6 +6,7 @@ use Contact\Entity\ContactInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Join;
 use Zend\Db\Sql\Sql;
 use Zend\Hydrator\HydratorInterface;
 use Zend\Paginator\Adapter\DbSelect;
@@ -50,10 +51,11 @@ class ContactRepository implements ContactRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function findAllContacts()
+    public function findAllContacts($memberId)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('contact');
+        $select->join('contact_email', ['member_id', 'contact_id'], '*', Join::JOIN_LEFT);
 
         $resultSet = new HydratingResultSet($this->hydrator, $this->contactPrototype);
 

@@ -49,6 +49,15 @@ return [
                             ],
                         ],
                     ],
+                    'process' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/process',
+                            'defaults' => [
+                                'action' => 'process',
+                            ],
+                        ],
+                    ],
                     'problem' => [
                         'type' => Literal::class,
                         'options' => [
@@ -82,7 +91,7 @@ return [
     ],
     'view_manager' => [
         'template_path_stack' => [
-            'contact' => __DIR__ . '/../view',
+            'auth' => __DIR__ . '/../view',
         ],
     ],
 ];

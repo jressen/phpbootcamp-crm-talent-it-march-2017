@@ -115,10 +115,20 @@ class AuthController extends AbstractActionController
             $options = [];
             try {
                 $additionalProfile = $this->linkedInService->getAdditionalProfileDetails($accessToken, $options);
-                $member = $this->memberService->registerNewMember($additionalProfile, $accessToken);
             } catch (\RuntimeException $runtimeException) {
                 return $this->redirect()->toRoute('auth/problem');
             }
+
+            try {
+                $member = $this->memberService->updateMember($additionalProfile, $accessToken);
+            } catch (\InvalidArgumentException $invalidArgumentException) {
+                try {
+                    $member = $this->memberService->registerNewMember($additionalProfile, $accessToken);
+                } catch (\RuntimeException $runtimeException) {
+                    return $this->redirect()->toRoute('auth/problem');
+                }
+            }
+
             $this->sessionContainer->member = $member;
         }
 
