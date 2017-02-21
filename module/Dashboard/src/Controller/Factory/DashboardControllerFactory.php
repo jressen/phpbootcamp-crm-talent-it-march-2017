@@ -6,6 +6,7 @@ namespace Dashboard\Controller\Factory;
 use Contact\Model\ContactEmailRepositoryInterface;
 use Contact\Model\ContactRepositoryInterface;
 use Dashboard\Controller\DashboardController;
+use Dashboard\Form\ContactForm;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\Authentication\AuthenticationService;
@@ -23,7 +24,8 @@ class DashboardControllerFactory implements FactoryInterface
         return new DashboardController(
             $container->get(AuthenticationService::class),
             $container->get(ContactRepositoryInterface::class),
-            $container->get(ContactEmailRepositoryInterface::class)
+            $container->get(ContactEmailRepositoryInterface::class),
+            $container->get('FormElementManager')->get(ContactForm::class)
         );
     }
 

@@ -19,8 +19,9 @@ interface ContactRepositoryInterface
     /**
      * Retrieve a single contact
      *
-     * @param int $id
+     * @param int $memberId
+     * @param int $contactId
      * @return ContactEntityInterface
      */
-    public function findContact($id);
+    public function findContact($memberId, $contactId);
 }
