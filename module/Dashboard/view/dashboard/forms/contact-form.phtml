@@ -1,28 +1,55 @@
 <?php
+/** @var \Zend\Form\Form $form */
 $form = $this->form;
+$form->prepare();
 
 $contactFieldset = $form->get('contact-fieldset');
-$contactEmailFieldset = $form->get('contact-email-fieldset');
+//$contactEmailFieldset = $form->get('contact-email-fieldset');
+/** @var \Dashboard\Form\ContactEmailCollection $contactEmailCollection */
+$contactEmailCollection = $form->get('contact-email-collection');
+
+/** @var \Dashboard\Form\ContactEmailFieldset $contactEmailFieldset */
+$contactEmailFieldset = $contactEmailCollection->getTemplateElement();
+
+//\Zend\Debug\Debug::dump($contactEmailCollection->getTargetElement());
+//die;
 $contactAddressFieldset = $form->get('contact-address-fieldset');
 
 // This provides a default CSS class and placeholder text for the title element:
+/** @var \Zend\Form\Element\Text $firstName */
 $firstName = $contactFieldset->get('first_name');
 $firstName->setAttribute('class', 'form-control');
 $firstName->setAttribute('placeholder', $this->translate('First name'));
+$firstName->setValue($this->contact->getFirstName());
 
 // This provides a default CSS class and placeholder text for the artist element:
+/** @var \Zend\Form\Element\Text $lastName */
 $lastName = $contactFieldset->get('last_name');
 $lastName->setAttribute('class', 'form-control');
 $lastName->setAttribute('placeholder', $this->translate('Last name'));
+$lastName->setValue($this->contact->getLastName());
 
+/** @var \Zend\Form\Element\Text $emailAddress */
 $emailAddress = $contactEmailFieldset->get('email_address');
+
+/** @var \Zend\Form\Element\Radio $emailPrimary */
 $emailPrimary = $contactEmailFieldset->get('primary');
+$emailPrimary->setValueOptions([0 => 'No', 1 => 'Yes']);
 
 $addressLine1 = $contactAddressFieldset->get('address_1');
 $addressLine2 = $contactAddressFieldset->get('address_2');
 $postcode = $contactAddressFieldset->get('postcode');
 $city = $contactAddressFieldset->get('city');
+
+$countryArray = $this->countries->toArray();
+$countryList = array_combine(
+    array_column($countryArray, 'iso'),
+    array_column($countryArray, 'nicename')
+);
+/** @var \Zend\Form\Element\Select $country */
 $country = $contactAddressFieldset->get('country_code');
+$country->setValueOptions($countryList);
+$country->setValue($this->contact->getAddresses()->current()->getCountryCode());
 
 $csrf = $form->get('csrf');
 
@@ -53,17 +80,27 @@ echo $this->form()->openTag($form);
 
     <fieldset>
         <legend><?php echo $this->translate('Email details') ?></legend>
-        <div class="form-group">
-            <?php echo $this->formLabel($emailAddress, $this->translate('Email Address')) ?>
-            <?php echo $this->formElement($emailAddress) ?>
-            <?php echo $this->formElementErrors()->render($emailAddress, ['class' => 'help-block']) ?>
-        </div>
 
-        <div class="form-group">
-            <?php echo $this->formLabel($emailPrimary, $this->translate('Primary')) ?>
-            <?php echo $this->formElement($emailPrimary) ?>
-            <?php echo $this->formElementErrors()->render($emailPrimary, ['class' => 'help-block']) ?>
-        </div>
+        <?php foreach ($this->contact->getEmailAddresses() as $emailAddressEntity): ?>
+            <?php
+                $emailAddress->init();
+                $emailAddress->setValue($emailAddressEntity->getEmailAddress());
+                $emailPrimary->setValue(($emailAddressEntity->isPrimary() ? 1 : 0));
+            ?>
+
+            <div class="form-group">
+                <?php echo $this->formLabel($emailAddress, $this->translate('Email Address')) ?>
+                <?php echo $this->formElement($emailAddress) ?>
+                <?php echo $this->formElementErrors()->render($emailAddress, ['class' => 'help-block']) ?>
+            </div>
+
+            <div class="form-group">
+                <?php echo $this->formLabel($emailPrimary, $this->translate('Primary')) ?>
+                <?php echo $this->formElement($emailPrimary) ?>
+                <?php echo $this->formElementErrors()->render($emailPrimary, ['class' => 'help-block']) ?>
+            </div>
+
+        <?php endforeach ?>
     </fieldset>
 
     <fieldset>

@@ -21,6 +21,8 @@
         <div class="row">
             <?php echo $this->partial('dashboard/forms/contact-form', [
             'form' => $this->contactForm,
+            'countries' => $this->countries,
+            'contact' => $this->contact,
             'submitLabel' => 'Update contact',
             ]); ?>
         </div>

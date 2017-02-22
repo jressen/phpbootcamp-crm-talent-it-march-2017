@@ -21,6 +21,11 @@ class ContactForm extends Form
         ]);
 
         $this->add([
+            'name' => 'contact-email-collection',
+            'type' => ContactEmailCollection::class,
+        ]);
+
+        $this->add([
             'name' => 'contact-address-fieldset',
             'type' => ContactAddressFieldset::class,
         ]);

@@ -5,6 +5,7 @@ namespace Dashboard\Controller;
 
 use Contact\Model\ContactEmailRepositoryInterface;
 use Contact\Model\ContactRepositoryInterface;
+use Contact\Model\CountryRepositoryInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -28,6 +29,11 @@ class DashboardController extends AbstractActionController
     protected $contactEmailModel;
 
     /**
+     * @var CountryRepositoryInterface
+     */
+    protected $countryModel;
+
+    /**
      * @var FormInterface
      */
     protected $contactForm;
@@ -37,18 +43,21 @@ class DashboardController extends AbstractActionController
      * @param AuthenticationService $authService
      * @param ContactRepositoryInterface $contactModel
      * @param ContactEmailRepositoryInterface $contactEmailModel
+     * @param CountryRepositoryInterface $countryModel
      * @param FormInterface $contactForm
      */
     public function __construct(
         AuthenticationService $authService,
         ContactRepositoryInterface $contactModel,
         ContactEmailRepositoryInterface $contactEmailModel,
+        CountryRepositoryInterface $countryModel,
         FormInterface $contactForm
     )
     {
         $this->authService = $authService;
         $this->contactModel = $contactModel;
         $this->contactEmailModel = $contactEmailModel;
+        $this->countryModel = $countryModel;
         $this->contactForm = $contactForm;
     }
 
@@ -102,10 +111,20 @@ class DashboardController extends AbstractActionController
         $memberId = $this->authService->getIdentity()->getMemberId();
 
         $contact = $this->contactModel->findContact($memberId, $contactId);
+        $countries = $this->countryModel->getAllCountries();
 
-        return new ViewModel([
+        $viewModel = new ViewModel([
             'contact' => $contact,
             'contactForm' => $this->contactForm,
+            'countries' => $countries,
         ]);
+
+        if (!$this->request->isPost()) {
+            return $viewModel;
+        }
+
+        $data = $this->request->getPost();
+        \Zend\Debug\Debug::dump($data);
+        die;
     }
 }

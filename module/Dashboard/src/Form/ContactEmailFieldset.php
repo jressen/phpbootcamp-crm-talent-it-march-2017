@@ -33,6 +33,13 @@ class ContactEmailFieldset extends Fieldset
             'name' => 'primary',
             'options' => [
                 'label' => 'Primary',
+                'value_options' => [
+                    0 => 'No',
+                    1 => 'Yes',
+                ],
+            ],
+            'attributes' => [
+                'class' => 'form-control',
             ],
         ]);
     }
