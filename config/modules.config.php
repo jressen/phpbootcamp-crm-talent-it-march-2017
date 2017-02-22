@@ -28,6 +28,7 @@ return [
     'Application',
     'Contact',
     'Company',
+    'Deal',
     'Auth',
     'Dashboard',
 ];
