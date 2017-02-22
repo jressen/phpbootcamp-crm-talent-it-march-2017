@@ -33,6 +33,7 @@
         "psr-4": {
             "Application\\": "module/Application/src/",
             "Contact\\": "module/Contact/src/",
+            "Company\\": "module/Company/src/",
             "Auth\\": "module/Auth/src",
             "Dashboard\\": "module/Dashboard/src"
         }
