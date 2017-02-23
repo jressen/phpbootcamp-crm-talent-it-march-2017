@@ -1,0 +1,94 @@
+<?php $this->headTitle(sprintf($this->translate('Detail for %s %s'), $this->contact->getFirstName(), $this->contact->getLastName())) ?>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="h1"><?php echo sprintf($this->translate('Detail for %s %s'), $this->contact->getFirstName(), $this->contact->getLastName()) ?></h1>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-4">
+            <nav class="nav">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="<?php echo $this->url('dashboard') ?>"><span class="glyphicon glyphicon-home"></span> <?php echo $this->translate('Overview') ?></a></li>
+                    <li class="list-group-item active"><span class="glyphicon glyphicon-user"></span> <?php echo $this->translate('Contacts') ?></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="col-md-5">
+
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <td colspan="2"><strong><?php echo $this->translate('Contact details') ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center"><img src="<?php echo $this->escapeHtml($this->contact->getImages()->current()->getImageLink()) ?>"></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><?php echo $this->translate('First name') ?>:</th>
+                        <td><?php echo $this->escapeHtml($this->contact->getFirstName()) ?></td>
+                    </tr>
+                    <tr>
+                        <th class="text-right"><?php echo $this->translate('Last name') ?>:</th>
+                        <td><?php echo $this->escapeHtml($this->contact->getLastName()) ?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong><?php echo $this->translate('Email Addresses') ?></strong></td>
+                    </tr>
+                    <?php foreach ($this->contact->getEmailAddresses() as $emailAddress): ?>
+                        <tr>
+                            <th class="text-right">Type:</th>
+                            <td><?php echo $this->escapeHtml($emailAddress->getEmailAddress()) ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                    <tr>
+                        <td colspan="2"><strong><?php echo $this->translate('Addresses') ?></strong></td>
+                    </tr>
+                    <?php foreach ($this->contact->getAddresses() as $address): ?>
+                        <tr>
+                            <th class="text-right"><?php echo $this->translate('Street 1') ?>:</th>
+                            <td><?php echo $this->escapeHtml($address->getStreet1()) ?></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right"><?php echo $this->translate('Street 2') ?>:</th>
+                            <td><?php echo $this->escapeHtml($address->getStreet2()) ?></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right"><?php echo $this->translate('Postcode') ?>:</th>
+                            <td><?php echo $this->escapeHtml($address->getPostcode()) ?></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right"><?php echo $this->translate('City') ?>:</th>
+                            <td><?php echo $this->escapeHtml($address->getCity()) ?></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right"><?php echo $this->translate('Province') ?>:</th>
+                            <td><?php echo $this->escapeHtml($address->getProvince()) ?></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right"><?php echo $this->translate('Country') ?>:</th>
+                            <td><?php echo $this->escapeHtml($address->getCountryCode()) ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </table>
+            </div>
+        </div><!-- /.col-md-5 -->
+
+        <div class="col-md-3">
+            <div class="row">
+                <h2 class="h2">Quick actions</h2>
+                <ul>
+                    <li><a href="<?php echo $this->url('dashboard/contacts/edit', ['contactId' => $this->contact->getContactId()]) ?>" title="<?php echo $this->translate('Edit contact') ?>"><?php echo $this->translate('Edit contact') ?></a></li>
+                    <li><?php echo $this->translate('Delete contact') ?></li>
+                    <li><a href="<?php echo $this->url('dashboard/contacts') ?>" title="<?php echo $this->translate('Back to contact list') ?>"><?php echo $this->translate('Back to contact list') ?></a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</div>

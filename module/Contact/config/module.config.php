@@ -15,6 +15,7 @@ return [
             Model\ContactAddressRepositoryInterface::class => Model\ContactAddressRepository::class,
             Model\ContactAddressCommandInterface::class => Model\ContactAddressCommand::class,
             Model\ContactImageModelInterface::class => Model\ContactImageModel::class,
+            Model\CountryRepositoryInterface::class => Model\CountryRepository::class,
         ],
         'factories' => [
             Model\ContactRepository::class => Model\Factory\ContactRepositoryFactory::class,
@@ -24,6 +25,7 @@ return [
             Model\ContactAddressRepository::class => Model\Factory\ContactAddressRepositoryFactory::class,
             Model\ContactAddressCommand::class => Model\Factory\ContactAddressCommandFactory::class,
             Model\ContactImageModel::class => Model\Factory\ContactImageModelFactory::class,
+            Model\CountryRepository::class => Model\Factory\CountryRepositoryFactory::class,
             Entity\ContactEntityHydrator::class => Entity\Factory\ContactEntityHydratorFactory::class,
         ],
     ],

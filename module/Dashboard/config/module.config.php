@@ -3,6 +3,7 @@
 namespace Dashboard;
 
 use Zend\Router\Http\Literal;
+use Zend\Router\Http\Segment;
 
 return [
     'controllers' => [
@@ -29,6 +30,33 @@ return [
                             'route' => '/contacts',
                             'defaults' => [
                                 'action' => 'contacts',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'detail' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/detail[/:contactId]',
+                                    'defaults' => [
+                                        'action' => 'contacts-detail',
+                                    ],
+                                    'constrains' => [
+                                        'contactId' => '\d+',
+                                    ],
+                                ],
+                            ],
+                            'edit' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/edit[/:contactId]',
+                                    'defaults' => [
+                                        'action' => 'contacts-edit',
+                                    ],
+                                    'constrains' => [
+                                        'contactId' => '\d+',
+                                    ],
+                                ],
                             ],
                         ],
                     ],

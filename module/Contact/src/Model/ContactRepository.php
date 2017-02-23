@@ -66,11 +66,12 @@ class ContactRepository implements ContactRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function findContact($id)
+    public function findContact($memberId, $contactId)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('contact');
-        $select->where(['contact_id = ?' => $id]);
+        $select->where(['member_id = ?' => $memberId]);
+        $select->where(['contact_id = ?' => $contactId]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -78,7 +79,7 @@ class ContactRepository implements ContactRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             throw new \RuntimeException(sprintf(
                 'Failed retrieving contact with identifier "%s"; unknown database error.',
-                $id
+                $contactId
             ));
         }
 
@@ -89,7 +90,7 @@ class ContactRepository implements ContactRepositoryInterface
         if (! $contact) {
             throw new \InvalidArgumentException(sprintf(
                 'Contact with identifier "%s" not found.',
-                $id
+                $contactId
             ));
         }
 
