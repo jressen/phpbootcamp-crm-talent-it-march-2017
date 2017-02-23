@@ -27,6 +27,8 @@ return [
     'Zend\Validator',
     'Application',
     'Contact',
+    'Company',
+    'Deal',
     'Auth',
     'Dashboard',
 ];

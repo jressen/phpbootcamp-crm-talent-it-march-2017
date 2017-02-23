@@ -1,9 +1,8 @@
 <?php echo $this->doctype() ?>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF-CRM')->setSeparator(' | ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->escapeHtml(Application\Module::APP_NAME))->setSeparator(' | ')->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -13,6 +12,8 @@
         <!-- Le styles -->
         <?php echo $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
             ->appendStylesheet($this->basePath('css/bootstrap.min.css'))
+            ->appendStylesheet($this->basePath('css/font-awesome.min.css'))
+            ->appendStylesheet($this->basePath('css/bootstrap-social.css'))
             ->appendStylesheet($this->basePath('css/bootstrap-theme.min.css'))
             ->appendStylesheet($this->basePath('css/style.css'))
         ?>
@@ -21,27 +22,43 @@
         <?php echo $this->headScript() ?>
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
-                        <img src="<?php echo $this->basePath('img/zf-logo-mark.svg') ?>" height="28" alt="ZF-CRM <?php echo \Application\Module::VERSION ?>"/>&nbsp;ZF-CRM
-                    </a>
+        <section id="top" name="top"><a name="top"></a>
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div name="top" class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="<?php echo $this->url('home', [], ['fragment' => 'top']) ?>">
+                            <img src="<?php echo $this->basePath('img/zf-logo-mark.svg') ?>" height="28" alt="<?php echo $this->escapeHtml(Application\Module::APP_NAME)?> <?php echo \Application\Module::VERSION ?>"/>&nbsp;<?php echo $this->escapeHtml(Application\Module::APP_NAME) ?>
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="<?php echo $this->url('home', [], ['fragment' => 'intro']) ?>"><?php echo $this->translate('Introduction') ?></a></li>
+                            <li><a href="<?php echo $this->url('home', [], ['fragment' => 'features']) ?>"><?php echo $this->translate('Features') ?></a></li>
+                            <li><a href="<?php echo $this->url('home', [], ['fragment' => 'recommendations']) ?>"><?php echo $this->translate('Recommendations') ?></a></li>
+                            <li><a href="<?php echo $this->url('home', [], ['fragment' => 'pricing']) ?>"><?php echo $this->translate('Pricing') ?></a></li>
+                            <li><a href="<?php echo $this->url('home', [], ['fragment' => 'contact']) ?>"><?php echo $this->translate('Contact') ?></a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Register') ?></a></li>
+                            <li><a href="<?php echo $this->url('auth') ?>"><?php echo $this->translate('Login') ?></a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="container">
+            </nav>
+        </section>
+
+        <div class="content-block">
+
             <?php echo $this->content ?>
+
+        </div>
+
+        <div class="container">
             <hr>
             <footer>
                 <p>&copy; 2005 - <?php echo date('Y') ?> by <a href="https://www.in2it.be/" title="In2it VOF" target="_blank">in2it V.O.F.</a>. All rights reserved.</p>

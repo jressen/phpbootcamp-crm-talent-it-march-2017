@@ -10,6 +10,7 @@ namespace Application;
 class Module
 {
     const VERSION = '3.0.2dev';
+    const APP_NAME = 'CloudCRM';
 
     public function getConfig()
     {

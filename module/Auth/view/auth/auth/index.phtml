@@ -1,15 +1,21 @@
-<?php $this->headTitle($this->translate('Please authenticate yourself')) ?>
+<?php $this->headTitle($this->translate('Easy login available')) ?>
+<?php $this->headLink()->appendStylesheet($this->basePath('/css/linkedin.css')) ?>
 
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="h1"><?php echo $this->translate('Please authenticate yourself') ?></h1>
-    </div>
-</div>
+<div class="container">
 
-<div class="row">
-    <div class="col-md-3">&nbsp;</div>
-    <div class="col-md-6">
-        <a href="<?php echo $this->linkedInUrl ?>" class="btn btn-linkedin">Login with LinkedIn</a>
+    <div class="row login-panel">
+        <div class="col-md-4">&nbsp;</div>
+        <div class="col-md-4">
+
+            <h1 class="h1"><?php echo $this->translate('Easy login available') ?></h1>
+
+            <p><?php echo $this->translate('We make it simple for you to sign up or to login, just login into LinkedIn and we\'ll take it from there.') ?></p>
+
+            <a href="<?php echo $this->linkedInUrl ?>" class="btn btn-lg btn-block btn-social btn-linkedin">
+                <span class="fa fa-linkedin"></span> <strong>Sign in with LinkedIn</strong>
+            </a>
+        </div>
+        <div class="col-md-4">&nbsp;</div>
     </div>
-    <div class="col-md-3">&nbsp;</div>
+
 </div>
