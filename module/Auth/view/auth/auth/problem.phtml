@@ -1,13 +1,17 @@
 <?php $this->headTitle($this->translate('We have detected a problem')) ?>
 
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="h1"><?php echo $this->translate('We have detected a problem') ?></h1>
-        <p>
-            <?php echo sprintf(
-                $this->translate('We have detected a problem with your authorisation. Please verify your connection and try again. %s'),
-                '<a href="' . $this->url('auth') . '" title="' . $this->translate('Go to login') . '">' . $this->translate('Go to login') . '</a>'
-            ) ?>
-        </p>
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="h1"><?php echo $this->translate('We have detected a problem') ?></h1>
+            <p>
+                <?php echo sprintf(
+                    $this->translate('We have detected a problem with your authorisation. Please verify your connection and try again. %s'),
+                    '<a href="' . $this->url('auth') . '" title="' . $this->translate('Go to login') . '">' . $this->translate('Go to login') . '</a>'
+                ) ?>
+            </p>
+        </div>
     </div>
+
 </div>

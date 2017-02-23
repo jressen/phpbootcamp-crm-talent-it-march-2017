@@ -67,8 +67,9 @@ div.container a.navbar-brand > img {
     font-size: 175%;
 }
 
-.xdebug-error {
+.xdebug-error, .content-block {
     margin-top: 75px;
+    min-height: 600px;
 }
 
 #inspiration-1 {
