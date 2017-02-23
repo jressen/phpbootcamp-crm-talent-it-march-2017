@@ -22,7 +22,7 @@ class LinkedInFactory implements FactoryInterface
     {
         $guzzleClient = new Client([
             'headers' => [
-                'User-Agent' => 'ZFCRM/' . Module::VERSION . ' curl/' . curl_version() . ' PHP/7.1.1',
+                'User-Agent' => 'ZFCRM/' . Module::VERSION . ' curl/' . curl_version()['version'] . ' PHP/7.1.2',
                 'Accept' => 'application/json',
                 'x-li-format' => 'json',
             ],
