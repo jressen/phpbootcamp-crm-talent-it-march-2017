@@ -1,39 +1,43 @@
 <?php $this->headTitle($this->translate('Contacts')) ?>
 
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="h1"><?php echo $this->translate('Contacts') ?></h1>
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="h1"><?php echo $this->translate('Contacts') ?></h1>
+        </div>
     </div>
-</div>
-<div class="row">
+    <div class="row">
 
-    <div class="col-md-4">
-        <nav class="nav">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="<?php echo $this->url('dashboard') ?>"><span class="glyphicon glyphicon-home"></span> <?php echo $this->translate('Overview') ?></a></li>
-                <li class="list-group-item active"><span class="glyphicon glyphicon-user"></span> <?php echo $this->translate('Contacts') ?></li>
-            </ul>
-        </nav>
-    </div>
+        <div class="col-md-4">
+            <nav class="nav">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="<?php echo $this->url('dashboard') ?>"><span class="glyphicon glyphicon-home"></span> <?php echo $this->translate('Overview') ?></a></li>
+                    <li class="list-group-item active"><span class="glyphicon glyphicon-user"></span> <?php echo $this->translate('Contacts') ?></li>
+                </ul>
+            </nav>
+        </div>
 
-    <div class="col-md-8">
+        <div class="col-md-8">
 
-        <table class="table">
-            <tr>
-                <th>&nbsp;</th>
-                <th><?php echo $this->translate('First name') ?></th>
-                <th><?php echo $this->translate('Last name') ?></th>
-                <th><?php echo $this->translate('E-mail address') ?></th>
-            </tr>
-            <?php foreach ($this->contacts as $contact): ?>
+            <table class="table">
                 <tr>
-                    <td><img src="<?php echo $contact->getImages()->current()->getImageLink() ?>" width="24" height="24"></td>
-                    <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
-                    <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
-                    <td><?php echo $this->escapeHtml($contact->getEmailAddresses()->current()->getEmailAddress()) ?></td>
+                    <th>&nbsp;</th>
+                    <th><?php echo $this->translate('First name') ?></th>
+                    <th><?php echo $this->translate('Last name') ?></th>
+                    <th><?php echo $this->translate('E-mail address') ?></th>
                 </tr>
-            <?php endforeach ?>
-        </table>
+                <?php foreach ($this->contacts as $contact): ?>
+                    <tr>
+                        <td><img src="<?php echo $contact->getImages()->current()->getImageLink() ?>" width="24" height="24"></td>
+                        <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
+                        <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
+                        <td><?php echo $this->escapeHtml($contact->getEmailAddresses()->current()->getEmailAddress()) ?></td>
+                    </tr>
+                <?php endforeach ?>
+            </table>
+        </div>
+
     </div>
 
 </div>
