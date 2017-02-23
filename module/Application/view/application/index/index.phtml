@@ -1,7 +1,217 @@
-<?php $this->headTitle($this->translate('Manage contacts with ease')) ?>
+<?php $this->headTitle($this->translate('Manage your contacts fast and easy')) ?>
 
-<div class="row">
-    <div class="col-md-12 col-sm-8">
-        <h1 class="h1"><?php echo $this->translate('ZF-CRM') ?></h1>
+<section name="intro" id="section-intro">
+    <div class="row page-header text-center app-header">
+        <div class="container">
+            <div class="row">
+                <h1 class="h1"><span class="glyphicon glyphicon-user"></span></h1>
+                <p class="text-capitalize"><?php echo $this->translate('Manage customer relations with ease') ?></p>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<section name="features" id="section-features"><a name="features"></a>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-6 col-md-4">
+                <h3 class="h3"><span class="glyphicon glyphicon-eye-open"></span> <?php echo $this->translate('Easy to use') ?></h3>
+                <p class="text-justify"><?php echo sprintf($this->translate('A CRM should be easy to use and work for you. With our %s we have done just that!'), $this->escapeHtml(Application\Module::APP_NAME)) ?></p>
+                <p class="text-justify"><?php echo sprintf($this->translate('We got rid of all distractions and made customers the central hub of %s. Now you can keep track of all your conversations in one single spot.'), $this->escapeHtml(Application\Module::APP_NAME)) ?></p>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                <h3 class="h3"><span class="glyphicon glyphicon-flash"></span> <?php echo $this->translate('Lightning fast') ?></h3>
+                <p class="text-justify"><?php echo sprintf($this->translate('%s is build on the fastest technologies around so the it gets the job done!'), $this->escapeHtml(Application\Module::APP_NAME)) ?></p>
+                <p class="text-justify"><?php echo sprintf($this->translate('With over %d customers working on %s from all corners of the world, we want to give everyone the same experience. It is fast all over the board!'), \number_format(350000), $this->escapeHtml(Application\Module::APP_NAME)) ?></p>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                <h3 class="h3"><span class="glyphicon glyphicon-heart"></span> <?php echo $this->translate('Integration that works') ?></h3>
+                <p class="text-justify"><?php echo sprintf($this->translate('Connect %s with other tools you use and make it part of your workflow!'), $this->escapeHtml(Application\Module::APP_NAME)) ?></p>
+                <p class="text-justify"><?php echo sprintf($this->translate('Why replicate your information all over the place? %s connects directly to the tools you use and keeps itself up-to-date all the time.'), $this->escapeHtml(Application\Module::APP_NAME)) ?></p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="section-divider" id="inspiration-1">
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="h2 text-uppercase"><?php echo sprintf($this->translate('Build with %s in Europe'), '<span class="glyphicon glyphicon-heart" style="color: red;"></span>') ?></h2>
+            <hr style="color: whitesmoke">
+            <p><?php echo $this->translate('All our apps are being developped with passion and love in the heart of Europe') ?></p>
+        </div>
+    </div>
+</section>
+
+<section name="recommendations" id="section-recommendations"><a name="recommendations"></a>
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="h2 text-uppercase"><?php echo sprintf($this->translate('What our customers say about %s'), $this->escapeHtml(Application\Module::APP_NAME)) ?></h2>
+            <hr style="color: whitesmoke">
+            <div class="col-md-3 col-sd-1">&nbsp;</div>
+            <div class="col-md-6 col-sd-10">
+                <div class="media">
+                    <div class="media-left">
+                        <img class="media-object img-circle" src="<?php echo $this->basePath('/img/john-frederickx.jpg') ?>" alt="John Frederickx" width="48" height="48">
+                    </div>
+                    <div class="media-body">
+                        <p><cite><?php echo $this->translate('So easy to manage my clients, it saves me a lot of head aches.') ?></cite><br> -- John Frederickx, CEO AlphaBeta</p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-body">
+                        <p><cite><?php echo $this->translate('Fast, easy, simple. This is how a CRM should be') ?></cite><br> -- Christina Jones, Reporter Startups Monthly</p>
+                    </div>
+                    <div class="media-right">
+                        <img class="media-object img-circle" src="<?php echo $this->basePath('/img/christina-jones.jpg') ?>" alt="Christina Jones" width="48" height="48">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sd-1">&nbsp;</div>
+        </div>
+    </div>
+</section>
+
+<section class="section-divider" id="inspiration-2">
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="h2 text-uppercase"><?php echo sprintf($this->translate('Impress your clients with a small %s'), '<span class="glyphicon glyphicon-gift" style="color: lightskyblue;"></span>') ?></h2>
+            <hr style="color: whitesmoke">
+            <p><?php echo $this->translate('Keep track of important moments in your client\'s life like birthdays or aniversaries and show them your more than a business. You\'re a friend!') ?></p>
+        </div>
+    </div>
+</section>
+
+<section name="pricing" id="section-pricing"><a name="pricing"></a>
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="h2 text-uppercase">Pricing</h2>
+        </div>
+        <hr>
+        <div class="row">
+
+            <div class="col-md-4 col-sd-6">
+                <div class="list-group">
+                    <div class="list-group-item-heading">
+                        <h2 class="h2 text-center"><?php echo $this->translate('Free') ?></h2>
+                        <h3 class="h3 text-center">€&nbsp;<?php echo \number_format(0, 2) ?>/<?php echo $this->translate('Month') ?></h3>
+                    </div>
+                    <p class="list-group-item-text">
+                        <ul class="list-group">
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Contact management') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Company management') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Deals') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Tasks') ?></li>
+                            <li class="list-group-item"> </li>
+                        </ul>
+                    </p>
+                </div>
+                <form class="form">
+                    <button class="btn btn-success btn-block" disabled="disabled"><span class="glyphicon glyphicon-flag"></span> Order now</button>
+                </form>
+            </div><!-- ./col-md4 col-sd-6 -->
+
+            <div class="col-md-4 col-sd-6">
+                <div class="list-group">
+                    <div class="list-group-item-heading list-group-item-success">
+                        <h2 class="h2 text-center"><?php echo $this->translate('Small biz') ?></h2>
+                        <h3 class="h3 text-center">€&nbsp;<?php echo \number_format(4.99, 2) ?>/<?php echo $this->translate('Month') ?></h3>
+                    </div>
+                    <p class="list-group-item-text">
+                        <ul class="list-group">
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Social Media Services') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Mail services<') ?>/li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Google integration') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Email support') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-arrow-left" style="color: limegreen"></span> <?php echo $this->translate('Including options from "free" package') ?></li>
+                        </ul>
+                    </p>
+                </div>
+                <form class="form">
+                    <button class="btn btn-success btn-block" disabled="disabled"><span class="glyphicon glyphicon-flag"></span> Order now</button>
+                </form>
+            </div><!-- ./col-md4 col-sd-6 -->
+
+            <div class="col-md-4 col-sd-6">
+                <div class="list-group">
+                    <div class="list-group-item-heading">
+                        <h2 class="h2 text-center"><?php echo $this->translate('Enterprise') ?></h2>
+                        <h3 class="h3 text-center">€&nbsp;<?php echo \number_format(14.99, 2) ?>/<?php echo $this->translate('Month') ?></h3>
+                    </div>
+                    <p class="list-group-item-text">
+                        <ul class="list-group">
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Salesforce Integration') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('24/7 Support') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('One click gifts') ?></li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-check" style="color: limegreen"></span> <?php echo $this->translate('Reporting') ?></li>
+                        <li class="list-group-item"><span class="glyphicon glyphicon-arrow-left" style="color: limegreen"></span> <?php echo $this->translate('Including options from "small biz" package') ?></li>
+                        </ul>
+                    </p>
+                </div>
+                <form class="form">
+                    <button class="btn btn-success btn-block" disabled="disabled"><span class="glyphicon glyphicon-flag"></span> Order now</button>
+                </form>
+            </div><!-- ./col-md4 col-sd-6 -->
+
+        </div>
+    </div>
+</section>
+
+<section class="section-divider" id="inspiration-3">
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="h2 text-uppercase"><?php echo sprintf($this->translate('Become the %s in your industry'), '<span class="glyphicon glyphicon-star" style="color: yellow;"></span>') ?></h2>
+            <hr style="color: whitesmoke">
+            <p><?php echo sprintf($this->translate('Work efficiently and effortless with %s to become the market leader in your industry'), $this->escapeHtml(Application\Module::APP_NAME)) ?></p>
+        </div>
+    </div>
+</section>
+
+<section name="contact" id="section-contact"><a name="contact"></a>
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="h2 text-uppercase">Contact us</h2>
+        </div>
+        <hr>
+        <div class="row">
+
+            <div class="col-md-4 col-sd-6">
+                <h2 class="h2"><?php echo $this->translate('Contact us') ?></h2>
+                <div>
+                    <span><?php echo $this->escapeHtml(Application\Module::APP_NAME) ?></span><br>
+                    <span>Hoofstraat 1</span><br>
+                    <span>2000 Antwerpen</span><br>
+                    <span>Belgium</span>
+                </div>
+            </div><!-- ./col-md4 col-sd-6 -->
+
+            <div class="col-md-4 col-sd-6">
+                <h2 class="h2"><?php echo $this->translate('Newsletter') ?></h2>
+                <div>
+                    <p><?php echo $this->translate('Register to our newsletter and be updated with the latests information regarding our services, offers and much more.') ?></p>
+                    <form class="form">
+                        <div class="form-group">
+                            <input class="form-control" type="text">
+                        </div>
+                        <button class="btn btn-info" disabled="disabled"><span class="glyphicon glyphicon-fire"></span> Sign up</button>
+                    </form>
+                </div>
+            </div><!-- ./col-md4 col-sd-6 -->
+
+            <div class="col-md-4 col-sd-6">
+                <h2 class="h2"><?php echo $this->translate('Social media') ?></h2>
+                <div class="group-item">
+                    <p class="list-group-item-text">Twitter</p>
+                    <p class="list-group-item-text">Facebook</p>
+                    <p class="list-group-item-text">Instagram</p>
+                    <p class="list-group-item-text">Google Plus</p>
+                </div>
+            </div><!-- ./col-md4 col-sd-6 -->
+
+        </div>
+    </div>
+</section>
