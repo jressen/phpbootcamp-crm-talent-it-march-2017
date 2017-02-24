@@ -69,7 +69,20 @@ div.container a.navbar-brand > img {
 
 .xdebug-error, .content-block {
     margin-top: 75px;
+}
+.content-block {
     min-height: 600px;
+}
+
+.section-item {
+    padding-top: 75px;
+    color: #555;
+}
+
+.section-item:hover {
+    color: #555;
+    text-transform: uppercase;
+    text-decoration: none;
 }
 
 #inspiration-1 {
