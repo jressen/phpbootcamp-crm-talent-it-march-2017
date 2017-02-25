@@ -85,6 +85,9 @@ div.container a.navbar-brand > img {
     text-decoration: none;
 }
 
+#inspiration-0 {
+    background-image: url('../img/inspiration-0.jpg');
+}
 #inspiration-1 {
     background-image: url('../img/inspiration-1.jpg');
 }
