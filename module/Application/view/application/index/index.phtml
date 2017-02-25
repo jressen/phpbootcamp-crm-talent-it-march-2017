@@ -1,13 +1,37 @@
 <?php $this->headTitle($this->translate('Manage your contacts fast and easy')) ?>
 <?php $this->inlineScript()->appendFile($this->basePath('/js/smoothscroll.js')) ?>
 
-<section name="intro" id="section-intro"><a class="section-item" name="top"></a>
+<section name="top" id="section-top"><a class="section-item" name="top"></a>
     <div class="row page-header text-center app-header">
         <div class="container">
             <div class="row">
                 <h1 class="h1"><span class="glyphicon glyphicon-user"></span></h1>
                 <p class="text-capitalize"><?php echo $this->translate('Manage customer relations with ease') ?></p>
             </div>
+        </div>
+    </div>
+</section>
+
+<section name="intro" id="section-intro">
+    <div class="container">
+        <div class="row">
+            <a class="section-item" name="intro">
+                <h2 class="h2 text-center text-uppercase"><?php echo sprintf($this->translate('About %s'), Application\Module::APP_NAME) ?></h2>
+            </a>
+        </div>
+        <hr style="color: whitesmoke">
+        <div class="row text-center">
+            <p><?php echo sprintf($this->translate('%s allows you to manage your contacts and sales easily, safely and securely.'), \Application\Module::APP_NAME) ?></p>
+        </div>
+    </div>
+</section>
+
+<section class="section-divider" id="inspiration-0">
+    <div class="container">
+        <div class="row text-center">
+            <h2 class="h2 text-uppercase"><?php echo sprintf($this->translate('Simplicity is key')) ?></h2>
+            <hr style="color: whitesmoke">
+            <p><?php echo sprintf($this->translate('Why make things complicated while simplicity works great. %s offers you a simple interface that just works and gives you back control over your relation management.'), \Application\Module::APP_NAME) ?></p>
         </div>
     </div>
 </section>
