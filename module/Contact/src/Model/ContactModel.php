@@ -5,6 +5,7 @@ namespace Contact\Model;
 
 use Contact\Entity\ContactInterface;
 use Zend\Db\Adapter\AdapterInterface;
+use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Sql;
 use Zend\Hydrator\HydratorInterface;
@@ -67,7 +68,21 @@ class ContactModel implements ContactModelInterface
      */
     public function findContact($memberId, $contactId)
     {
-        // TODO: Implement findContact() method.
+        $sql = new Sql($this->db);
+        $select = $sql->select(self::TABLE_NAME);
+        $select->where([
+            'member_id = ?' => $memberId,
+            'contact_id = ?' => $contactId,
+        ]);
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
+            throw new \DomainException('Cannot find contac');
+        }
+
+        return $this->hydrator->hydrate($result->current(), $this->contactPrototype);
     }
 
     /**
