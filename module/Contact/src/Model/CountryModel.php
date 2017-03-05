@@ -10,7 +10,7 @@ use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Sql;
 use Zend\Hydrator\HydratorInterface;
 
-class CountryRepository implements CountryRepositoryInterface
+class CountryModel implements CountryModelInterface
 {
     /**
      * @var AdapterInterface
@@ -28,7 +28,8 @@ class CountryRepository implements CountryRepositoryInterface
     protected $countryPrototype;
 
     /**
-     * CountryRepository constructor.
+     * CountryModel constructor.
+     *
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param CountryInterface $countryPrototype

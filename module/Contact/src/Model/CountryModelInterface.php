@@ -4,7 +4,7 @@ namespace Contact\Model;
 
 use Contact\Entity\CountryInterface;
 
-interface CountryRepositoryInterface
+interface CountryModelInterface
 {
     /**
      * @return CountryInterface[]
