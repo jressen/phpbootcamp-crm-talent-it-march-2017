@@ -5,6 +5,7 @@ namespace Contact\Model\Factory;
 
 use Contact\Entity\Contact;
 use Contact\Entity\Factory\ContactHydratorFactory;
+use Contact\Model\AddressModel;
 use Contact\Model\ContactModel;
 use Contact\Model\EmailAddressModel;
 use Interop\Container\ContainerInterface;
@@ -23,8 +24,12 @@ class ContactModelFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $emailAddressModel = $container->get(EmailAddressModel::class);
+        $addressModel = $container->get(AddressModel::class);
         $contactHydratorFactory = new ContactHydratorFactory();
-        $contactHydrator = $contactHydratorFactory->prepareHydrator($emailAddressModel);
+        $contactHydrator = $contactHydratorFactory->prepareHydrator(
+            $emailAddressModel,
+            $addressModel
+        );
 
         return new ContactModel(
             $container->get(AdapterInterface::class),

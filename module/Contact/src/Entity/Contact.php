@@ -150,4 +150,22 @@ class Contact implements ContactInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * @param array $addresses
+     * @return Contact
+     */
+    public function setAddresses($addresses)
+    {
+        $this->addresses = $addresses;
+        return $this;
+    }
+
 }

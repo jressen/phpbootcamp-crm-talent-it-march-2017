@@ -53,10 +53,12 @@ return [
         'aliases' => [
             Model\ContactModelInterface::class => Model\ContactModel::class,
             Model\EmailAddressModelInterface::class => Model\EmailAddressModel::class,
+            Model\AddressModelInterface::class => Model\AddressModel::class,
         ],
         'factories' => [
             Model\ContactModel::class => Model\Factory\ContactModelFactory::class,
             Model\EmailAddressModel::class => Model\Factory\EmailAddressModelFactory::class,
+            Model\AddressModel::class => Model\Factory\AddressModelFactory::class,
         ],
     ],
 ];

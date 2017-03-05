@@ -3,8 +3,10 @@
 namespace Contact\Entity\Factory;
 
 
+use Contact\Entity\ContactAddressHydrator;
 use Contact\Entity\ContactEmailHydrator;
 use Contact\Entity\ContactHydrator;
+use Contact\Model\AddressModelInterface;
 use Contact\Model\EmailAddressModelInterface;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
@@ -20,9 +22,15 @@ class ContactHydratorFactory
      */
     protected $hydrator;
 
-    public function __invoke(EmailAddressModelInterface $emailAddressModel)
+    public function __invoke(
+        EmailAddressModelInterface $emailAddressModel,
+        AddressModelInterface $addressModel
+    )
     {
-        return $this->prepareHydrator($emailAddressModel);
+        return $this->prepareHydrator(
+            $emailAddressModel,
+            $addressModel
+        );
     }
 
     /**
@@ -31,7 +39,10 @@ class ContactHydratorFactory
      * @param EmailAddressModelInterface $emailAddressModel
      * @return AggregateHydrator
      */
-    public function prepareHydrator(EmailAddressModelInterface $emailAddressModel)
+    public function prepareHydrator(
+        EmailAddressModelInterface $emailAddressModel,
+        AddressModelInterface $addressModel
+    )
     {
         $this->hydrator = new AggregateHydrator();
         $contactHydrator = new ContactHydrator();
@@ -39,6 +50,9 @@ class ContactHydratorFactory
         $this->hydrator->add($contactHydrator);
         $this->hydrator->add(
             new ContactEmailHydrator($emailAddressModel)
+        );
+        $this->hydrator->add(
+            new ContactAddressHydrator($addressModel)
         );
 
         return $this->hydrator;

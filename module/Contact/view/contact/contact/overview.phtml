@@ -28,7 +28,15 @@
                         <?php endforeach ?>
                         </ul>
                     </td>
-                    <td>&nbsp;</td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <?php foreach ($contact->getAddresses() as $address): ?>
+                                <?php if (null !== $address->getCountry()): ?>
+                                    <li><?php echo $this->escapeHtml($address->getCountry()->getNiceName()) ?></li>
+                                <?php endif ?>
+                            <?php endforeach ?>
+                        </ul>
+                    </td>
                     <td>
                         Edit |
                         Delete
