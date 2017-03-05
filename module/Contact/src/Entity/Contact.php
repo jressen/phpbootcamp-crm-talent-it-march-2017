@@ -168,4 +168,22 @@ class Contact implements ContactInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param array $images
+     * @return Contact
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+        return $this;
+    }
+
 }

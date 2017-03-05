@@ -9,6 +9,7 @@
     <div class="row">
         <table class="table">
             <tr>
+                <th>&nbsp;</th>
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Email address</th>
@@ -19,6 +20,11 @@
             <?php foreach ($this->contacts as $contact): ?>
 
                 <tr>
+                    <td>
+                        <?php if (null !== $contact->getImages()): ?>
+                        <img src="<?php echo $contact->getImages()->current()->getImageLink() ?>" width="24" height="24">
+                        <?php endif ?>
+                    </td>
                     <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
                     <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
                     <td>

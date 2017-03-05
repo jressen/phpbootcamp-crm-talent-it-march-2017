@@ -8,6 +8,7 @@ use Contact\Entity\Factory\ContactHydratorFactory;
 use Contact\Model\AddressModel;
 use Contact\Model\ContactModel;
 use Contact\Model\EmailAddressModel;
+use Contact\Model\ImageModel;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\Db\Adapter\AdapterInterface;
@@ -25,10 +26,13 @@ class ContactModelFactory implements FactoryInterface
     {
         $emailAddressModel = $container->get(EmailAddressModel::class);
         $addressModel = $container->get(AddressModel::class);
+        $imageModel = $container->get(ImageModel::class);
+
         $contactHydratorFactory = new ContactHydratorFactory();
         $contactHydrator = $contactHydratorFactory->prepareHydrator(
             $emailAddressModel,
-            $addressModel
+            $addressModel,
+            $imageModel
         );
 
         return new ContactModel(

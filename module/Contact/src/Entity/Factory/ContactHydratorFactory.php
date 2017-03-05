@@ -6,8 +6,10 @@ namespace Contact\Entity\Factory;
 use Contact\Entity\ContactAddressHydrator;
 use Contact\Entity\ContactEmailHydrator;
 use Contact\Entity\ContactHydrator;
+use Contact\Entity\ContactImageHydrator;
 use Contact\Model\AddressModelInterface;
 use Contact\Model\EmailAddressModelInterface;
+use Contact\Model\ImageModelInterface;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\Hydrator\Aggregate\AggregateHydrator;
@@ -24,12 +26,14 @@ class ContactHydratorFactory
 
     public function __invoke(
         EmailAddressModelInterface $emailAddressModel,
-        AddressModelInterface $addressModel
+        AddressModelInterface $addressModel,
+        ImageModelInterface $imageModel
     )
     {
         return $this->prepareHydrator(
             $emailAddressModel,
-            $addressModel
+            $addressModel,
+            $imageModel
         );
     }
 
@@ -41,7 +45,8 @@ class ContactHydratorFactory
      */
     public function prepareHydrator(
         EmailAddressModelInterface $emailAddressModel,
-        AddressModelInterface $addressModel
+        AddressModelInterface $addressModel,
+        ImageModelInterface $imageModel
     )
     {
         $this->hydrator = new AggregateHydrator();
@@ -53,6 +58,9 @@ class ContactHydratorFactory
         );
         $this->hydrator->add(
             new ContactAddressHydrator($addressModel)
+        );
+        $this->hydrator->add(
+            new ContactImageHydrator($imageModel)
         );
 
         return $this->hydrator;
