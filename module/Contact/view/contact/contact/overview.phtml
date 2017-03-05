@@ -1,0 +1,39 @@
+<?php $this->headTitle($this->translate('Overview of contacts')) ?>
+
+<div class="container">
+
+    <div class="row">
+        <h1 class="h1"><?php echo $this->translate('Overview of contacts') ?></h1>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email address</th>
+                <th>Country</th>
+                <th>Add</th>
+            </tr>
+
+            <?php foreach ($this->contacts as $contact): ?>
+
+                <tr>
+                    <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
+                    <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        Edit |
+                        Delete
+                    </td>
+                </tr>
+
+            <?php endforeach ?>
+        </table>
+
+        <br>
+        <?php echo $this->paginationControl($this->contacts, 'Sliding', 'paginator-slide', []); ?>
+    </div>
+
+</div>

@@ -57,6 +57,7 @@ return [
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'paginator-slide' => __DIR__ . '/../view/layout/slidePaginator.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
