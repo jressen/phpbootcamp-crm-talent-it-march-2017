@@ -6,97 +6,34 @@ use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 
 return [
-    'service_manager' => [
-        'aliases' => [
-            Model\ContactRepositoryInterface::class => Model\ContactRepository::class,
-            Model\ContactCommandInterface::class => Model\ContactCommand::class,
-            Model\ContactEmailRepositoryInterface::class => Model\ContactEmailRepository::class,
-            Model\ContactEmailCommandInterface::class => Model\ContactEmailCommand::class,
-            Model\ContactAddressRepositoryInterface::class => Model\ContactAddressRepository::class,
-            Model\ContactAddressCommandInterface::class => Model\ContactAddressCommand::class,
-            Model\ContactImageModelInterface::class => Model\ContactImageModel::class,
-            Model\CountryRepositoryInterface::class => Model\CountryRepository::class,
-        ],
-        'factories' => [
-            Model\ContactRepository::class => Model\Factory\ContactRepositoryFactory::class,
-            Model\ContactCommand::class => Model\Factory\ContactlCommandFactory::class,
-            Model\ContactEmailRepository::class => Model\Factory\ContactEmailRepositoryFactory::class,
-            Model\ContactEmailCommand::class => Model\Factory\ContactEmailCommandFactory::class,
-            Model\ContactAddressRepository::class => Model\Factory\ContactAddressRepositoryFactory::class,
-            Model\ContactAddressCommand::class => Model\Factory\ContactAddressCommandFactory::class,
-            Model\ContactImageModel::class => Model\Factory\ContactImageModelFactory::class,
-            Model\CountryRepository::class => Model\Factory\CountryRepositoryFactory::class,
-            Entity\ContactEntityHydrator::class => Entity\Factory\ContactEntityHydratorFactory::class,
-        ],
-    ],
     'controllers' => [
         'factories' => [
             Controller\ContactController::class => Controller\Factory\ContactControllerFactory::class,
-            Controller\ContactWriteController::class => Controller\Factory\ContactWriteControllerFactory::class,
         ],
     ],
     'router' => [
         'routes' => [
             'contact' => [
-                'type' => Segment::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route' => '/contact[/page/:page]',
+                    'route' => '/contact',
                     'defaults' => [
                         'controller' => Controller\ContactController::class,
                         'action' => 'index',
-                        'page' => 1,
-                    ],
-                    'constraints' => [
-                        'page' => '\d+',
                     ],
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'detail' => [
+                    'overview' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/detail/:id',
+                            'route' => '/overview[/page/:page]',
                             'defaults' => [
-                                'action' => 'detail',
+                                'action' => 'overview',
+                                'page' => 1,
                             ],
                             'constraints' => [
-                                'id' => '\d+',
-                            ],
-                        ],
-                    ],
-                    'add' => [
-                        'type' => Literal::class,
-                        'options' => [
-                            'route' => '/add',
-                            'defaults' => [
-                                'controller' => Controller\ContactWriteController::class,
-                                'action' => 'add',
-                            ],
-                        ],
-                    ],
-                    'edit' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/edit/:id',
-                            'defaults' => [
-                                'controller' => Controller\ContactWriteController::class,
-                                'action' => 'edit',
-                            ],
-                            'constraints' => [
-                                'id' => '\d+',
-                            ],
-                        ],
-                    ],
-                    'delete' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/delete/:id',
-                            'defaults' => [
-                                'controller' => Controller\ContactWriteController::class,
-                                'action' => 'delete',
-                            ],
-                            'constraints' => [
-                                'id' => '\d+',
+                                'page' => '\d+',
                             ],
                         ],
                     ],
@@ -108,8 +45,24 @@ return [
         'template_path_stack' => [
             'contact' => __DIR__ . '/../view',
         ],
-        'template_map' => [
-            'paginator-slide' => __DIR__ . '/../view/layout/slidePaginator.phtml',
+    ],
+    'service_manager' => [
+        'invokables' => [
+            Entity\Factory\ContactHydratorFactory::class => Entity\Factory\ContactHydratorFactory::class,
+        ],
+        'aliases' => [
+            Model\ContactModelInterface::class => Model\ContactModel::class,
+            Model\EmailAddressModelInterface::class => Model\EmailAddressModel::class,
+            Model\AddressModelInterface::class => Model\AddressModel::class,
+            Model\CountryModelInterface::class => Model\CountryModel::class,
+            Model\ImageModelInterface::class => Model\ImageModel::class,
+        ],
+        'factories' => [
+            Model\ContactModel::class => Model\Factory\ContactModelFactory::class,
+            Model\EmailAddressModel::class => Model\Factory\EmailAddressModelFactory::class,
+            Model\AddressModel::class => Model\Factory\AddressModelFactory::class,
+            Model\CountryModel::class => Model\Factory\CountryModelFactory::class,
+            Model\ImageModel::class => Model\Factory\ImageModelFactory::class,
         ],
     ],
 ];

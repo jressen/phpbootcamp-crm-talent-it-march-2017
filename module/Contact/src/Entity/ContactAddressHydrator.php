@@ -3,26 +3,35 @@
 namespace Contact\Entity;
 
 
+use Contact\Model\AddressModelInterface;
 use Zend\Hydrator\HydratorInterface;
 
 class ContactAddressHydrator implements HydratorInterface
 {
     /**
+     * @var AddressModelInterface
+     */
+    protected $addressModel;
+
+    /**
+     * ContactAddressHydrator constructor.
+     *
+     * @param AddressModelInterface $addressModel
+     */
+    public function __construct(AddressModelInterface $addressModel)
+    {
+        $this->addressModel = $addressModel;
+    }
+
+    /**
      * @inheritDoc
      */
     public function extract($object)
     {
-        return [
-            'contact_address_id' => $object->getContactAddressId(),
-            'member_id' => $object->getMemberId(),
-            'contact_id' => $object->getContactId(),
-            'street_1' => $object->getStreet1(),
-            'street_2' => $object->getStreet2(),
-            'postcode' => $object->getPostcode(),
-            'city' => $object->getCity(),
-            'province' => $object->getProvince(),
-            'country_code' => $object->getCountryCode(),
-        ];
+        if (!$object instanceof ContactInterface) {
+            return [];
+        }
+        return [];
     }
 
     /**
@@ -30,18 +39,22 @@ class ContactAddressHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        $class = get_class($object);
-        return new $class(
-            $data['contact_address_id'],
-            $data['member_id'],
-            $data['contact_id'],
-            $data['street_1'],
-            $data['street_2'],
-            $data['postcode'],
-            $data['city'],
-            $data['province'],
-            $data['country_code']
-        );
+        if (!$object instanceof ContactInterface) {
+            return $object;
+        }
+
+        if ($this->propertyAvailable('contact_id', $data)) {
+            $object->setAddresses(
+                $this->addressModel->fetchAllAddresses($data['contact_id'])
+            );
+        }
+
+        return $object;
+    }
+
+    private function propertyAvailable($property, $data)
+    {
+        return (array_key_exists($property, $data) && !empty($data[$property]));
     }
 
 }

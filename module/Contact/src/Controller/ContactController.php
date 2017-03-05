@@ -3,96 +3,55 @@
 namespace Contact\Controller;
 
 
-use Contact\Form\ContactForm;
-use Contact\Model\Contact;
-use Contact\Model\ContactAddressRepositoryInterface;
-use Contact\Model\ContactEmailRepositoryInterface;
-use Contact\Model\ContactRepositoryInterface;
+use Contact\Model\ContactModelInterface;
+use Contact\Model\EmailAddressModelInterface;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Paginator\Paginator;
-use Zend\Paginator\PaginatorIterator;
 use Zend\View\Model\ViewModel;
 
 class ContactController extends AbstractActionController
 {
     /**
-     * @var ContactRepositoryInterface
+     * @var ContactModelInterface
      */
-    protected $contactRepository;
+    private $contactModel;
 
     /**
-     * @var ContactEmailRepositoryInterface
+     * @var EmailAddressModelInterface
      */
-    protected $contactEmailRespository;
-
-    /**
-     * @var ContactAddressRepositoryInterface
-     */
-    protected $contactAddressRepository;
+    private $emailAddressModel;
 
     /**
      * ContactController constructor.
      *
-     * @param ContactRepositoryInterface $contactRepository
-     * @param ContactEmailRepositoryInterface $contactEmailRepository
-     * @param ContactAddressRepositoryInterface $contactAddressRepository
+     * @param ContactModelInterface $contactModel
+     * @param EmailAddressModelInterface $emailAddressModel
      */
     public function __construct(
-        ContactRepositoryInterface $contactRepository,
-        ContactEmailRepositoryInterface $contactEmailRepository,
-        ContactAddressRepositoryInterface $contactAddressRepository
+        ContactModelInterface $contactModel,
+        EmailAddressModelInterface $emailAddressModel
     )
     {
-        $this->contactRepository = $contactRepository;
-        $this->contactEmailRespository = $contactEmailRepository;
-        $this->contactAddressRepository = $contactAddressRepository;
+        $this->contactModel = $contactModel;
+        $this->emailAddressModel = $emailAddressModel;
     }
 
     public function indexAction()
     {
-        $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
-        $contacts = $this->contactRepository->findAllContacts();
-        $contacts->setCurrentPageNumber($page)
-            ->setItemCountPerPage(15)
-            ->setPageRange(7);
-
-        return new ViewModel([
-            'contacts' => $contacts,
-        ]);
+        return $this->redirect()->toRoute('contact/overview', ['page' => 1]);
     }
 
-    public function detailAction()
+    public function overviewAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $page = $this->params()->fromRoute('page', 1);
+        $memberId = $this->identity()->getMemberId();
 
-        if (0 === $id) {
-            return $this->redirect()->toRoute('contact', ['action' => 'add']);
-        }
+        $contacts = $this->contactModel->fetchAllContacts($memberId);
 
-        try {
-            $contact = $this->contactRepository->findContact($id);
-        } catch (\Exception $e) {
-            return $this->redirect()->toRoute('contact', ['action' => 'index']);
-        }
+        $viewModel = [
+            'contacts' => $contacts,
+            'page' => $page,
+        ];
 
-        $contactEmailList = [];
-        try {
-            $contactEmailList = $this->contactEmailRespository->findAllContactEmails($id);
-        } catch (\Exception $exception) {
-            // No email accounts linked to this contact
-        }
-
-        $contactAddressList = [];
-        try {
-            $contactAddressList = $this->contactAddressRepository->getAllAddresses($id);
-        } catch (\Exception $exception) {
-            // No address details linked to this contact
-        }
-
-        return new ViewModel([
-            'contact' => $contact,
-            'contactEmails' => $contactEmailList,
-            'contactAddresses' => $contactAddressList,
-        ]);
+        return new ViewModel($viewModel);
     }
 }

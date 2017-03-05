@@ -3,40 +3,47 @@
 namespace Contact\Entity;
 
 
-use Zend\Filter\StringTrim;
-use Zend\Filter\StripTags;
-use Zend\Filter\ToInt;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
-use Zend\Validator\StringLength;
-
-class Contact implements ContactInterface, InputFilterAwareInterface
+class Contact implements ContactInterface
 {
     /**
      * @var int
      */
-    private $contactId;
+    protected $contactId;
 
     /**
      * @var int
      */
-    private $memberId;
+    protected $memberId;
 
     /**
      * @var string
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @var string
      */
-    private $lastName;
+    protected $lastName;
 
     /**
-     * @var InputFilterAwareInterface
+     * @var array
      */
-    private $inputFilter;
+    protected $emailAddresses = [];
+
+    /**
+     * @var array
+     */
+    protected $addresses = [];
+
+    /**
+     * @var array
+     */
+    protected $phoneNumbers = [];
+
+    /**
+     * @var array
+     */
+    protected $images = [];
 
     /**
      * Contact constructor.
@@ -45,7 +52,7 @@ class Contact implements ContactInterface, InputFilterAwareInterface
      * @param string $firstName
      * @param string $lastName
      */
-    public function __construct($contactId, $memberId, $firstName, $lastName)
+    public function __construct($contactId = 0, $memberId = 0, $firstName = '', $lastName = '')
     {
         $this->contactId = $contactId;
         $this->memberId = $memberId;
@@ -62,11 +69,31 @@ class Contact implements ContactInterface, InputFilterAwareInterface
     }
 
     /**
+     * @param int $contactId
+     * @return Contact
+     */
+    public function setContactId($contactId)
+    {
+        $this->contactId = $contactId;
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getMemberId()
     {
         return $this->memberId;
+    }
+
+    /**
+     * @param int $memberId
+     * @return Contact
+     */
+    public function setMemberId($memberId)
+    {
+        $this->memberId = $memberId;
+        return $this;
     }
 
     /**
@@ -78,6 +105,16 @@ class Contact implements ContactInterface, InputFilterAwareInterface
     }
 
     /**
+     * @param string $firstName
+     * @return Contact
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLastName()
@@ -85,77 +122,68 @@ class Contact implements ContactInterface, InputFilterAwareInterface
         return $this->lastName;
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    /**
+     * @param string $lastName
+     * @return Contact
+     */
+    public function setLastName($lastName)
     {
-        throw new \DomainException(sprintf(
-            '%s does not allow injection of an alternate input filter',
-            __CLASS__
-        ));
+        $this->lastName = $lastName;
+        return $this;
     }
 
-    public function getInputFilter()
+    /**
+     * @return array
+     */
+    public function getEmailAddresses()
     {
-        if ($this->inputFilter) {
-            return $this->inputFilter;
-        }
-
-        $inputFilter = new InputFilter();
-
-        $inputFilter->add([
-            'name' => 'contact_id',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
-            ],
-        ]);
-
-        $inputFilter->add([
-            'name' => 'member_id',
-            'required' => true,
-            'filters' => [
-                ['name' => ToInt::class],
-            ],
-        ]);
-
-        $inputFilter->add([
-            'name' => 'first_name',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-            ],
-            'validators' => [
-                [
-                    'name' => StringLength::class,
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min' => 1,
-                        'max' => 100,
-                    ],
-                ],
-            ],
-        ]);
-
-        $inputFilter->add([
-            'name' => 'last_name',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-            ],
-            'validators' => [
-                [
-                    'name' => StringLength::class,
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min' => 1,
-                        'max' => 100,
-                    ],
-                ],
-            ],
-        ]);
-
-        $this->inputFilter = $inputFilter;
-        return $this->inputFilter;
+        return $this->emailAddresses;
     }
+
+    /**
+     * @param array $emailAddresses
+     * @return Contact
+     */
+    public function setEmailAddresses($emailAddresses)
+    {
+        $this->emailAddresses = $emailAddresses;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * @param array $addresses
+     * @return Contact
+     */
+    public function setAddresses($addresses)
+    {
+        $this->addresses = $addresses;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param array $images
+     * @return Contact
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+        return $this;
+    }
+
 }

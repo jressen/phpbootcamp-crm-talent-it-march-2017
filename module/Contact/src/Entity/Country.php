@@ -18,7 +18,7 @@ class Country implements CountryInterface
     /**
      * @var string
      */
-    protected $niceName;
+    protected $nicename;
 
     /**
      * @var string
@@ -28,30 +28,30 @@ class Country implements CountryInterface
     /**
      * @var int
      */
-    protected $numCode;
+    protected $numcode;
 
     /**
      * @var int
      */
-    protected $phoneCode;
+    protected $phonecode;
 
     /**
      * Country constructor.
      * @param string $iso
      * @param string $name
-     * @param string $niceName
+     * @param string $nicename
      * @param string $iso3
-     * @param int $numCode
-     * @param int $phoneCode
+     * @param int $numcode
+     * @param int $phonecode
      */
-    public function __construct($iso = '', $name = '', $niceName = '', $iso3 = '', $numCode = 0, $phoneCode = 0)
+    public function __construct($iso = '', $name = '', $nicename = '', $iso3 = '', $numcode = 0, $phonecode = 0)
     {
         $this->iso = $iso;
         $this->name = $name;
-        $this->niceName = $niceName;
+        $this->nicename = $nicename;
         $this->iso3 = $iso3;
-        $this->numCode = $numCode;
-        $this->phoneCode = $phoneCode;
+        $this->numcode = $numcode;
+        $this->phonecode = $phonecode;
     }
 
     /**
@@ -63,6 +63,16 @@ class Country implements CountryInterface
     }
 
     /**
+     * @param string $iso
+     * @return Country
+     */
+    public function setIso($iso)
+    {
+        $this->iso = $iso;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -71,11 +81,31 @@ class Country implements CountryInterface
     }
 
     /**
+     * @param string $name
+     * @return Country
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
      * @return string
      */
-    public function getNiceName()
+    public function getNicename()
     {
-        return $this->niceName;
+        return $this->nicename;
+    }
+
+    /**
+     * @param string $nicename
+     * @return Country
+     */
+    public function setNicename($nicename)
+    {
+        $this->nicename = $nicename;
+        return $this;
     }
 
     /**
@@ -87,18 +117,49 @@ class Country implements CountryInterface
     }
 
     /**
-     * @return int
+     * @param string $iso3
+     * @return Country
      */
-    public function getNumCode()
+    public function setIso3($iso3)
     {
-        return $this->numCode;
+        $this->iso3 = $iso3;
+        return $this;
     }
 
     /**
      * @return int
      */
-    public function getPhoneCode()
+    public function getNumcode()
     {
-        return $this->phoneCode;
+        return $this->numcode;
     }
+
+    /**
+     * @param int $numcode
+     * @return Country
+     */
+    public function setNumcode($numcode)
+    {
+        $this->numcode = $numcode;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhonecode()
+    {
+        return $this->phonecode;
+    }
+
+    /**
+     * @param int $phonecode
+     * @return Country
+     */
+    public function setPhonecode($phonecode)
+    {
+        $this->phonecode = $phonecode;
+        return $this;
+    }
+
 }

@@ -18,7 +18,7 @@ interface CountryInterface
     /**
      * @return string
      */
-    public function getNiceName();
+    public function getNicename();
 
     /**
      * @return string
@@ -28,7 +28,7 @@ interface CountryInterface
     /**
      * @return int
      */
-    public function getNumCode();
+    public function getNumcode();
 
     /**
      * @return int

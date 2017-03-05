@@ -3,22 +3,31 @@
 namespace Contact\Entity;
 
 
+use Contact\Model\ImageModelInterface;
 use Zend\Hydrator\HydratorInterface;
 
 class ContactImageHydrator implements HydratorInterface
 {
     /**
+     * @var ImageModelInterface
+     */
+    protected $imageModel;
+
+    /**
+     * ContactImageHydrator constructor.
+     * @param ImageModelInterface $imageModel
+     */
+    public function __construct(ImageModelInterface $imageModel)
+    {
+        $this->imageModel = $imageModel;
+    }
+
+    /**
      * @inheritDoc
      */
     public function extract($object)
     {
-        return [
-            'contact_image_id' => $object->getContactImageId(),
-            'member_id' => $object->getMemberId(),
-            'contact_id' => $object->getContactId(),
-            'image_link' => $object->getImageLink(),
-            'image_active' => $object->isImageActive() ? 1 : 0,
-        ];
+        return [];
     }
 
     /**
@@ -26,15 +35,21 @@ class ContactImageHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        /** @var ContactImage $class */
-        $class = get_class($object);
-        return new $class(
-            $data['contact_image_id'],
-            $data['member_id'],
-            $data['contact_id'],
-            $data['image_link'],
-            (bool) $data['image_active']
-        );
+        if (!$object instanceof ContactInterface) {
+            return $object;
+        }
+
+        if ($this->propertyAvailable('contact_id', $data)) {
+            $object->setImages(
+                $this->imageModel->fetchAllImages($data['contact_id'])
+            );
+        }
+
+        return $object;
     }
 
+    private function propertyAvailable($property, $data)
+    {
+        return (array_key_exists($property, $data) && !empty($data[$property]));
+    }
 }

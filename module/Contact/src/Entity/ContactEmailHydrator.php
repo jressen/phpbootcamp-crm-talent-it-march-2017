@@ -3,23 +3,35 @@
 namespace Contact\Entity;
 
 
+use Contact\Model\EmailAddressModelInterface;
 use Zend\Hydrator\HydratorInterface;
 
 class ContactEmailHydrator implements HydratorInterface
 {
     /**
+     * @var EmailAddressModelInterface
+     */
+    protected $emailAddressModel;
+
+    /**
+     * ContactEmailHydrator constructor.
+     *
+     * @param EmailAddressModelInterface $emailAddressModel
+     */
+    public function __construct(EmailAddressModelInterface $emailAddressModel)
+    {
+        $this->emailAddressModel = $emailAddressModel;
+    }
+
+    /**
      * @inheritDoc
      */
     public function extract($object)
     {
-        /** @var ContactEmail $object */
-        return [
-            'contact_email_id' => $object->getContactEmailId(),
-            'member_id' => $object->getMemberId(),
-            'contact_id' => $object->getContactId(),
-            'email_address' => $object->getEmailAddress(),
-            'primary' => $object->isPrimary(),
-        ];
+        if (!$object instanceof ContactInterface) {
+            return [];
+        }
+        return [];
     }
 
     /**
@@ -27,15 +39,21 @@ class ContactEmailHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        /** @var ContactEmail $class */
-        $class = get_class($object);
-        return new $class(
-            $data['contact_email_id'],
-            $data['member_id'],
-            $data['contact_id'],
-            $data['email_address'],
-            (bool) $data['primary']
-        );
+        if (!$object instanceof ContactInterface) {
+            return $object;
+        }
+
+        if ($this->propertyAvailable('contact_id', $data)) {
+            $object->setEmailAddresses(
+                $this->emailAddressModel->fetchAllEmailAddresses($data['contact_id'])
+            );
+        }
+
+        return $object;
     }
 
+    private function propertyAvailable($property, $data)
+    {
+        return (array_key_exists($property, $data) && !empty($data[$property]));
+    }
 }

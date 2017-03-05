@@ -6,22 +6,22 @@ namespace Contact\Entity;
 use Contact\Model\EmailAddressModelInterface;
 use Zend\Hydrator\HydratorInterface;
 
-class ContactHydrator implements HydratorInterface
+class EmailAddressHydrator implements HydratorInterface
 {
     /**
      * @inheritDoc
      */
     public function extract($object)
     {
-        if (!$object instanceof ContactInterface) {
+        if (!$object instanceof EmailAddressInterface) {
             return [];
         }
-
         return [
             'member_id' => $object->getMemberId(),
             'contact_id' => $object->getContactId(),
-            'first_name' => $object->getFirstName(),
-            'last_name' => $object->getLastName(),
+            'contact_email_id' => $object->getContactEmailId(),
+            'email_address' => $object->getEmailAddress(),
+            'primary' => (int) $object->isPrimary(),
         ];
     }
 
@@ -30,7 +30,7 @@ class ContactHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        if (!$object instanceof ContactInterface) {
+        if (!$object instanceof EmailAddressInterface) {
             return $object;
         }
 
@@ -42,12 +42,17 @@ class ContactHydrator implements HydratorInterface
             $object->setContactId($data['contact_id']);
         }
 
-        if ($this->propertyAvailable('first_name', $data)) {
-            $object->setFirstName($data['first_name']);
+        if ($this->propertyAvailable('contact_email_id', $data)) {
+            $object->setContactEmailId($data['contact_email_id']);
         }
 
-        if ($this->propertyAvailable('last_name', $data)) {
-            $object->setLastName($data['last_name']);
+        if ($this->propertyAvailable('email_address', $data)) {
+            $object->setEmailAddress($data['email_address']);
+        }
+
+        if ($this->propertyAvailable('primary', $data)) {
+            $primary = (1 === (int) $data['primary']);
+            $object->setPrimary($primary);
         }
 
         return $object;

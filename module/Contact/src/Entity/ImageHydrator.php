@@ -3,25 +3,25 @@
 namespace Contact\Entity;
 
 
-use Contact\Model\EmailAddressModelInterface;
 use Zend\Hydrator\HydratorInterface;
 
-class ContactHydrator implements HydratorInterface
+class ImageHydrator implements HydratorInterface
 {
     /**
      * @inheritDoc
      */
     public function extract($object)
     {
-        if (!$object instanceof ContactInterface) {
+        if (!$object instanceof ImageInterface) {
             return [];
         }
 
         return [
+            'contact_image_id' => $object->getContactImageId(),
             'member_id' => $object->getMemberId(),
             'contact_id' => $object->getContactId(),
-            'first_name' => $object->getFirstName(),
-            'last_name' => $object->getLastName(),
+            'image_link' => $object->getImageLink(),
+            'image_active' => $object->isImageActive() ? 1 : 0,
         ];
     }
 
@@ -30,8 +30,12 @@ class ContactHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        if (!$object instanceof ContactInterface) {
+        if (!$object instanceof ImageInterface) {
             return $object;
+        }
+
+        if ($this->propertyAvailable('contact_image_id', $data)) {
+            $object->setContactImageId($data['contact_image_id']);
         }
 
         if ($this->propertyAvailable('member_id', $data)) {
@@ -42,12 +46,12 @@ class ContactHydrator implements HydratorInterface
             $object->setContactId($data['contact_id']);
         }
 
-        if ($this->propertyAvailable('first_name', $data)) {
-            $object->setFirstName($data['first_name']);
+        if ($this->propertyAvailable('image_link', $data)) {
+            $object->setImageLink($data['image_link']);
         }
 
-        if ($this->propertyAvailable('last_name', $data)) {
-            $object->setLastName($data['last_name']);
+        if ($this->propertyAvailable('image_active', $data)) {
+            $object->setImageActive((1 === (int) $data['image_active']));
         }
 
         return $object;
@@ -57,5 +61,4 @@ class ContactHydrator implements HydratorInterface
     {
         return (array_key_exists($property, $data) && !empty($data[$property]));
     }
-
 }

@@ -1,0 +1,59 @@
+<?php $this->headTitle($this->translate('Overview of contacts')) ?>
+
+<div class="container">
+
+    <div class="row">
+        <h1 class="h1"><?php echo $this->translate('Overview of contacts') ?></h1>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>&nbsp;</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email address</th>
+                <th>Country</th>
+                <th>Add</th>
+            </tr>
+
+            <?php foreach ($this->contacts as $contact): ?>
+
+                <tr>
+                    <td>
+                        <?php if (null !== $contact->getImages()): ?>
+                        <img src="<?php echo $contact->getImages()->current()->getImageLink() ?>" width="24" height="24">
+                        <?php endif ?>
+                    </td>
+                    <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
+                    <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
+                    <td>
+                        <ul class="list-unstyled">
+                        <?php foreach ($contact->getEmailAddresses() as $emailAddress): ?>
+                            <li><?php echo $emailAddress->getEmailAddress() ?></li>
+                        <?php endforeach ?>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <?php foreach ($contact->getAddresses() as $address): ?>
+                                <?php if (null !== $address->getCountry()): ?>
+                                    <li><?php echo $this->escapeHtml($address->getCountry()->getNiceName()) ?></li>
+                                <?php endif ?>
+                            <?php endforeach ?>
+                        </ul>
+                    </td>
+                    <td>
+                        Edit |
+                        Delete
+                    </td>
+                </tr>
+
+            <?php endforeach ?>
+        </table>
+
+        <br>
+        <?php echo $this->paginationControl($this->contacts, 'Sliding', 'paginator-slide', []); ?>
+    </div>
+
+</div>
