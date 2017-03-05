@@ -47,11 +47,16 @@ return [
         ],
     ],
     'service_manager' => [
+        'invokables' => [
+            Entity\Factory\ContactHydratorFactory::class => Entity\Factory\ContactHydratorFactory::class,
+        ],
         'aliases' => [
             Model\ContactModelInterface::class => Model\ContactModel::class,
+            Model\EmailAddressModelInterface::class => Model\EmailAddressModel::class,
         ],
         'factories' => [
             Model\ContactModel::class => Model\Factory\ContactModelFactory::class,
+            Model\EmailAddressModel::class => Model\Factory\EmailAddressModelFactory::class,
         ],
     ],
 ];

@@ -21,7 +21,13 @@
                 <tr>
                     <td><?php echo $this->escapeHtml($contact->getFirstName()) ?></td>
                     <td><?php echo $this->escapeHtml($contact->getLastName()) ?></td>
-                    <td>&nbsp;</td>
+                    <td>
+                        <ul class="list-unstyled">
+                        <?php foreach ($contact->getEmailAddresses() as $emailAddress): ?>
+                            <li><?php echo $emailAddress->getEmailAddress() ?></li>
+                        <?php endforeach ?>
+                        </ul>
+                    </td>
                     <td>&nbsp;</td>
                     <td>
                         Edit |

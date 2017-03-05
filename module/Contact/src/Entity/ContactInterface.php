@@ -3,22 +3,8 @@
 namespace Contact\Entity;
 
 
-interface ContactInterface
+interface ContactInterface extends ContactAwareInterface
 {
-    /**
-     * Retrieve the sequence ID from this Contact
-     *
-     * @return int
-     */
-    public function getContactId();
-
-    /**
-     * Retrieve the member sequence ID from this Contact
-     *
-     * @return int
-     */
-    public function getMemberId();
-
     /**
      * Retrieve the first name from this Contact
      *
@@ -32,4 +18,11 @@ interface ContactInterface
      * @return string
      */
     public function getLastName();
+
+    /**
+     * Retrieve all linked email addresses from this Contact
+     *
+     * @return EmailAddressInterface[]
+     */
+    public function getEmailAddresses();
 }

@@ -44,7 +44,6 @@ class ContactModel implements ContactModelInterface
         $this->contactPrototype = $contactPrototype;
     }
 
-
     /**
      * @inheritdoc
      */

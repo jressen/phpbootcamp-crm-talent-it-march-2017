@@ -4,6 +4,7 @@ namespace Contact\Controller;
 
 
 use Contact\Model\ContactModelInterface;
+use Contact\Model\EmailAddressModelInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -15,13 +16,23 @@ class ContactController extends AbstractActionController
     private $contactModel;
 
     /**
+     * @var EmailAddressModelInterface
+     */
+    private $emailAddressModel;
+
+    /**
      * ContactController constructor.
      *
      * @param ContactModelInterface $contactModel
+     * @param EmailAddressModelInterface $emailAddressModel
      */
-    public function __construct(ContactModelInterface $contactModel)
+    public function __construct(
+        ContactModelInterface $contactModel,
+        EmailAddressModelInterface $emailAddressModel
+    )
     {
         $this->contactModel = $contactModel;
+        $this->emailAddressModel = $emailAddressModel;
     }
 
     public function indexAction()
@@ -36,9 +47,11 @@ class ContactController extends AbstractActionController
 
         $contacts = $this->contactModel->fetchAllContacts($memberId);
 
-        return new ViewModel([
+        $viewModel = [
             'contacts' => $contacts,
             'page' => $page,
-        ]);
+        ];
+
+        return new ViewModel($viewModel);
     }
 }
