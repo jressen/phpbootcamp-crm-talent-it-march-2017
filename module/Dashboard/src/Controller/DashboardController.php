@@ -111,7 +111,7 @@ class DashboardController extends AbstractActionController
         $memberId = $this->authService->getIdentity()->getMemberId();
 
         $contact = $this->contactModel->findContact($memberId, $contactId);
-        $countries = $this->countryModel->getAllCountries();
+        $countries = $this->countryModel->fetchAllCountries();
 
         $viewModel = new ViewModel([
             'contact' => $contact,

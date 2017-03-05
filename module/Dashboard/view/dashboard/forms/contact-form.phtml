@@ -49,7 +49,7 @@ $countryList = array_combine(
 /** @var \Zend\Form\Element\Select $country */
 $country = $contactAddressFieldset->get('country_code');
 $country->setValueOptions($countryList);
-$country->setValue($this->contact->getAddresses()->current()->getCountryCode());
+$country->setValue($this->contact->getAddresses()->current()->getCountry()->getIso());
 
 $csrf = $form->get('csrf');
 
