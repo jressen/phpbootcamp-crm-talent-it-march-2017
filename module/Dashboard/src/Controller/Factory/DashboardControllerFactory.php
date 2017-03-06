@@ -3,12 +3,11 @@
 namespace Dashboard\Controller\Factory;
 
 
-use Contact\Model\ContactEmailRepositoryInterface;
+use Contact\Model\AddressModelInterface;
 use Contact\Model\ContactModelInterface;
-use Contact\Model\ContactRepositoryInterface;
 use Contact\Model\CountryModelInterface;
-use Contact\Model\CountryRepositoryInterface;
 use Contact\Model\EmailAddressModelInterface;
+use Contact\Service\ContactFormServiceInterface;
 use Dashboard\Controller\DashboardController;
 use Dashboard\Form\ContactForm;
 use Interop\Container\ContainerInterface;
@@ -29,7 +28,9 @@ class DashboardControllerFactory implements FactoryInterface
             $container->get(AuthenticationService::class),
             $container->get(ContactModelInterface::class),
             $container->get(EmailAddressModelInterface::class),
+            $container->get(AddressModelInterface::class),
             $container->get(CountryModelInterface::class),
+            $container->get(ContactFormServiceInterface::class),
             $container->get('FormElementManager')->get(ContactForm::class)
         );
     }

@@ -21,10 +21,11 @@ interface AddressModelInterface
     public function findAddressById($contactId, $contactAddressId);
 
     /**
+     * @param int $contactId
      * @param AddressInterface $address
      * @return AddressInterface
      */
-    public function saveAddress(AddressInterface $address);
+    public function saveAddress($contactId, AddressInterface $address);
 
     /**
      * @param AddressInterface $address

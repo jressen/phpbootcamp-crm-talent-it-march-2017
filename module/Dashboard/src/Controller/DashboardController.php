@@ -3,9 +3,12 @@
 namespace Dashboard\Controller;
 
 
+use Contact\Entity\ContactInterface;
+use Contact\Model\AddressModelInterface;
 use Contact\Model\EmailAddressModelInterface;
 use Contact\Model\ContactModelInterface;
 use Contact\Model\CountryModelInterface;
+use Contact\Service\ContactFormServiceInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -29,9 +32,19 @@ class DashboardController extends AbstractActionController
     protected $contactEmailModel;
 
     /**
+     * @var AddressModelInterface
+     */
+    protected $contactAddressModel;
+
+    /**
      * @var CountryModelInterface
      */
     protected $countryModel;
+
+    /**
+     * @var ContactFormServiceInterface
+     */
+    protected $contactFormService;
 
     /**
      * @var FormInterface
@@ -43,21 +56,27 @@ class DashboardController extends AbstractActionController
      * @param AuthenticationService $authService
      * @param ContactModelInterface $contactModel
      * @param EmailAddressModelInterface $contactEmailModel
+     * @param AddressModelInterface $addressModel
      * @param CountryModelInterface $countryModel
+     * @param ContactFormServiceInterface $contactFormService
      * @param FormInterface $contactForm
      */
     public function __construct(
         AuthenticationService $authService,
         ContactModelInterface $contactModel,
         EmailAddressModelInterface $contactEmailModel,
+        AddressModelInterface $addressModel,
         CountryModelInterface $countryModel,
+        ContactFormServiceInterface $contactFormService,
         FormInterface $contactForm
     )
     {
         $this->authService = $authService;
         $this->contactModel = $contactModel;
         $this->contactEmailModel = $contactEmailModel;
+        $this->contactAddressModel = $addressModel;
         $this->countryModel = $countryModel;
+        $this->contactFormService = $contactFormService;
         $this->contactForm = $contactForm;
     }
 
@@ -126,7 +145,23 @@ class DashboardController extends AbstractActionController
         }
 
         $data = $this->request->getPost();
-        \Zend\Debug\Debug::dump($data);
-        die;
+        $this->contactForm->setData($data);
+        if (!$this->contactForm->isValid()) {
+            return $viewModel;
+        }
+
+        $validData = $this->contactForm->getData();
+        if (!$validData instanceof ContactInterface) {
+            return $viewModel;
+        }
+        $this->contactModel->saveContact($memberId, $validData);
+        foreach ($validData->getEmailAddresses() as $emailAddress) {
+            $this->contactEmailModel->saveEmailAddress($contactId, $emailAddress);
+        }
+        foreach ($validData->getAddresses() as $address) {
+            $this->contactAddressModel->saveAddress($contactId, $address);
+        }
+
+        return $this->redirect()->toRoute('dashboard/contacts/detail', ['contactId' => $contactId]);
     }
 }

@@ -2,7 +2,7 @@
 /** @var \Dashboard\Form\ContactForm $form */
 $form = $this->form;
 $form->setAttribute('method', 'post');
-$form->setAttribute('action', $this->url('dashboard/contacts/edit', ['contact_id' => $this->contactId]));
+$form->setAttribute('action', $this->url('dashboard/contacts/edit', ['contactId' => $this->contact->getContactId()]));
 $contactData = $form->getHydrator()->extract($this->contact);
 
 $contactEmailData = [];
@@ -50,7 +50,7 @@ $contactAddressCollection = $form->get('contact-address-collection');
     <?php echo $this->formElementErrors()->render($lastName, ['class' => 'help-block']) ?>
 </div>
 
-<?php echo $this->formCollection($contactEmailCollection, true) ?>
+<?php echo $this->formCollection($contactEmailCollection); ?>
 
 <?php echo $this->formCollection($contactAddressCollection, true) ?>
 

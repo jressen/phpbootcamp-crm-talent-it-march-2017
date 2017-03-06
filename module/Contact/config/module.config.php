@@ -63,6 +63,7 @@ return [
             Model\AddressModel::class => Model\Factory\AddressModelFactory::class,
             Model\CountryModel::class => Model\Factory\CountryModelFactory::class,
             Model\ImageModel::class => Model\Factory\ImageModelFactory::class,
+            Service\ContactFormServiceInterface::class => Service\Factory\ContactFormServiceFactory::class,
         ],
     ],
 ];
