@@ -1,148 +1,61 @@
 <?php
-/** @var \Zend\Form\Form $form */
+/** @var \Dashboard\Form\ContactForm $form */
 $form = $this->form;
+$form->setAttribute('method', 'post');
+$form->setAttribute('action', $this->url('dashboard/contacts/edit', ['contact_id' => $this->contactId]));
+$contactData = $form->getHydrator()->extract($this->contact);
+
+$contactEmailData = [];
+foreach ($this->contact->getEmailAddresses() as $emailAddress) {
+    $contactEmailData[] = $form->get('contact-email-collection')->getTargetElement()->getHydrator()->extract($emailAddress);
+}
+
+$contactAddressData = [];
+foreach ($this->contact->getAddresses() as $address) {
+    $contactAddressDataEntry = $form->get('contact-address-collection')->getTargetElement()->getHydrator()->extract($address);
+    $contactAddressDataEntry['country'] = $address->getCountry();
+    $contactAddressData[] = $contactAddressDataEntry;
+}
+
+$form->setData([
+    'contact-fieldset' => $contactData,
+    'contact-email-collection' => $contactEmailData,
+    'contact-address-collection' => $contactAddressData,
+]);
 $form->prepare();
 
+/** @var \Dashboard\Form\ContactFieldset $contactFieldset */
 $contactFieldset = $form->get('contact-fieldset');
-//$contactEmailFieldset = $form->get('contact-email-fieldset');
-/** @var \Dashboard\Form\ContactEmailCollection $contactEmailCollection */
 $contactEmailCollection = $form->get('contact-email-collection');
-
-/** @var \Dashboard\Form\ContactEmailFieldset $contactEmailFieldset */
-$contactEmailFieldset = $contactEmailCollection->getTemplateElement();
-
-//\Zend\Debug\Debug::dump($contactEmailCollection->getTargetElement());
-//die;
-$contactAddressFieldset = $form->get('contact-address-fieldset');
-
-// This provides a default CSS class and placeholder text for the title element:
-/** @var \Zend\Form\Element\Text $firstName */
-$firstName = $contactFieldset->get('first_name');
-$firstName->setAttribute('class', 'form-control');
-$firstName->setAttribute('placeholder', $this->translate('First name'));
-$firstName->setValue($this->contact->getFirstName());
-
-// This provides a default CSS class and placeholder text for the artist element:
-/** @var \Zend\Form\Element\Text $lastName */
-$lastName = $contactFieldset->get('last_name');
-$lastName->setAttribute('class', 'form-control');
-$lastName->setAttribute('placeholder', $this->translate('Last name'));
-$lastName->setValue($this->contact->getLastName());
-
-/** @var \Zend\Form\Element\Text $emailAddress */
-$emailAddress = $contactEmailFieldset->get('email_address');
-
-/** @var \Zend\Form\Element\Radio $emailPrimary */
-$emailPrimary = $contactEmailFieldset->get('primary');
-$emailPrimary->setValueOptions([0 => 'No', 1 => 'Yes']);
-
-$addressLine1 = $contactAddressFieldset->get('address_1');
-$addressLine2 = $contactAddressFieldset->get('address_2');
-$postcode = $contactAddressFieldset->get('postcode');
-$city = $contactAddressFieldset->get('city');
-
-$countryArray = $this->countries->toArray();
-$countryList = array_combine(
-    array_column($countryArray, 'iso'),
-    array_column($countryArray, 'nicename')
-);
-/** @var \Zend\Form\Element\Select $country */
-$country = $contactAddressFieldset->get('country_code');
-$country->setValueOptions($countryList);
-$country->setValue($this->contact->getAddresses()->current()->getCountry()->getIso());
-
-$csrf = $form->get('csrf');
-
-// This provides CSS classes for the submit button:
-$submit = $form->get('submit');
-$submit->setValue($this->submitLabel);
-$submit->setAttribute('class', 'btn btn-primary');
-
-$form->prepare();
-
-echo $this->form()->openTag($form);
+$contactAddressCollection = $form->get('contact-address-collection');
 ?>
 
-    <fieldset>
-        <legend><?php echo $this->translate('Primary contact details') ?></legend>
-        <div class="form-group">
-            <?php echo $this->formLabel($firstName, $this->translate('First name')) ?>
-            <?php echo $this->formElement($firstName) ?>
-            <?php echo $this->formElementErrors()->render($firstName, ['class' => 'help-block']) ?>
-        </div>
 
-        <div class="form-group">
-            <?php echo $this->formLabel($lastName, $this->translate('Last name')) ?>
-            <?php echo $this->formElement($lastName) ?>
-            <?php echo $this->formElementErrors()->render($lastName, ['class' => 'help-block']) ?>
-        </div>
-    </fieldset>
+<?php echo $this->form()->openTag($form) ?>
 
-    <fieldset>
-        <legend><?php echo $this->translate('Email details') ?></legend>
+<?php $contactId = $contactFieldset->get('contact_id'); ?>
+<?php echo $this->formElement($contactId) ?>
 
-        <?php foreach ($this->contact->getEmailAddresses() as $emailAddressEntity): ?>
-            <?php
-                $emailAddress->init();
-                $emailAddress->setValue($emailAddressEntity->getEmailAddress());
-                $emailPrimary->setValue(($emailAddressEntity->isPrimary() ? 1 : 0));
-            ?>
+<?php $firstName = $contactFieldset->get('first_name') ?>
+<div class="form-group">
+    <?php echo $this->formLabel($firstName, $this->translate('First name')) ?>
+    <?php echo $this->formElement($firstName) ?>
+    <?php echo $this->formElementErrors()->render($firstName, ['class' => 'help-block']) ?>
+</div>
 
-            <div class="form-group">
-                <?php echo $this->formLabel($emailAddress, $this->translate('Email Address')) ?>
-                <?php echo $this->formElement($emailAddress) ?>
-                <?php echo $this->formElementErrors()->render($emailAddress, ['class' => 'help-block']) ?>
-            </div>
+<?php $lastName = $contactFieldset->get('last_name') ?>
+<div class="form-group">
+    <?php echo $this->formLabel($lastName, $this->translate('Last name')) ?>
+    <?php echo $this->formElement($lastName) ?>
+    <?php echo $this->formElementErrors()->render($lastName, ['class' => 'help-block']) ?>
+</div>
 
-            <div class="form-group">
-                <?php echo $this->formLabel($emailPrimary, $this->translate('Primary')) ?>
-                <?php echo $this->formElement($emailPrimary) ?>
-                <?php echo $this->formElementErrors()->render($emailPrimary, ['class' => 'help-block']) ?>
-            </div>
+<?php echo $this->formCollection($contactEmailCollection, true) ?>
 
-        <?php endforeach ?>
-    </fieldset>
+<?php echo $this->formCollection($contactAddressCollection, true) ?>
 
-    <fieldset>
-        <legend><?php echo $this->translate('Address details') ?></legend>
+<?php echo $this->formRow($form->get('csrf')) ?>
 
-        <div class="form-group">
-            <?php echo $this->formLabel($addressLine1, sprintf($this->translate('Address line %d'), 1)) ?>
-            <?php echo $this->formElement($addressLine1) ?>
-            <?php echo $this->formElementErrors()->render($addressLine1, ['class' => 'help-block']) ?>
-        </div>
+<?php echo $this->formRow($form->get('submit')) ?>
 
-        <div class="form-group">
-            <?php echo $this->formLabel($addressLine2, sprintf($this->translate('Address line %d'), 2)) ?>
-            <?php echo $this->formElement($addressLine2) ?>
-            <?php echo $this->formElementErrors()->render($addressLine2, ['class' => 'help-block']) ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $this->formLabel($postcode, $this->translate('Postcode')) ?>
-            <?php echo $this->formElement($postcode) ?>
-            <?php echo $this->formElementErrors()->render($postcode, ['class' => 'help-block']) ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $this->formLabel($city, $this->translate('City')) ?>
-            <?php echo $this->formElement($city) ?>
-            <?php echo $this->formElementErrors()->render($city, ['class' => 'help-block']) ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $this->formLabel($country, $this->translate('Country')) ?>
-            <?php echo $this->formElement($country) ?>
-            <?php echo $this->formElementErrors()->render($country, ['class' => 'help-block']) ?>
-        </div>
-    </fieldset>
-    <div class="form-group">
-        <?php echo $this->formSubmit($submit); ?>
-        <a class="btn btn-default" href="<?php echo $this->url('contact') ?>"><?php echo $this->translate('Cancel') ?></a>
-    </div>
-
-<?php
-echo $this->formHidden($contactFieldset->get('contact_id'));
-echo $this->formHidden($form->get('csrf'));
-echo $this->form()->closeTag();
-?>
+<?php echo $this->form()->closeTag($form) ?>

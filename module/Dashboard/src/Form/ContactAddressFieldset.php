@@ -3,6 +3,8 @@
 namespace Dashboard\Form;
 
 
+use Contact\Entity\Address;
+use Contact\Entity\AddressHydrator;
 use Zend\Form\Fieldset;
 
 class ContactAddressFieldset extends Fieldset
@@ -10,6 +12,9 @@ class ContactAddressFieldset extends Fieldset
     public function __construct($name = null, array $options = [])
     {
         parent::__construct($name, $options);
+
+        $this->setHydrator(new AddressHydrator());
+        $this->setObject(new Address());
 
         $this->add([
             'type' => 'hidden',
@@ -24,7 +29,7 @@ class ContactAddressFieldset extends Fieldset
             ],
             'attributes' => [
                 'class' => 'form-control',
-                'placeholder' => 'e.g. 123 Sunset Avenue',
+                'placeholder' => 'e.g. Noorderlaan 32414',
             ],
         ]);
 
@@ -48,7 +53,7 @@ class ContactAddressFieldset extends Fieldset
             ],
             'attributes' => [
                 'class' => 'form-control',
-                'placeholder' => 'e.g. 12021',
+                'placeholder' => 'e.g. 2000',
             ],
         ]);
 
@@ -60,19 +65,13 @@ class ContactAddressFieldset extends Fieldset
             ],
             'attributes' => [
                 'class' => 'form-control',
-                'placeholder' => 'e.g. Los Angeles',
+                'placeholder' => 'e.g. Antwerp',
             ],
         ]);
 
         $this->add([
-            'type' => 'select',
-            'name' => 'country_code',
-            'options' => [
-                'label' => 'Country',
-            ],
-            'attributes' => [
-                'class' => 'form-control',
-            ],
+            'name' => 'country',
+            'type' => CountryFieldset::class,
         ]);
     }
 }
