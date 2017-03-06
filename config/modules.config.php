@@ -30,5 +30,5 @@ return [
     'Contact',
 //    'Company',
 //    'Deal',
-//    'Dashboard',
+    'Dashboard',
 ];

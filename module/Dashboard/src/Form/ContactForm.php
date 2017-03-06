@@ -2,6 +2,9 @@
 
 namespace Dashboard\Form;
 
+use Contact\Entity\Contact;
+use Contact\Entity\ContactHydrator;
+use Contact\Entity\Factory\ContactHydratorFactory;
 use Zend\Form\Form;
 
 class ContactForm extends Form
@@ -10,14 +13,12 @@ class ContactForm extends Form
     {
         parent::__construct($name, $options);
 
+        $this->setHydrator(new ContactHydrator());
+        $this->bind(new Contact());
+
         $this->add([
             'name' => 'contact-fieldset',
             'type' => ContactFieldset::class,
-        ]);
-
-        $this->add([
-            'name' => 'contact-email-fieldset',
-            'type' => ContactEmailFieldset::class,
         ]);
 
         $this->add([
@@ -26,8 +27,8 @@ class ContactForm extends Form
         ]);
 
         $this->add([
-            'name' => 'contact-address-fieldset',
-            'type' => ContactAddressFieldset::class,
+            'name' => 'contact-address-collection',
+            'type' => ContactAddressCollection::class,
         ]);
 
         $this->add([
@@ -40,6 +41,7 @@ class ContactForm extends Form
             'type' => 'submit',
             'attributes' => [
                 'value' => 'Save contact',
+                'class' => 'btn btn-success',
             ],
         ]);
     }

@@ -3,9 +3,9 @@
 namespace Dashboard\Controller;
 
 
-use Contact\Model\ContactEmailRepositoryInterface;
-use Contact\Model\ContactRepositoryInterface;
-use Contact\Model\CountryRepositoryInterface;
+use Contact\Model\EmailAddressModelInterface;
+use Contact\Model\ContactModelInterface;
+use Contact\Model\CountryModelInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -19,17 +19,17 @@ class DashboardController extends AbstractActionController
     protected $authService;
 
     /**
-     * @var ContactRepositoryInterface
+     * @var ContactModelInterface
      */
     protected $contactModel;
 
     /**
-     * @var ContactEmailRepositoryInterface
+     * @var EmailAddressModelInterface
      */
     protected $contactEmailModel;
 
     /**
-     * @var CountryRepositoryInterface
+     * @var CountryModelInterface
      */
     protected $countryModel;
 
@@ -41,16 +41,16 @@ class DashboardController extends AbstractActionController
     /**
      * DashboardController constructor.
      * @param AuthenticationService $authService
-     * @param ContactRepositoryInterface $contactModel
-     * @param ContactEmailRepositoryInterface $contactEmailModel
-     * @param CountryRepositoryInterface $countryModel
+     * @param ContactModelInterface $contactModel
+     * @param EmailAddressModelInterface $contactEmailModel
+     * @param CountryModelInterface $countryModel
      * @param FormInterface $contactForm
      */
     public function __construct(
         AuthenticationService $authService,
-        ContactRepositoryInterface $contactModel,
-        ContactEmailRepositoryInterface $contactEmailModel,
-        CountryRepositoryInterface $countryModel,
+        ContactModelInterface $contactModel,
+        EmailAddressModelInterface $contactEmailModel,
+        CountryModelInterface $countryModel,
         FormInterface $contactForm
     )
     {
@@ -78,7 +78,7 @@ class DashboardController extends AbstractActionController
         }
         $member = $this->authService->getIdentity();
 
-        $contactCollection = $this->contactModel->findAllContacts($member->getMemberId());
+        $contactCollection = $this->contactModel->fetchAllContacts($member->getMemberId());
 
         return new ViewModel([
             'contacts' => $contactCollection,
@@ -111,11 +111,13 @@ class DashboardController extends AbstractActionController
         $memberId = $this->authService->getIdentity()->getMemberId();
 
         $contact = $this->contactModel->findContact($memberId, $contactId);
-        $countries = $this->countryModel->getAllCountries();
+        $countries = $this->countryModel->fetchAllCountries();
+
+        $this->contactForm->bind($contact);
 
         $viewModel = new ViewModel([
-            'contact' => $contact,
             'contactForm' => $this->contactForm,
+            'contact' => $contact,
             'countries' => $countries,
         ]);
 

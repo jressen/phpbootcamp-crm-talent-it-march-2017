@@ -71,7 +71,7 @@
                         </tr>
                         <tr>
                             <th class="text-right"><?php echo $this->translate('Country') ?>:</th>
-                            <td><?php echo $this->escapeHtml($address->getCountryCode()) ?></td>
+                            <td><?php echo $this->escapeHtml($address->getCountry()->getNicename()) ?></td>
                         </tr>
                     <?php endforeach ?>
                 </table>

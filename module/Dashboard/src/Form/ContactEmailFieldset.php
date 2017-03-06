@@ -3,6 +3,8 @@
 namespace Dashboard\Form;
 
 
+use Contact\Entity\EmailAddress;
+use Contact\Entity\EmailAddressHydrator;
 use Zend\Form\Fieldset;
 
 class ContactEmailFieldset extends Fieldset
@@ -10,6 +12,9 @@ class ContactEmailFieldset extends Fieldset
     public function __construct($name = null, array $options = [])
     {
         parent::__construct($name, $options);
+
+        $this->setHydrator(new EmailAddressHydrator());
+        $this->setObject(new EmailAddress());
 
         $this->add([
             'type' => 'hidden',
