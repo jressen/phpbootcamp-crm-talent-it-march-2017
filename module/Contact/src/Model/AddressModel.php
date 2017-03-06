@@ -8,6 +8,7 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Update;
 use Zend\Hydrator\HydratorInterface;
 
 class AddressModel implements AddressModelInterface
@@ -83,9 +84,12 @@ class AddressModel implements AddressModelInterface
     /**
      * @inheritDoc
      */
-    public function saveAddress(AddressInterface $address)
+    public function saveAddress($contactId, AddressInterface $address)
     {
-        // TODO: Implement saveAddress() method.
+        if (0 < $address->getContactAddressId()) {
+            return $this->updateAddress($contactId, $address);
+        }
+        return $this->insertAddress($contactId, $address);
     }
 
     /**
@@ -94,6 +98,25 @@ class AddressModel implements AddressModelInterface
     public function deleteAddress(AddressInterface $address)
     {
         // TODO: Implement deleteAddress() method.
+    }
+
+    private function updateAddress($contactId, AddressInterface $address)
+    {
+        $addressData = $this->hydrator->extract($address);
+        unset($addressData['contact_id'], $addressData['contact_address_id']);
+
+        $update = new Update(self::TABLE_NAME);
+        $update->set($addressData);
+        $update->where([
+            'contact_id = ?' => $contactId,
+            'contact_address_id = ?' => $address->getContactAddressId(),
+        ]);
+
+        $sql = new Sql($this->db);
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        $stmt->execute();
+
+        return $address;
     }
 
 }

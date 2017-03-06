@@ -8,6 +8,7 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Update;
 use Zend\Hydrator\HydratorInterface;
 
 class EmailAddressModel implements EmailAddressModelInterface
@@ -80,7 +81,10 @@ class EmailAddressModel implements EmailAddressModelInterface
      */
     public function saveEmailAddress($contactId, EmailAddressInterface $emailAddress)
     {
-        // TODO: Implement saveEmailAddress() method.
+        if (0 < $emailAddress->getContactEmailId()) {
+            return $this->updateEmailAddress($contactId, $emailAddress);
+        }
+        return $this->insertEmailAddress($contactId, $emailAddress);
     }
 
     /**
@@ -91,4 +95,27 @@ class EmailAddressModel implements EmailAddressModelInterface
         // TODO: Implement deleteEmailAddress() method.
     }
 
+    private function updateEmailAddress($contactId, EmailAddressInterface $emailAddress)
+    {
+        $emailAddressData = $this->hydrator->extract($emailAddress);
+        unset ($emailAddressData['contact_id'], $emailAddressData['contact_email_id']);
+
+        $update = new Update(self::TABLE_NAME);
+        $update->set($emailAddressData);
+        $update->where([
+            'contact_id' => $contactId,
+            'contact_email_id' => $emailAddress->getContactEmailId(),
+        ]);
+
+        $sql = new Sql($this->db);
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        $stmt->execute();
+
+        return $emailAddress;
+    }
+
+    private function insertEmailAddress($contactId, EmailAddressInterface $emailAddress)
+    {
+        return $emailAddress;
+    }
 }

@@ -25,4 +25,11 @@ interface ContactInterface extends ContactAwareInterface
      * @return EmailAddressInterface[]
      */
     public function getEmailAddresses();
+
+    /**
+     * Retrieve all linked addresses from this Contact
+     *
+     * @return AddressInterface[]
+     */
+    public function getAddresses();
 }

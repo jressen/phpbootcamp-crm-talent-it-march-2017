@@ -33,14 +33,37 @@ class CountryHydrator implements HydratorInterface
         if (!$object instanceof CountryInterface) {
             return $object;
         }
-        $object->setIso($data['iso'])
-            ->setName($data['name'])
-            ->setNicename($data['nicename'])
-            ->setIso3($data['iso3'])
-            ->setNumcode($data['numcode'])
-            ->setPhoneCode($data['phonecode']);
+
+        if ($this->propertyAvailable('iso', $data)) {
+            $object->setIso($data['iso']);
+        }
+
+        if ($this->propertyAvailable('name', $data)) {
+            $object->setName($data['name']);
+        }
+
+        if ($this->propertyAvailable('nicename', $data)) {
+            $object->setNicename($data['nicename']);
+        }
+
+        if ($this->propertyAvailable('iso3', $data)) {
+            $object->setIso3($data['iso3']);
+        }
+
+        if ($this->propertyAvailable('numcode', $data)) {
+            $object->setNumcode($data['numcode']);
+        }
+
+        if ($this->propertyAvailable('phonecode', $data)) {
+            $object->setPhoneCode($data['phonecode']);
+        }
 
         return $object;
+    }
+
+    private function propertyAvailable($property, $data)
+    {
+        return (array_key_exists($property, $data) && !empty($data[$property]));
     }
 
 }

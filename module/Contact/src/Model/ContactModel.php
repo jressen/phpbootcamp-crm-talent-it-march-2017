@@ -8,6 +8,7 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Update;
 use Zend\Hydrator\HydratorInterface;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
@@ -90,7 +91,10 @@ class ContactModel implements ContactModelInterface
      */
     public function saveContact($memberId, ContactInterface $contact)
     {
-        // TODO: Implement saveContact() method.
+        if (0 < $contact->getContactId()) {
+            return $this->updateContact($memberId, $contact);
+        }
+        return $this->insertContact($memberId, $contact);
     }
 
     /**
@@ -101,4 +105,20 @@ class ContactModel implements ContactModelInterface
         // TODO: Implement deleteContact() method.
     }
 
+    private function updateContact($memberId, ContactInterface $contact)
+    {
+        $contactData = $this->hydrator->extract($contact);
+        unset ($contactData['member_id'], $contactData['contact_id']);
+        $update = new Update(self::TABLE_NAME);
+        $update->set($contactData);
+        $update->where([
+            'member_id = ?' => $memberId,
+            'contact_id = ?' => $contact->getContactId(),
+        ]);
+
+        $sql = new Sql($this->db);
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        $stmt->execute();
+        return $contact;
+    }
 }
