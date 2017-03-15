@@ -126,7 +126,7 @@ class MemberService
             $memberProfileData['firstName'],
             $memberProfileData['lastName']
         );
-        $contactEntity = $this->contactCommand->insertContact($newContact);
+        $contactEntity = $this->contactCommand->saveContact($memberEntity->getMemberId(), $newContact);
 
         $contactEmailClass = get_class($this->contactEmailPrototype);
         $newContactEmail = new $contactEmailClass(
@@ -136,7 +136,7 @@ class MemberService
             $memberProfileData['emailAddress'],
             true
         );
-        $contactEmailEntity = $this->contactEmailCommand->insertContactEmail($newContactEmail);
+        $contactEmailEntity = $this->contactEmailCommand->saveEmailAddress($contactEntity->getContactId(), $newContactEmail);
 
         $contactAddressClass = get_class($this->contactAddressPrototype);
         $newContactAddress = new $contactAddressClass(
@@ -152,7 +152,7 @@ class MemberService
                 strtoupper($memberProfileData['location']['country']['code']) :
                 '')
         );
-        $contactAddressEntity = $this->contactAddressCommand->saveContactAddress($newContactAddress);
+        $contactAddressEntity = $this->contactAddressCommand->saveAddress($contactEntity->getContactId(), $newContactAddress);
 
         $contactImageClass = get_class($this->contactImagePrototype);
         $newContactImage = new $contactImageClass(
@@ -162,7 +162,7 @@ class MemberService
             $memberProfileData['pictureUrl'],
             true
         );
-        $contactImageEntity = $this->contactImageModel->saveContactImage($newContactImage);
+        $contactImageEntity = $this->contactImageModel->saveImage($newContactImage);
 
         return $memberEntity;
     }

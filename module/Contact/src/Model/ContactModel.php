@@ -95,7 +95,7 @@ class ContactModel implements ContactModelInterface
         if (0 < $contact->getContactId()) {
             return $this->updateContact($memberId, $contact);
         }
-        return $this->insertContact($contact);
+        return $this->insertContact($memberId, $contact);
     }
 
     /**
@@ -106,6 +106,13 @@ class ContactModel implements ContactModelInterface
         // TODO: Implement deleteContact() method.
     }
 
+    /**
+     * Update existing contact
+     *
+     * @param int $memberId
+     * @param ContactInterface $contact
+     * @return ContactInterface
+     */
     private function updateContact($memberId, ContactInterface $contact)
     {
         $contactData = $this->hydrator->extract($contact);
@@ -123,8 +130,14 @@ class ContactModel implements ContactModelInterface
         return $contact;
     }
 
-
-    public function insertContact(ContactInterface $contact)
+    /**
+     * Insert a new contact
+     *
+     * @param int $memberId
+     * @param ContactInterface $contact
+     * @return ContactInterface
+     */
+    private function insertContact($memberId, ContactInterface $contact)
     {
 
         $contactData = $this->hydrator->extract($contact);
