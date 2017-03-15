@@ -5,14 +5,14 @@ namespace Auth\Service;
 
 use Auth\Entity\MemberInterface;
 use Auth\Model\MemberModel;
-use Contact\Entity\ContactAddressInterface;
-use Contact\Entity\ContactEmailInterface;
-use Contact\Entity\ContactImageInterface;
+use Contact\Entity\AddressInterface;
+use Contact\Entity\EmailAddressInterface;
+use Contact\Entity\ImageInterface;
 use Contact\Entity\ContactInterface;
-use Contact\Model\ContactAddressCommandInterface;
-use Contact\Model\ContactCommandInterface;
-use Contact\Model\ContactEmailCommandInterface;
-use Contact\Model\ContactImageModelInterface;
+use Contact\Model\AddressModelInterface;
+use Contact\Model\ContactModelInterface;
+use Contact\Model\EmailAddressModelInterface;
+use Contact\Model\ImageModelInterface;
 
 class MemberService
 {
@@ -27,7 +27,7 @@ class MemberService
     protected $memberPrototype;
 
     /**
-     * @var ContactCommandInterface
+     * @var ContactModelInterface
      */
     protected $contactCommand;
 
@@ -37,32 +37,32 @@ class MemberService
     protected $contactPrototype;
 
     /**
-     * @var ContactEmailCommandInterface
+     * @var EmailAddressModelInterface
      */
     protected $contactEmailCommand;
 
     /**
-     * @var ContactEmailInterface
+     * @var EmailAddressInterface
      */
     protected $contactEmailPrototype;
 
     /**
-     * @var ContactAddressCommandInterface
+     * @var AddressModelInterface
      */
     protected $contactAddressCommand;
 
     /**
-     * @var ContactAddressInterface
+     * @var AddressInterface
      */
     protected $contactAddressPrototype;
 
     /**
-     * @var ContactImageModelInterface
+     * @var ImageModelInterface
      */
     protected $contactImageModel;
 
     /**
-     * @var ContactImageInterface
+     * @var ImageInterface
      */
     protected $contactImagePrototype;
 
@@ -71,26 +71,26 @@ class MemberService
      *
      * @param MemberModel $memberModel
      * @param MemberInterface $memberPrototype
-     * @param ContactCommandInterface $contactCommand
+     * @param ContactModelInterface $contactCommand
      * @param ContactInterface $contactPrototype
-     * @param ContactEmailCommandInterface $contactEmailCommand
-     * @param ContactEmailInterface $contactEmailPrototype
-     * @param ContactAddressCommandInterface $contactAddressCommand
-     * @param ContactAddressInterface $contactAddress
-     * @param ContactImageModelInterface $contactImageModel
-     * @param ContactImageInterface $contactImage
+     * @param EmailAddressModelInterface $contactEmailCommand
+     * @param EmailAddressInterface $contactEmailPrototype
+     * @param AddressModelInterface $contactAddressCommand
+     * @param AddressInterface $contactAddress
+     * @param ImageModelInterface $contactImageModel
+     * @param ImageInterface $contactImage
      */
     public function __construct(
         MemberModel $memberModel,
         MemberInterface $memberPrototype,
-        ContactCommandInterface $contactCommand,
+        ContactModelInterface $contactCommand,
         ContactInterface $contactPrototype,
-        ContactEmailCommandInterface $contactEmailCommand,
-        ContactEmailInterface $contactEmailPrototype,
-        ContactAddressCommandInterface $contactAddressCommand,
-        ContactAddressInterface $contactAddress,
-        ContactImageModelInterface $contactImageModel,
-        ContactImageInterface $contactImage
+        EmailAddressModelInterface $contactEmailCommand,
+        EmailAddressInterface $contactEmailPrototype,
+        AddressModelInterface $contactAddressCommand,
+        AddressInterface $contactAddress,
+        ImageModelInterface $contactImageModel,
+        ImageInterface $contactImage
     )
     {
         $this->memberModel = $memberModel;

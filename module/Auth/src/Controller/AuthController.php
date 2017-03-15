@@ -4,8 +4,8 @@ namespace Auth\Controller;
 
 use Auth\Service\LinkedIn;
 use Auth\Service\MemberService;
-use Contact\Model\ContactCommandInterface;
-use Contact\Model\ContactEmailCommandInterface;
+use Contact\Model\ContactModelInterface;
+use Contact\Model\EmailAddressInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use Zend\Mvc\Controller\AbstractActionController;
