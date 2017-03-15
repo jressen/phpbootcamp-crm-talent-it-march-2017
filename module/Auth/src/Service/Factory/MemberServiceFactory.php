@@ -25,13 +25,13 @@ class MemberServiceFactory implements FactoryInterface
         return new MemberService(
             $container->get(\Auth\Model\MemberModel::class),
             new MemberEntity(0, '', ''),
-            $container->get(\Contact\Model\ContactCommandInterface::class),
+            $container->get(\Contact\Model\ContactModelInterface::class),
             new Contact(0, 0, '', ''),
-            $container->get(\Contact\Model\ContactEmailCommandInterface::class),
+            $container->get(\Contact\Model\EmailAddressModelInterface::class),
             new ContactEmail(0, 0, 0, ''),
-            $container->get(\Contact\Model\ContactAddressCommandInterface::class),
+            $container->get(\Contact\Model\AddressModelInterface::class),
             new ContactAddress(0, 0, 0),
-            $container->get(\Contact\Model\ContactImageModelInterface::class),
+            $container->get(\Contact\Model\ImageModelInterface::class),
             new ContactImage(0, 0, 0, '')
         );
     }
