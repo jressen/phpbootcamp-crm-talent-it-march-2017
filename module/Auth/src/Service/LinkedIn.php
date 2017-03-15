@@ -97,6 +97,7 @@ class LinkedIn
                     'client_id' => $this->config['client_key'],
                     'client_secret' => $this->config['client_key_secret'],
                 ],
+                'verify' => false,
             ]);
         } catch (ClientException $exception) {
             throw new \RuntimeException($exception->getMessage());
@@ -125,6 +126,7 @@ class LinkedIn
                     'oauth2_access_token' => $accessToken,
                     'format' => $format,
                 ],
+                'verify' => false
             ]);
         } catch (ClientException $exception) {
             throw new \RuntimeException($exception->getMessage());
@@ -167,6 +169,7 @@ class LinkedIn
                     'oauth2_access_token' => $accessToken,
                     'format' => $format,
                 ],
+                'verify' => false
             ]);
         } catch (ClientException $exception) {
             throw new \RuntimeException($exception->getMessage());
