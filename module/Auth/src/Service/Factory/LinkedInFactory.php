@@ -21,6 +21,9 @@ class LinkedInFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $guzzleClient = new Client([
+            'defaults' => [
+                'verify' => false,
+            ],
             'headers' => [
                 'User-Agent' => 'ZFCRM/' . Module::VERSION . ' curl/' . curl_version()['version'] . ' PHP/7.1.2',
                 'Accept' => 'application/json',
