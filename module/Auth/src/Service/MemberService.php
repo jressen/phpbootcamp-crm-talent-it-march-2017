@@ -119,29 +119,29 @@ class MemberService
         $newMember = new $memberClass(0, $memberProfileData['id'], $accessToken);
         $memberEntity = $this->memberModel->saveMember($newMember);
 
-        $contactClass = get_class($this->contactPrototype);
-        $newContact = new $contactClass(
-            0,
-            $memberEntity->getMemberId(),
-            $memberProfileData['firstName'],
-            $memberProfileData['lastName']
-        );
-        $contactEntity = $this->contactCommand->saveContact($memberEntity->getMemberId(), $newContact);
+        $memberId = $memberEntity->getMemberId();
 
-        $contactEmailClass = get_class($this->contactEmailPrototype);
-        $newContactEmail = new $contactEmailClass(
-            0,
-            $memberEntity->getMemberId(),
-            $contactEntity->getContactId(),
-            $memberProfileData['emailAddress'],
-            true
-        );
-        $contactEmailEntity = $this->contactEmailCommand->saveEmailAddress($contactEntity->getContactId(), $newContactEmail);
+        $newContact = clone $this->contactPrototype;
+        $newContact->setMemberId($memberId)
+            ->setFirstName($memberProfileData['firstName'])
+            ->setLastName($memberProfileData['lastName']);
 
-        $contactAddressClass = get_class($this->contactAddressPrototype);
+        $contactEntity = $this->contactCommand->saveContact($memberId, $newContact);
+        \Zend\Debug\Debug::dump($contactEntity, __FUNCTION__ . ' -> $contactEntity');
+
+        $newContactEmail = clone $this->contactEmailPrototype;
+        $newContactEmail->setMemberId($memberId)
+            ->setContactId($contactEntity->getContactId())
+            ->setEmailAddress($memberProfileData['emailAddress'])
+            ->setPrimary(true);
+        $contactEmailEntity = $this->contactEmailCommand->saveEmailAddress($newContactEmail);
+
+        \Zend\Debug\Debug::dump($contactEmailEntity, __FUNCTION__ . ' -> $contactEmailEntity');
+
+        /*$contactAddressClass = get_class($this->contactAddressPrototype);
         $newContactAddress = new $contactAddressClass(
             0,
-            $memberEntity->getMemberId(),
+            $memberId,
             $contactEntity->getContactId(),
             '', // street1
             '', // street2
@@ -153,16 +153,20 @@ class MemberService
                 '')
         );
         $contactAddressEntity = $this->contactAddressCommand->saveAddress($contactEntity->getContactId(), $newContactAddress);
+        \Zend\Debug\Debug::dump($contactAddressEntity, __FUNCTION__ . ' -> $contactAddressEntity');
 
         $contactImageClass = get_class($this->contactImagePrototype);
         $newContactImage = new $contactImageClass(
             0,
-            $memberEntity->getMemberId(),
+            $memberId,
             $contactEntity->getContactId(),
             $memberProfileData['pictureUrl'],
             true
         );
         $contactImageEntity = $this->contactImageModel->saveImage($newContactImage);
+
+        \Zend\Debug\Debug::dump($contactImageEntity, __FUNCTION__ . ' -> $contactImageEntity');
+        die;*/
 
         return $memberEntity;
     }
@@ -185,6 +189,22 @@ class MemberService
         );
         $this->memberModel->saveMember($memberEntity);
         return $memberEntity;
+    }
+
+    /**
+     * See if the member is already registered in our data storage
+     *
+     * @param array $memberProfileData
+     * @return bool
+     */
+    public function isRegistered(array $memberProfileData)
+    {
+        try {
+            $member = $this->memberModel->getMemberByLinkedinId($memberProfileData['id']);
+            return true;
+        } catch (\InvalidArgumentException $invalidArgumentException) {
+            return false;
+        }
     }
 
 }

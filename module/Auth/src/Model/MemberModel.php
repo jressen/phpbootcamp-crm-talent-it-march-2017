@@ -16,6 +16,8 @@ use Zend\Hydrator\HydratorInterface;
 
 class MemberModel
 {
+    const TABLE_NAME = 'member';
+
     /**
      * @var AdapterInterface
      */

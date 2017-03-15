@@ -74,7 +74,7 @@ class Contact implements ContactInterface
      */
     public function setContactId($contactId)
     {
-        $this->contactId = $contactId;
+        $this->contactId = (int) $contactId;
         return $this;
     }
 
@@ -92,7 +92,7 @@ class Contact implements ContactInterface
      */
     public function setMemberId($memberId)
     {
-        $this->memberId = $memberId;
+        $this->memberId = (int) $memberId;
         return $this;
     }
 

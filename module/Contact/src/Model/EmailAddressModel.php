@@ -4,9 +4,11 @@ namespace Contact\Model;
 
 
 use Contact\Entity\EmailAddressInterface;
+use Zend\Authentication\Adapter\DbTable\Exception\InvalidArgumentException;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
 use Zend\Hydrator\HydratorInterface;
@@ -79,12 +81,12 @@ class EmailAddressModel implements EmailAddressModelInterface
     /**
      * @inheritDoc
      */
-    public function saveEmailAddress($contactId, EmailAddressInterface $emailAddress)
+    public function saveEmailAddress(EmailAddressInterface $emailAddress)
     {
-        if (0 < $emailAddress->getContactEmailId()) {
-            return $this->updateEmailAddress($contactId, $emailAddress);
+        if (0 < (int) $emailAddress->getContactEmailId()) {
+            return $this->updateEmailAddress($emailAddress);
         }
-        return $this->insertEmailAddress($contactId, $emailAddress);
+        return $this->insertEmailAddress($emailAddress);
     }
 
     /**
@@ -95,14 +97,21 @@ class EmailAddressModel implements EmailAddressModelInterface
         // TODO: Implement deleteEmailAddress() method.
     }
 
-    private function updateEmailAddress($contactId, EmailAddressInterface $emailAddress)
+    private function updateEmailAddress(EmailAddressInterface $emailAddress)
     {
+        $memberId = $emailAddress->getMemberId();
+        $contactId = $emailAddress->getContactId();
+
         $emailAddressData = $this->hydrator->extract($emailAddress);
-        unset ($emailAddressData['contact_id'], $emailAddressData['contact_email_id']);
+        unset (
+            $emailAddressData['member_id'],
+            $emailAddressData['contact_id'],
+            $emailAddressData['contact_email_id']);
 
         $update = new Update(self::TABLE_NAME);
         $update->set($emailAddressData);
         $update->where([
+            'member_id' => $memberId,
             'contact_id' => $contactId,
             'contact_email_id' => $emailAddress->getContactEmailId(),
         ]);
@@ -114,8 +123,38 @@ class EmailAddressModel implements EmailAddressModelInterface
         return $emailAddress;
     }
 
-    private function insertEmailAddress($contactId, EmailAddressInterface $emailAddress)
+    /**
+     * Store a new email address in the database backend
+     *
+     * @param EmailAddressInterface $emailAddress
+     * @return EmailAddressInterface
+     * @throws \RuntimeException
+     */
+    private function insertEmailAddress(EmailAddressInterface $emailAddress)
     {
+        $memberId = $emailAddress->getMemberId();
+        $contactId = $emailAddress->getContactId();
+
+        $date = date('Y-m-d H:i:s');
+        $emailAddressData = $this->hydrator->extract($emailAddress);
+        unset (
+            $emailAddressData['contact_email_id']
+        );
+        $emailAddressData['created'] = $emailAddressData['modified'] = $date;
+
+        $insert = new Insert(self::TABLE_NAME);
+        $insert->values($emailAddressData);
+
+        $sql = new Sql($this->db);
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface) {
+            throw new \RuntimeException('Cannot process data correctly');
+        }
+
+        $id = $result->getGeneratedValue();
+        $emailAddress->setContactEmailId($id);
         return $emailAddress;
     }
 }
