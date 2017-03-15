@@ -42,4 +42,15 @@ interface ContactModelInterface
      * @return bool
      */
     public function deleteContact($memberId, ContactInterface $contact);
+
+
+    /**
+     * insert a new contact
+     *
+     * @param int $memberId
+     * @param ContactInterface $contact
+     * @return bool
+     */
+    public function insertContact(ContactInterface $contact);
+
 }
