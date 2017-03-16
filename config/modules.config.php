@@ -32,7 +32,7 @@ return [
     'Application',
     'Auth',
     'Contact',
-//    'Company',
-//    'Deal',
+    'Company',
+    'Deal',
     'Dashboard',
 ];
