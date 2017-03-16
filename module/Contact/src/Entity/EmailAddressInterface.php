@@ -27,6 +27,7 @@ interface EmailAddressInterface extends ContactAwareInterface
     /**
      * Set the email address
      *
+     * @param id
      */
     public function setContactEmailId($id);
 
