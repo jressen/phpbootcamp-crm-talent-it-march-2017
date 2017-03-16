@@ -7,6 +7,7 @@ use Contact\Entity\AddressInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
 use Zend\Hydrator\HydratorInterface;
@@ -105,22 +106,16 @@ class AddressModel implements AddressModelInterface
         $date = date('Y-m-d H:i:s');
         $addressData = $this->hydrator->extract($address);
         unset(
-            $addressData['member_id'],
-            $addressData['contact_id'],
             $addressData['contact_address_id']
         );
         $addressData['created'] = $addressData['modified'] = date('Y-m-d H:i:s');
+        $addressData['country_code'] = $address->getCountry()->getIso();
 
-        $update = new Update(self::TABLE_NAME);
-        $update->set($addressData);
-        $update->where([
-            'member_id = ?' => $address->getMemberId(),
-            'contact_id = ?' => $address->getContactId(),
-            'contact_address_id = ?' => $address->getContactAddressId(),
-        ]);
+        $insert = new Insert(self::TABLE_NAME);
+        $insert->values($addressData);
 
         $sql = new Sql($this->db);
-        $stmt = $sql->prepareStatementForSqlObject($update);
+        $stmt = $sql->prepareStatementForSqlObject($insert);
         $result = $stmt->execute();
 
         if (!$result instanceof ResultInterface) {

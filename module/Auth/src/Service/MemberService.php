@@ -167,7 +167,12 @@ class MemberService
             ->setContactId($contactId)
             ->setCountry($country);
 
-        $contactAddressEntity = $this->contactAddressCommand->saveAddress($newContactAddress);
+        try {
+            $contactAddressEntity = $this->contactAddressCommand->saveAddress($newContactAddress);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            echo $exception->getTraceAsString();
+        }
 
         $contactImageClass = get_class($this->contactImagePrototype);
         $newContactImage = clone $this->contactImagePrototype;
