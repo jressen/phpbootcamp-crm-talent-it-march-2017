@@ -7,6 +7,7 @@ use Auth\Entity\MemberEntity;
 use Auth\Service\MemberService;
 use Contact\Entity\Contact;
 use Contact\Entity\Address;
+use Contact\Entity\Country;
 use Contact\Entity\EmailAddress;
 use Contact\Entity\Image;
 use Interop\Container\ContainerInterface;
@@ -32,7 +33,9 @@ class MemberServiceFactory implements FactoryInterface
             $container->get(\Contact\Model\AddressModelInterface::class),
             new Address(0, 0, 0),
             $container->get(\Contact\Model\ImageModelInterface::class),
-            new Image(0, 0, 0, '')
+            new Image(0, 0, 0, ''),
+            $container->get(\Contact\Model\CountryModelInterface::class),
+            new Country()
         );
     }
 

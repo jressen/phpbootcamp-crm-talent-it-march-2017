@@ -25,11 +25,9 @@ interface EmailAddressModelInterface
     public function findEmailAddressById($contactId, $contactEmailId);
 
     /**
-     * @param int $contactId
-     * @param EmailAddressInterface $emailAddress
      * @return EmailAddressInterface
      */
-    public function saveEmailAddress($contactId, EmailAddressInterface $emailAddress);
+    public function saveEmailAddress(EmailAddressInterface $emailAddress);
 
     /**
      * @param int $contactId

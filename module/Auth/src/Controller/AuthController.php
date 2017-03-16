@@ -111,24 +111,33 @@ class AuthController extends AbstractActionController
     {
         $accessToken = $this->sessionContainer->accessCode['access_token'];
 
+        // If no member was stored in session, let's see if we actually have it in store
         if (!isset ($this->sessionContainer->member)) {
+
             $options = [];
+
+            // First we need to retrieve the data from LinkedIn
             try {
                 $additionalProfile = $this->linkedInService->getAdditionalProfileDetails($accessToken, $options);
             } catch (\RuntimeException $runtimeException) {
                 return $this->redirect()->toRoute('auth/problem');
             }
 
-            try {
-                $member = $this->memberService->updateMember($additionalProfile, $accessToken);
-            } catch (\InvalidArgumentException $invalidArgumentException) {
+            $member = null;
+            // Let's see if we already have this member registered
+            if (!$this->memberService->isRegistered($additionalProfile)) {
                 try {
                     $member = $this->memberService->registerNewMember($additionalProfile, $accessToken);
                 } catch (\RuntimeException $runtimeException) {
                     return $this->redirect()->toRoute('auth/problem');
                 }
+            } else {
+                try {
+                    $member = $this->memberService->updateMember($additionalProfile, $accessToken);
+                } catch (\RuntimeException $runtimeException) {
+                    return $this->redirect()->toRoute('auth/problem');
+                }
             }
-
             $this->sessionContainer->member = $member;
         }
 
