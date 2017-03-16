@@ -7,6 +7,7 @@ use Contact\Entity\AddressInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
 use Zend\Hydrator\HydratorInterface;
@@ -84,12 +85,12 @@ class AddressModel implements AddressModelInterface
     /**
      * @inheritDoc
      */
-    public function saveAddress($contactId, AddressInterface $address)
+    public function saveAddress(AddressInterface $address)
     {
-        if (0 < $address->getContactAddressId()) {
-            return $this->updateAddress($contactId, $address);
+        if (0 < (int) $address->getContactAddressId()) {
+            return $this->updateAddress($address);
         }
-        return $this->insertAddress($contactId, $address);
+        return $this->insertAddress($address);
     }
 
     /**
@@ -100,15 +101,47 @@ class AddressModel implements AddressModelInterface
         // TODO: Implement deleteAddress() method.
     }
 
-    private function updateAddress($contactId, AddressInterface $address)
+    private function insertAddress(AddressInterface $address)
+    {
+        $date = date('Y-m-d H:i:s');
+        $addressData = $this->hydrator->extract($address);
+        unset(
+            $addressData['contact_address_id']
+        );
+        $addressData['created'] = $addressData['modified'] = date('Y-m-d H:i:s');
+        $addressData['country_code'] = $address->getCountry()->getIso();
+
+        $insert = new Insert(self::TABLE_NAME);
+        $insert->values($addressData);
+
+        $sql = new Sql($this->db);
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface) {
+            throw new \RuntimeException('Something was wrong with stroring the address');
+        }
+        $address->setContactAddressId($result->getGeneratedValue());
+
+        return $address;
+    }
+
+    private function updateAddress(AddressInterface $address)
     {
         $addressData = $this->hydrator->extract($address);
-        unset($addressData['contact_id'], $addressData['contact_address_id']);
+        unset(
+            $addressData['member_id'],
+            $addressData['contact_id'],
+            $addressData['contact_address_id'],
+            $addressData['created']
+        );
+        $addressData['modified'] = date('Y-m-d H:i:s');
 
         $update = new Update(self::TABLE_NAME);
         $update->set($addressData);
         $update->where([
-            'contact_id = ?' => $contactId,
+            'member_id = ?' => $address->getMemberId(),
+            'contact_id = ?' => $address->getContactId(),
             'contact_address_id = ?' => $address->getContactAddressId(),
         ]);
 

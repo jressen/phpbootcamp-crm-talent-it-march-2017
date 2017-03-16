@@ -6,11 +6,13 @@ namespace Auth\Service;
 use Auth\Entity\MemberInterface;
 use Auth\Model\MemberModel;
 use Contact\Entity\AddressInterface;
+use Contact\Entity\CountryInterface;
 use Contact\Entity\EmailAddressInterface;
 use Contact\Entity\ImageInterface;
 use Contact\Entity\ContactInterface;
 use Contact\Model\AddressModelInterface;
 use Contact\Model\ContactModelInterface;
+use Contact\Model\CountryModelInterface;
 use Contact\Model\EmailAddressModelInterface;
 use Contact\Model\ImageModelInterface;
 
@@ -67,6 +69,16 @@ class MemberService
     protected $contactImagePrototype;
 
     /**
+     * @var CountryModelInterface
+     */
+    protected $countryModel;
+
+    /**
+     * @var CountryInterface
+     */
+    protected $countryPrototype;
+
+    /**
      * MemberService constructor.
      *
      * @param MemberModel $memberModel
@@ -79,6 +91,8 @@ class MemberService
      * @param AddressInterface $contactAddress
      * @param ImageModelInterface $contactImageModel
      * @param ImageInterface $contactImage
+     * @param CountryModelInterface $countryModel
+     * @param CountryInterface $country
      */
     public function __construct(
         MemberModel $memberModel,
@@ -90,7 +104,9 @@ class MemberService
         AddressModelInterface $contactAddressCommand,
         AddressInterface $contactAddress,
         ImageModelInterface $contactImageModel,
-        ImageInterface $contactImage
+        ImageInterface $contactImage,
+        CountryModelInterface $countryModel,
+        CountryInterface $country
     )
     {
         $this->memberModel = $memberModel;
@@ -103,6 +119,8 @@ class MemberService
         $this->contactAddressPrototype = $contactAddress;
         $this->contactImageModel = $contactImageModel;
         $this->contactImagePrototype = $contactImage;
+        $this->countryModel = $countryModel;
+        $this->countryPrototype = $country;
     }
 
 
@@ -119,50 +137,50 @@ class MemberService
         $newMember = new $memberClass(0, $memberProfileData['id'], $accessToken);
         $memberEntity = $this->memberModel->saveMember($newMember);
 
-        $contactClass = get_class($this->contactPrototype);
-        $newContact = new $contactClass(
-            0,
-            $memberEntity->getMemberId(),
-            $memberProfileData['firstName'],
-            $memberProfileData['lastName']
-        );
-        $contactEntity = $this->contactCommand->insertContact($newContact);
+        $memberId = $memberEntity->getMemberId();
 
-        $contactEmailClass = get_class($this->contactEmailPrototype);
-        $newContactEmail = new $contactEmailClass(
-            0,
-            $memberEntity->getMemberId(),
-            $contactEntity->getContactId(),
-            $memberProfileData['emailAddress'],
-            true
-        );
-        $contactEmailEntity = $this->contactEmailCommand->insertContactEmail($newContactEmail);
+        $newContact = clone $this->contactPrototype;
+        $newContact->setMemberId($memberId)
+            ->setFirstName($memberProfileData['firstName'])
+            ->setLastName($memberProfileData['lastName']);
 
-        $contactAddressClass = get_class($this->contactAddressPrototype);
-        $newContactAddress = new $contactAddressClass(
-            0,
-            $memberEntity->getMemberId(),
-            $contactEntity->getContactId(),
-            '', // street1
-            '', // street2
-            '', // postcode
-            '', // city
-            '', // province
-            (isset ($memberProfileData['location']['country']['code']) ?
-                strtoupper($memberProfileData['location']['country']['code']) :
-                '')
+        $contactEntity = $this->contactCommand->saveContact($memberId, $newContact);
+        $contactId = $contactEntity->getContactId();
+
+        $newContactEmail = clone $this->contactEmailPrototype;
+        $newContactEmail->setMemberId($memberId)
+            ->setContactId($contactId)
+            ->setEmailAddress($memberProfileData['emailAddress'])
+            ->setPrimary(true);
+        $contactEmailEntity = $this->contactEmailCommand->saveEmailAddress($newContactEmail);
+
+        $countryCode = (
+            isset ($memberProfileData['location']['country']['code'])
+                ? strtoupper($memberProfileData['location']['country']['code'])
+                : ''
         );
-        $contactAddressEntity = $this->contactAddressCommand->saveContactAddress($newContactAddress);
+
+        $country = $this->countryModel->findCountryByIso($countryCode);
+
+        $newContactAddress = clone $this->contactAddressPrototype;
+        $newContactAddress->setMemberId($memberId)
+            ->setContactId($contactId)
+            ->setCountry($country);
+
+        try {
+            $contactAddressEntity = $this->contactAddressCommand->saveAddress($newContactAddress);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            echo $exception->getTraceAsString();
+        }
 
         $contactImageClass = get_class($this->contactImagePrototype);
-        $newContactImage = new $contactImageClass(
-            0,
-            $memberEntity->getMemberId(),
-            $contactEntity->getContactId(),
-            $memberProfileData['pictureUrl'],
-            true
-        );
-        $contactImageEntity = $this->contactImageModel->saveContactImage($newContactImage);
+        $newContactImage = clone $this->contactImagePrototype;
+        $newContactImage->setMemberId($memberId)
+            ->setContactId($contactId)
+            ->setImageLink($memberProfileData['pictureUrl'])
+            ->setImageActive(true);
+        $contactImageEntity = $this->contactImageModel->saveImage($newContactImage);
 
         return $memberEntity;
     }
@@ -185,6 +203,22 @@ class MemberService
         );
         $this->memberModel->saveMember($memberEntity);
         return $memberEntity;
+    }
+
+    /**
+     * See if the member is already registered in our data storage
+     *
+     * @param array $memberProfileData
+     * @return bool
+     */
+    public function isRegistered(array $memberProfileData)
+    {
+        try {
+            $member = $this->memberModel->getMemberByLinkedinId($memberProfileData['id']);
+            return true;
+        } catch (\InvalidArgumentException $invalidArgumentException) {
+            return false;
+        }
     }
 
 }

@@ -42,4 +42,5 @@ interface ContactModelInterface
      * @return bool
      */
     public function deleteContact($memberId, ContactInterface $contact);
+
 }

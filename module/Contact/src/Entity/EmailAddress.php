@@ -61,7 +61,7 @@ class EmailAddress implements EmailAddressInterface
      */
     public function setMemberId($memberId)
     {
-        $this->memberId = $memberId;
+        $this->memberId = (int) $memberId;
         return $this;
     }
 
@@ -79,7 +79,7 @@ class EmailAddress implements EmailAddressInterface
      */
     public function setContactId($contactId)
     {
-        $this->contactId = $contactId;
+        $this->contactId = (int) $contactId;
         return $this;
     }
 
@@ -97,7 +97,7 @@ class EmailAddress implements EmailAddressInterface
      */
     public function setContactEmailId($contactEmailId)
     {
-        $this->contactEmailId = $contactEmailId;
+        $this->contactEmailId = (int) $contactEmailId;
         return $this;
     }
 
