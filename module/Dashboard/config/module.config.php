@@ -60,7 +60,16 @@ return [
                             ],
                         ],
                     ],
-                ],
+                    'companies' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/companies',
+                            'defaults' => [
+                                'action' => 'companies',
+                            ],
+                        ],
+                        ],
+                    ],
             ],
         ],
     ],

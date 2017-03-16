@@ -2,7 +2,6 @@
 
 namespace Dashboard\Controller;
 
-
 use Contact\Entity\ContactInterface;
 use Contact\Model\AddressModelInterface;
 use Contact\Model\EmailAddressModelInterface;
@@ -14,8 +13,8 @@ use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class DashboardController extends AbstractActionController
-{
+class DashboardController extends AbstractActionController {
+
     /**
      * @var AuthenticationService
      */
@@ -62,15 +61,8 @@ class DashboardController extends AbstractActionController
      * @param FormInterface $contactForm
      */
     public function __construct(
-        AuthenticationService $authService,
-        ContactModelInterface $contactModel,
-        EmailAddressModelInterface $contactEmailModel,
-        AddressModelInterface $addressModel,
-        CountryModelInterface $countryModel,
-        ContactFormServiceInterface $contactFormService,
-        FormInterface $contactForm
-    )
-    {
+    AuthenticationService $authService, ContactModelInterface $contactModel, EmailAddressModelInterface $contactEmailModel, AddressModelInterface $addressModel, CountryModelInterface $countryModel, ContactFormServiceInterface $contactFormService, FormInterface $contactForm
+    ) {
         $this->authService = $authService;
         $this->contactModel = $contactModel;
         $this->contactEmailModel = $contactEmailModel;
@@ -80,8 +72,7 @@ class DashboardController extends AbstractActionController
         $this->contactForm = $contactForm;
     }
 
-    public function overviewAction()
-    {
+    public function overviewAction() {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
@@ -90,8 +81,7 @@ class DashboardController extends AbstractActionController
         return new ViewModel([]);
     }
 
-    public function contactsAction()
-    {
+    public function contactsAction() {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
@@ -104,8 +94,18 @@ class DashboardController extends AbstractActionController
         ]);
     }
 
-    public function contactsDetailAction()
-    {
+    public function companiesAction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('auth');
+        }
+        $member = $this->authService->getIdentity();
+
+        return new ViewModel([
+            'companies'
+        ]);
+    }
+
+    public function contactsDetailAction() {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
@@ -120,8 +120,7 @@ class DashboardController extends AbstractActionController
         ]);
     }
 
-    public function contactsEditAction()
-    {
+    public function contactsEditAction() {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
@@ -164,4 +163,5 @@ class DashboardController extends AbstractActionController
 
         return $this->redirect()->toRoute('dashboard/contacts/detail', ['contactId' => $contactId]);
     }
+
 }
