@@ -1,5 +1,9 @@
 <?php
+
+
+
 namespace Dashboard\Controller;
+
 use Contact\Entity\ContactInterface;
 use Contact\Model\AddressModelInterface;
 use Contact\Model\EmailAddressModelInterface;
@@ -10,36 +14,44 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+
 class DashboardController extends AbstractActionController
 {
     /**
      * @var AuthenticationService
      */
     protected $authService;
+
     /**
      * @var ContactModelInterface
      */
     protected $contactModel;
+
     /**
      * @var EmailAddressModelInterface
      */
     protected $contactEmailModel;
+
     /**
      * @var AddressModelInterface
      */
     protected $contactAddressModel;
+
     /**
      * @var CountryModelInterface
      */
     protected $countryModel;
+
     /**
      * @var ContactFormServiceInterface
      */
     protected $contactFormService;
+
     /**
      * @var FormInterface
      */
     protected $contactForm;
+
     /**
      * DashboardController constructor.
      * @param AuthenticationService $authService
@@ -68,14 +80,17 @@ class DashboardController extends AbstractActionController
         $this->contactFormService = $contactFormService;
         $this->contactForm = $contactForm;
     }
+
     public function overviewAction()
     {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
         $member = $this->authService->getIdentity();
+
         return new ViewModel([]);
     }
+
     public function companiesAction() {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
@@ -86,17 +101,21 @@ class DashboardController extends AbstractActionController
             'companies'
         ]);
     }
+
     public function contactsAction()
     {
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
         $member = $this->authService->getIdentity();
+
         $contactCollection = $this->contactModel->fetchAllContacts($member->getMemberId());
+
         return new ViewModel([
             'contacts' => $contactCollection,
         ]);
     }
+
     public function contactsDetailAction()
     {
         if (!$this->authService->hasIdentity()) {
@@ -109,6 +128,7 @@ class DashboardController extends AbstractActionController
             'contact' => $contact,
         ]);
     }
+
     public function contactsEditAction()
     {
         if (!$this->authService->hasIdentity()) {
