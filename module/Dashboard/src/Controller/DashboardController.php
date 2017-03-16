@@ -121,9 +121,12 @@ class DashboardController extends AbstractActionController
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
+
         $contactId = $this->params()->fromRoute('contactId', 0);
         $memberId = $this->authService->getIdentity()->getMemberId();
+
         $contact = $this->contactModel->findContact($memberId, $contactId);
+
         return new ViewModel([
             'contact' => $contact,
         ]);
@@ -134,11 +137,15 @@ class DashboardController extends AbstractActionController
         if (!$this->authService->hasIdentity()) {
             return $this->redirect()->toRoute('auth');
         }
+
         $contactId = $this->params()->fromRoute('contactId', 0);
         $memberId = $this->authService->getIdentity()->getMemberId();
+
         $contact = $this->contactModel->findContact($memberId, $contactId);
         $countries = $this->countryModel->fetchAllCountries();
+
         $this->contactForm->bind($contact);
+
         $viewModel = new ViewModel([
             'contactForm' => $this->contactForm,
             'contact' => $contact,
@@ -147,11 +154,13 @@ class DashboardController extends AbstractActionController
         if (!$this->request->isPost()) {
             return $viewModel;
         }
+
         $data = $this->request->getPost();
         $this->contactForm->setData($data);
         if (!$this->contactForm->isValid()) {
             return $viewModel;
         }
+
         $validData = $this->contactForm->getData();
         if (!$validData instanceof ContactInterface) {
             return $viewModel;
@@ -160,6 +169,7 @@ class DashboardController extends AbstractActionController
         foreach ($validData->getEmailAddresses() as $emailAddress) {
             $this->contactEmailModel->saveEmailAddress($contactId, $emailAddress);
         }
+
         foreach ($validData->getAddresses() as $address) {
             $this->contactAddressModel->saveAddress($contactId, $address);
         }
