@@ -1,7 +1,6 @@
 <?php
 
 namespace Dashboard\Controller;
-
 use Contact\Entity\ContactInterface;
 use Contact\Model\AddressModelInterface;
 use Contact\Model\EmailAddressModelInterface;
@@ -150,7 +149,7 @@ class DashboardController extends AbstractActionController
             'countries' => $countries,
         ]);
 
-         if (!$this->request->isPost()) {
+        if (!$this->request->isPost()) {
             return $viewModel;
         }
 
