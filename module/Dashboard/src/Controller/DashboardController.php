@@ -156,7 +156,7 @@ class DashboardController extends AbstractActionController
         }
         $this->contactModel->saveContact($memberId, $validData);
         foreach ($validData->getEmailAddresses() as $emailAddress) {
-            $this->contactEmailModel->saveEmailAddress($contactId, $emailAddress);
+            $this->contactEmailModel->saveEmailAddress($emailAddress);
         }
         foreach ($validData->getAddresses() as $address) {
             $this->contactAddressModel->saveAddress($contactId, $address);
