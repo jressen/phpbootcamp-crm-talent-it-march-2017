@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace Dashboard\Controller;
 
 use Contact\Entity\ContactInterface;
@@ -151,7 +149,8 @@ class DashboardController extends AbstractActionController
             'contact' => $contact,
             'countries' => $countries,
         ]);
-        if (!$this->request->isPost()) {
+
+         if (!$this->request->isPost()) {
             return $viewModel;
         }
 
@@ -169,10 +168,10 @@ class DashboardController extends AbstractActionController
         foreach ($validData->getEmailAddresses() as $emailAddress) {
             $this->contactEmailModel->saveEmailAddress($contactId, $emailAddress);
         }
-
         foreach ($validData->getAddresses() as $address) {
             $this->contactAddressModel->saveAddress($contactId, $address);
         }
+        
         return $this->redirect()->toRoute('dashboard/contacts/detail', ['contactId' => $contactId]);
     }
 }
