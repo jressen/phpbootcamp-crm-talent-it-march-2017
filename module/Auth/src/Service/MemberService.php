@@ -176,7 +176,7 @@ class MemberService
 
         $contactImageClass = get_class($this->contactImagePrototype);
         $newContactImage = clone $this->contactImagePrototype;
-        $newContactImage->setMemberId($memberId)
+        $newContactImage->ImagesetMemberId($memberId)
             ->setContactId($contactId)
             ->setImageLink($memberProfileData['pictureUrl'])
             ->setImageActive(true);

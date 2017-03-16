@@ -11,4 +11,10 @@ interface MemberAwareInterface
      * @return int
      */
     public function getMemberId();
+
+    /**
+     * @param $memberId
+     * @return int
+     */
+    public function setMemberId($memberId);
 }
