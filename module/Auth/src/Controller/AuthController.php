@@ -111,8 +111,6 @@ class AuthController extends AbstractActionController
     {
         $accessToken = $this->sessionContainer->accessCode['access_token'];
 
-        \Zend\Debug\Debug::dump(isset ($this->sessionContainer->member), 'Session member data');
-
         // If no member was stored in session, let's see if we actually have it in store
         if (!isset ($this->sessionContainer->member)) {
 
@@ -125,57 +123,24 @@ class AuthController extends AbstractActionController
                 return $this->redirect()->toRoute('auth/problem');
             }
 
-            \Zend\Debug\Debug::dump($additionalProfile);
-
             $member = null;
             // Let's see if we already have this member registered
             if (!$this->memberService->isRegistered($additionalProfile)) {
                 try {
                     $member = $this->memberService->registerNewMember($additionalProfile, $accessToken);
-                    \Zend\Debug\Debug::dump($member, 'registerNewMember');
                 } catch (\RuntimeException $runtimeException) {
-                    \Zend\Debug\Debug::dump($runtimeException->getMessage(), 'registerNewMember');
-//                    return $this->redirect()->toRoute('auth/problem');
+                    return $this->redirect()->toRoute('auth/problem');
                 }
             } else {
                 try {
                     $member = $this->memberService->updateMember($additionalProfile, $accessToken);
-                    \Zend\Debug\Debug::dump($member, 'updateMember');
-                } catch (\RuntimeException $runtimeException) {
-                    \Zend\Debug\Debug::dump($runtimeException->getMessage(), 'updateMember');
-//                    return $this->redirect()->toRoute('auth/problem');
-                }
-            }
-
-            \Zend\Debug\Debug::dump($member, 'registred member');die;
-        }
-
-        /**
-        if (!isset ($this->sessionContainer->member)) {
-            $options = [];
-            try {
-                $additionalProfile = $this->linkedInService->getAdditionalProfileDetails($accessToken, $options);
-            } catch (\RuntimeException $runtimeException) {
-                return $this->redirect()->toRoute('auth/problem');
-            }
-            \Zend\Debug\Debug::dump($additionalProfile, 'additionalProfile');
-
-            try {
-                $member = $this->memberService->updateMember($additionalProfile, $accessToken);
-                \Zend\Debug\Debug::dump($member, 'updateMember');
-            } catch (\InvalidArgumentException $invalidArgumentException) {
-                try {
-                    $member = $this->memberService->registerNewMember($additionalProfile, $accessToken);
-                    \Zend\Debug\Debug::dump($member, 'registerNewMember');
                 } catch (\RuntimeException $runtimeException) {
                     return $this->redirect()->toRoute('auth/problem');
                 }
             }
-
             $this->sessionContainer->member = $member;
-        }*/
+        }
 
-        \Zend\Debug\Debug::dump($this->sessionContainer->member, 'Last line of defence');die;
         $result = $this->linkedInService->authenticateMember(
             $this->authService,
             $this->sessionContainer->member
@@ -184,8 +149,7 @@ class AuthController extends AbstractActionController
             return $this->redirect()->toRoute('auth/problem');
         }
 
-        //return $this->redirect()->toRoute('auth/welcome');
-        \Zend\Debug\Debug::dump($this->authService->getIdentity(), 'Last line of defence');die;
+        return $this->redirect()->toRoute('auth/welcome');
     }
 
     public function welcomeAction()

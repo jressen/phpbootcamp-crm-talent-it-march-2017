@@ -6,11 +6,13 @@ namespace Auth\Service;
 use Auth\Entity\MemberInterface;
 use Auth\Model\MemberModel;
 use Contact\Entity\AddressInterface;
+use Contact\Entity\CountryInterface;
 use Contact\Entity\EmailAddressInterface;
 use Contact\Entity\ImageInterface;
 use Contact\Entity\ContactInterface;
 use Contact\Model\AddressModelInterface;
 use Contact\Model\ContactModelInterface;
+use Contact\Model\CountryModelInterface;
 use Contact\Model\EmailAddressModelInterface;
 use Contact\Model\ImageModelInterface;
 
@@ -67,6 +69,16 @@ class MemberService
     protected $contactImagePrototype;
 
     /**
+     * @var CountryModelInterface
+     */
+    protected $countryModel;
+
+    /**
+     * @var CountryInterface
+     */
+    protected $countryPrototype;
+
+    /**
      * MemberService constructor.
      *
      * @param MemberModel $memberModel
@@ -79,6 +91,8 @@ class MemberService
      * @param AddressInterface $contactAddress
      * @param ImageModelInterface $contactImageModel
      * @param ImageInterface $contactImage
+     * @param CountryModelInterface $countryModel
+     * @param CountryInterface $country
      */
     public function __construct(
         MemberModel $memberModel,
@@ -90,7 +104,9 @@ class MemberService
         AddressModelInterface $contactAddressCommand,
         AddressInterface $contactAddress,
         ImageModelInterface $contactImageModel,
-        ImageInterface $contactImage
+        ImageInterface $contactImage,
+        CountryModelInterface $countryModel,
+        CountryInterface $country
     )
     {
         $this->memberModel = $memberModel;
@@ -103,6 +119,8 @@ class MemberService
         $this->contactAddressPrototype = $contactAddress;
         $this->contactImageModel = $contactImageModel;
         $this->contactImagePrototype = $contactImage;
+        $this->countryModel = $countryModel;
+        $this->countryPrototype = $country;
     }
 
 
@@ -127,46 +145,37 @@ class MemberService
             ->setLastName($memberProfileData['lastName']);
 
         $contactEntity = $this->contactCommand->saveContact($memberId, $newContact);
-        \Zend\Debug\Debug::dump($contactEntity, __FUNCTION__ . ' -> $contactEntity');
+        $contactId = $contactEntity->getContactId();
 
         $newContactEmail = clone $this->contactEmailPrototype;
         $newContactEmail->setMemberId($memberId)
-            ->setContactId($contactEntity->getContactId())
+            ->setContactId($contactId)
             ->setEmailAddress($memberProfileData['emailAddress'])
             ->setPrimary(true);
         $contactEmailEntity = $this->contactEmailCommand->saveEmailAddress($newContactEmail);
 
-        \Zend\Debug\Debug::dump($contactEmailEntity, __FUNCTION__ . ' -> $contactEmailEntity');
-
-        /*$contactAddressClass = get_class($this->contactAddressPrototype);
-        $newContactAddress = new $contactAddressClass(
-            0,
-            $memberId,
-            $contactEntity->getContactId(),
-            '', // street1
-            '', // street2
-            '', // postcode
-            '', // city
-            '', // province
-            (isset ($memberProfileData['location']['country']['code']) ?
-                strtoupper($memberProfileData['location']['country']['code']) :
-                '')
+        $countryCode = (
+            isset ($memberProfileData['location']['country']['code'])
+                ? strtoupper($memberProfileData['location']['country']['code'])
+                : ''
         );
-        $contactAddressEntity = $this->contactAddressCommand->saveAddress($contactEntity->getContactId(), $newContactAddress);
-        \Zend\Debug\Debug::dump($contactAddressEntity, __FUNCTION__ . ' -> $contactAddressEntity');
+
+        $country = $this->countryModel->findCountryByIso($countryCode);
+
+        $newContactAddress = clone $this->contactAddressPrototype;
+        $newContactAddress->setMemberId($memberId)
+            ->setContactId($contactId)
+            ->setCountry($country);
+
+        $contactAddressEntity = $this->contactAddressCommand->saveAddress($newContactAddress);
 
         $contactImageClass = get_class($this->contactImagePrototype);
-        $newContactImage = new $contactImageClass(
-            0,
-            $memberId,
-            $contactEntity->getContactId(),
-            $memberProfileData['pictureUrl'],
-            true
-        );
+        $newContactImage = clone $this->contactImagePrototype;
+        $newContactImage->setMemberId($memberId)
+            ->setContactId($contactId)
+            ->setImageLink($memberProfileData['pictureUrl'])
+            ->setImageActive(true);
         $contactImageEntity = $this->contactImageModel->saveImage($newContactImage);
-
-        \Zend\Debug\Debug::dump($contactImageEntity, __FUNCTION__ . ' -> $contactImageEntity');
-        die;*/
 
         return $memberEntity;
     }
