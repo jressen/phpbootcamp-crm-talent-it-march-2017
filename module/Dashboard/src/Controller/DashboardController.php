@@ -90,6 +90,17 @@ class DashboardController extends AbstractActionController
         return new ViewModel([]);
     }
 
+    public function companiesAction() {
+        if (!$this->authService->hasIdentity()) {
+            return $this->redirect()->toRoute('auth');
+        }
+        $member = $this->authService->getIdentity();
+
+        return new ViewModel([
+            'companies'
+        ]);
+    }
+
     public function contactsAction()
     {
         if (!$this->authService->hasIdentity()) {
@@ -161,7 +172,7 @@ class DashboardController extends AbstractActionController
         foreach ($validData->getAddresses() as $address) {
             $this->contactAddressModel->saveAddress($contactId, $address);
         }
-
+        
         return $this->redirect()->toRoute('dashboard/contacts/detail', ['contactId' => $contactId]);
     }
 }
