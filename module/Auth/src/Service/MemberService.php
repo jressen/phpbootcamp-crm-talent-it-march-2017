@@ -15,6 +15,7 @@ use Contact\Model\ContactModelInterface;
 use Contact\Model\CountryModelInterface;
 use Contact\Model\EmailAddressModelInterface;
 use Contact\Model\ImageModelInterface;
+use Contact\Entity\ContactAwareInterface;
 
 class MemberService
 {

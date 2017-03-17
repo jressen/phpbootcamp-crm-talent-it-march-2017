@@ -11,4 +11,10 @@ interface ContactAwareInterface extends MemberAwareInterface
      * @return int
      */
     public function getContactId();
+
+    /**
+     * @param $contactId
+     * @return int
+     */
+    public function setContactId($contactId);
 }
