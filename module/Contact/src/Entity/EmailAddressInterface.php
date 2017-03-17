@@ -25,6 +25,13 @@ interface EmailAddressInterface extends ContactAwareInterface
     public function getEmailAddress();
 
     /**
+     * Set the email address
+     *
+     * @param id
+     */
+    public function setContactEmailId($id);
+
+    /**
      * Check if the email address is primary
      *
      * @return bool

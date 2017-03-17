@@ -10,6 +10,13 @@ interface AddressInterface extends ContactAwareInterface
      */
     public function getContactAddressId();
 
+
+    /**
+     * @param $contactAddressId
+     * @return int
+     */
+    public function setContactAddressId($contactAddressId);
+
     /**
      * @return string
      */

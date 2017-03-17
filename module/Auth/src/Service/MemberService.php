@@ -15,6 +15,7 @@ use Contact\Model\ContactModelInterface;
 use Contact\Model\CountryModelInterface;
 use Contact\Model\EmailAddressModelInterface;
 use Contact\Model\ImageModelInterface;
+use Contact\Entity\ContactAwareInterface;
 
 class MemberService
 {
@@ -176,7 +177,7 @@ class MemberService
 
         $contactImageClass = get_class($this->contactImagePrototype);
         $newContactImage = clone $this->contactImagePrototype;
-        $newContactImage->setMemberId($memberId)
+        $newContactImage->ImagesetMemberId($memberId)
             ->setContactId($contactId)
             ->setImageLink($memberProfileData['pictureUrl'])
             ->setImageActive(true);
