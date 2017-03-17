@@ -1,10 +1,10 @@
-<?php $this->headTitle($this->translate('Overview')) ?>
+<?php $this->headTitle($this->translate('Companies')) ?>
 
 <div class="container">
 
     <div class="row">
         <div class="col-md-12">
-            <h1 class="h1"><?php echo $this->translate('Overview') ?></h1>
+            <h1 class="h1"><?php echo $this->translate('Companies') ?></h1>
         </div>
     </div>
 
@@ -13,9 +13,9 @@
         <div class="col-md-4">
             <nav class="nav">
                 <ul class="list-group">
-                    <li class="list-group-item active"><span class="glyphicon glyphicon-home"></span> <?php echo $this->translate('Overview') ?></li>
+                    <li class="list-group-item"><a href="<?php echo $this->url('dashboard') ?>"><span class="glyphicon glyphicon-home"></span> <?php echo $this->translate('Overview') ?></a></li>                    
                     <li class="list-group-item"><a href="<?php echo $this->url('dashboard/contacts') ?>"><span class="glyphicon glyphicon-user"></span> <?php echo $this->translate('Contacts') ?></a></li>
-                    <li class="list-group-item"><a href="<?php echo $this->url('dashboard/companies') ?>"><span class="fa fa-building-o"></span> <?php echo $this->translate('Companies') ?></a></li>
+                    <li class="list-group-item active"><span class="fa fa-building-o"></span> <?php echo $this->translate('Companies') ?></li>
                 </ul>
             </nav>
         </div>
